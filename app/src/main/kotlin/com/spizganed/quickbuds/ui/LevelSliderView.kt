@@ -54,6 +54,12 @@ class LevelSliderView(
         color = accent; style = Paint.Style.STROKE; strokeWidth = dp(2.5f)
     }
     private val nothing = ThemeRes.nothing(context)
+
+    /** Material style: the M3 slider. A 16dp track (tonal past the handle), a gap, and a 4dp bar handle that thins while dragged. */
+    private val material = ThemeRes.material(context)
+    private val tonal = ThemeRes.palette(context).tonal
+    private val barPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val bar = android.graphics.RectF()
     private val valuePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = accent; textSize = dp(14f); textAlign = Paint.Align.CENTER
         if (nothing) typeface = ThemeRes.headline(context) else isFakeBoldText = true
@@ -61,27 +67,56 @@ class LevelSliderView(
 
     private val left get() = dp(22f)
     private val right get() = width - dp(22f)
-    private val trackY get() = if (showValue) dp(40f) else dp(22f)
+    private val trackY get() = if (showValue) dp(if (material) 46f else 40f) else dp(22f)
 
     private fun x(v: Float) = left + (v - min) * (right - left) / (max - min)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), dp(if (showValue) 58f else 44f).toInt())
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), dp(if (showValue) (if (material) 68f else 58f) else 44f).toInt())
     }
 
     override fun onDraw(canvas: Canvas) {
         // Nothing style: the same drawing as dots (DotArt); the value stays text.
         if (nothing) DotArt.draw(context, canvas, width, height) { shapes(it) } else shapes(canvas)
-        if (showValue) canvas.drawText(if (value > 0 && min < 0) "+$value" else "$value", x(pos), trackY - dp(18f), valuePaint)
+        if (showValue) canvas.drawText(if (value > 0 && min < 0) "+$value" else "$value", x(pos), trackY - dp(if (material) 26f else 18f), valuePaint)
     }
 
     private fun shapes(canvas: Canvas) {
+        if (material) { m3(canvas); return }
         canvas.drawLine(left, trackY, right, trackY, trackPaint)
         canvas.drawLine(left, trackY, x(pos), trackY, fillPaint)
         if (nothing) { DotArt.knob(context, canvas, x(pos), trackY, accent); return }
         val r = if (dragging) dp(10f) else dp(8f)
         canvas.drawCircle(x(pos), trackY, r, dotFill)
         canvas.drawCircle(x(pos), trackY, r, dotRing)
+    }
+
+    private fun m3(canvas: Canvas) {
+        val x = x(pos)
+        val half = dp(8f)
+        val gap = dp(6f)
+        // Outer ends fully round, the ends next to the handle 2dp, as in M3.
+        val outer = half
+        val inner = dp(2f)
+        if (x - gap > left - half) part(canvas, left - half, x - gap, fillPaint.color, outer, inner)
+        if (x + gap < right + half) part(canvas, x + gap, right + half, tonal, inner, outer)
+        barPaint.color = fillPaint.color
+        val w = if (dragging) dp(1f) else dp(2f)
+        bar.set(x - w, trackY - dp(22f), x + w, trackY + dp(22f))
+        canvas.drawRoundRect(bar, w, w, barPaint)
+    }
+
+    private val path = android.graphics.Path()
+
+    /** One track segment from [from] to [to], with radius [l] on the left ends and [r] on the right. */
+    private fun part(canvas: Canvas, from: Float, to: Float, color: Int, l: Float, r: Float) {
+        val max = (to - from) / 2
+        val lr = minOf(l, max); val rr = minOf(r, max)
+        bar.set(from, trackY - dp(8f), to, trackY + dp(8f))
+        path.reset()
+        path.addRoundRect(bar, floatArrayOf(lr, lr, rr, rr, rr, rr, lr, lr), android.graphics.Path.Direction.CW)
+        barPaint.color = color
+        canvas.drawPath(path, barPaint)
     }
 
     override fun onTouchEvent(e: MotionEvent): Boolean {
