@@ -178,7 +178,7 @@ def grid(icon, sp, shape="grid"):
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/w_grid" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="{orient}">
 {row(range(6))}
-<View android:id="@+id/w_grid_row1" android:layout_width="0dp" android:layout_height="0dp" />
+<FrameLayout android:id="@+id/w_grid_row1" android:layout_width="0dp" android:layout_height="0dp" />
 </LinearLayout>
 '''
     return f'''<?xml version="1.0" encoding="utf-8"?>

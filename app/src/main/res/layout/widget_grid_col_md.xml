@@ -51,5 +51,5 @@
 <ImageView android:id="@+id/w_cell5_label" android:layout_width="wrap_content" android:layout_height="15dp" android:adjustViewBounds="true" android:scaleType="fitCenter" android:layout_marginTop="2dp" />
 </LinearLayout>
 </FrameLayout>
-<View android:id="@+id/w_grid_row1" android:layout_width="0dp" android:layout_height="0dp" />
+<FrameLayout android:id="@+id/w_grid_row1" android:layout_width="0dp" android:layout_height="0dp" />
 </LinearLayout>
