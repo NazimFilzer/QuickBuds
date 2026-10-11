@@ -13,12 +13,10 @@ import org.json.JSONObject
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-import java.net.URLEncoder
 
 /**
- * The problem report, filled by [ReportActivity]: JSON to the report Worker (report-worker/), or the Google Form
- * (`formResponse`, no sign-in) when the Worker is unreachable. The desktop app does the same (desktop/src/report.rs).
- * A changed form question gets a new id.
+ * The problem report, filled by [ReportActivity]: JSON to the report Worker (report-worker/). The desktop app does
+ * the same (desktop/src/report.rs).
  */
 object ProblemReport {
 
@@ -27,16 +25,7 @@ object ProblemReport {
     /** One report. [categories] are [CATEGORIES] values; [log] is null when the person turned it off. */
     class Report(val model: String, val categories: List<String>, val description: String, val log: String?, val crash: Boolean)
 
-    private const val FORM = "https://docs.google.com/forms/d/e/1FAIpQLScPNdmogyip2EDWZayNUSW3ElYz674GAC7t7BZuFNHgvxGP_Q/formResponse"
-    private const val ENTRY_MODEL = "entry.849813820"
-    private const val ENTRY_CATEGORY = "entry.494675210"
-    private const val ENTRY_DESCRIPTION = "entry.1786789589"
-    private const val ENTRY_LOG = "entry.863055756"
-
-    /** Google answers 413 somewhere between 31 and 41 KB of form body. */
-    private const val MAX_BODY = 30_000
-
-    /** The form's Category options, in the form's own words (it rejects any other value). */
+    /** The Category options, in the Worker's own words (it drops any other value, report-worker/src/index.js). */
     val CATEGORIES = listOf("UI", "Lag", "Connection", "Feature not working", "Battery", "Other")
 
     /** The log's first line: phone, Android, QuickBuds, buds model and firmware. Exported logs start with it too. */
@@ -101,26 +90,6 @@ object ProblemReport {
         runCatching { c.getSystemService(BluetoothManager::class.java)?.adapter?.name }.getOrNull()
     ).filter { it.length >= 3 }.distinct()
 
-    /**
-     * The form body. A log over [MAX_BODY] loses its oldest lines (the header stays): the newest part shows the
-     * problem.
-     */
-    private fun formBody(r: Report): String {
-        fun enc(s: String) = URLEncoder.encode(s, "UTF-8")
-        val fields = listOf(ENTRY_MODEL to r.model, ENTRY_DESCRIPTION to r.description) + r.categories.map { ENTRY_CATEGORY to it }
-        val head = fields.joinToString("&") { "${it.first}=${enc(it.second)}" }
-        if (r.log == null) return head
-        val lines = r.log.lines()
-        var from = 1
-        while (true) {
-            val kept = (listOf(lines[0]) + lines.drop(from)).joinToString("\n")
-            val body = "$head&$ENTRY_LOG=${enc(kept)}"
-            if (body.length <= MAX_BODY || from >= lines.size) return body
-            // Drop a tenth of what is left: a few passes, not one per line.
-            from += maxOf(1, (lines.size - from) / 10)
-        }
-    }
-
     /** [r] as the person reads it before Send: one block per field, the log last. */
     fun preview(r: Report): String = listOfNotNull(
         "Model:\n${r.model}",
@@ -130,8 +99,7 @@ object ProblemReport {
     ).joinToString("\n\n")
 
     /**
-     * Posts [r] to the Worker; to the Google Form only when the Worker is unreachable (no connection, or a 5xx).
-     * Network thread only. Returns (sent, the Worker's answer text when it refused the report).
+     * Posts [r] to the Worker. Network thread only. Returns (sent, the Worker's answer text when it refused the report).
      */
     fun send(c: Context, r: Report): Pair<Boolean, String?> {
         val json = JSONObject()
@@ -141,21 +109,11 @@ object ProblemReport {
             .put("description", r.description)
             .put("log", r.log ?: JSONObject.NULL)
             .put("crash", r.crash)
-        try {
-            val (code, text) = post(WORKER, "application/json; charset=UTF-8", json.toString())
-            if (code < 500) {
-                if (code != 200) PacketLogger.log("REPORT: worker answered $code")
-                val message = runCatching { JSONObject(text).getString("message") }.getOrNull()
-                return (code == 200) to message.takeIf { code != 200 }
-            }
-            PacketLogger.log("REPORT: worker answered $code, using the form")
-        } catch (e: IOException) {
-            PacketLogger.error("report worker", e)
-        }
         return try {
-            val (code, _) = post(FORM, "application/x-www-form-urlencoded; charset=UTF-8", formBody(r))
-            if (code != 200) PacketLogger.log("REPORT: form answered $code")
-            (code == 200) to null
+            val (code, text) = post(WORKER, json.toString())
+            if (code != 200) PacketLogger.log("REPORT: worker answered $code")
+            val message = runCatching { JSONObject(text).getString("message") }.getOrNull()
+            (code == 200) to message.takeIf { code != 200 }
         } catch (e: IOException) {
             PacketLogger.error("report send", e)
             false to null
@@ -163,14 +121,14 @@ object ProblemReport {
     }
 
     /** The answer code and body. Throws [IOException] without a connection. */
-    private fun post(url: String, type: String, body: String): Pair<Int, String> {
+    private fun post(url: String, body: String): Pair<Int, String> {
         val conn = URL(url).openConnection() as HttpURLConnection
         try {
             conn.requestMethod = "POST"
             conn.doOutput = true
             conn.connectTimeout = 15_000
             conn.readTimeout = 15_000
-            conn.setRequestProperty("Content-Type", type)
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8")
             conn.outputStream.use { it.write(body.toByteArray()) }
             val code = conn.responseCode
             val text = (if (code < 400) conn.inputStream else conn.errorStream)?.bufferedReader()?.use { it.readText() }.orEmpty()

@@ -52,8 +52,8 @@ Finish each step before the next one starts.
   sets either flag, so HeyMelody never shows them.
 - Earbud fall detection (`deviceLostRemind`, only Enco Clip2) (2026-09-29).
 - Custom UI styles as a file (import / export): only the built-in styles (2026-09-29).
-- **Any feature that needs a server** (OPPO's or anyone's). Exceptions: the problem report's Google Form (2026-09-29), and its
-  Cloudflare Worker on the free plan, `report-worker/` (2026-10-11).
+- **Any feature that needs a server** (OPPO's or anyone's). Exception: the problem report's
+  Cloudflare Worker on the free plan, `report-worker/` (2026-10-11). Was: a Google Form.
 - Firmware updates: a failed flash can brick the buds. The firmware row says to update from HeyMelody
   (2026-09-29).
 - From HeyMelody's device page (2026-09-29): Zen mode and Sound space / white noise (sound packs

@@ -1,6 +1,5 @@
 //! App settings › Report a problem: the phone's `ProblemReport`, posted with `curl` (as the updater does) to the same
-//! report Worker, or to the Google Form when the Worker is unreachable. Nothing goes out without Send; See the report
-//! shows the exact text first.
+//! report Worker. Nothing goes out without Send; See the report shows the exact text first.
 
 use crate::protocol::*;
 use crate::session::{Line, LOG};
@@ -11,14 +10,7 @@ use std::process::Stdio;
 use std::sync::Mutex;
 
 const WORKER: &str = "https://quickbuds-report.spizganed.workers.dev/report";
-const FORM: &str = "https://docs.google.com/forms/d/e/1FAIpQLScPNdmogyip2EDWZayNUSW3ElYz674GAC7t7BZuFNHgvxGP_Q/formResponse";
-const ENTRY_MODEL: &str = "entry.849813820";
-const ENTRY_CATEGORY: &str = "entry.494675210";
-const ENTRY_DESCRIPTION: &str = "entry.1786789589";
-const ENTRY_LOG: &str = "entry.863055756";
-/// Google answers 413 somewhere between 31 and 41 KB of form body.
-const MAX_BODY: usize = 30_000;
-/// The form's Category options, in its own words; it rejects any other value.
+/// The Category options, in the Worker's own words; it drops any other value (report-worker/src/index.js).
 const CATEGORIES: [&str; 6] = ["UI", "Lag", "Connection", "Feature not working", "Battery", "Other"];
 /// Their labels, the phone's `problem_cat_*` strings.
 pub const CATEGORY_KEYS: [&str; 6] = ["problem_cat_ui", "problem_cat_lag", "problem_cat_connection",
@@ -197,34 +189,6 @@ fn scrub_macs(s: &str) -> String {
     out
 }
 
-/// `application/x-www-form-urlencoded`, as Java's `URLEncoder` writes it.
-fn enc(s: &str) -> String {
-    s.bytes().map(|c| match c {
-        b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'.' | b'-' | b'*' | b'_' => (c as char).to_string(),
-        b' ' => "+".into(),
-        _ => format!("%{c:02X}"),
-    }).collect()
-}
-
-#[cfg(test)]
-fn dec(s: &str) -> String {
-    let b = s.as_bytes();
-    let mut out = Vec::with_capacity(b.len());
-    let mut i = 0;
-    while i < b.len() {
-        match b[i] {
-            b'+' => out.push(b' '),
-            b'%' if i + 2 < b.len() => {
-                out.push(u8::from_str_radix(&s[i + 1..i + 3], 16).unwrap_or(b'?'));
-                i += 2;
-            }
-            c => out.push(c),
-        }
-        i += 1;
-    }
-    String::from_utf8_lossy(&out).into_owned()
-}
-
 /// One report; [Draft::log] is None when the person turned it off.
 struct Draft {
     model: String,
@@ -232,23 +196,6 @@ struct Draft {
     description: String,
     log: Option<String>,
     crash: bool,
-}
-
-/// The form body. A log over [MAX_BODY] loses its oldest lines (the header stays).
-fn body(d: &Draft) -> String {
-    let mut fields = vec![(ENTRY_MODEL, d.model.as_str()), (ENTRY_DESCRIPTION, d.description.as_str())];
-    fields.extend(d.categories.iter().map(|c| (ENTRY_CATEGORY, *c)));
-    let head = fields.iter().map(|(k, v)| format!("{k}={}", enc(v))).collect::<Vec<_>>().join("&");
-    let Some(log) = &d.log else { return head };
-    let lines: Vec<&str> = log.lines().collect();
-    let mut from = 1;
-    loop {
-        let kept = std::iter::once(lines[0]).chain(lines[from.min(lines.len())..].iter().copied()).collect::<Vec<_>>().join("\n");
-        let body = format!("{head}&{ENTRY_LOG}={}", enc(&kept));
-        if body.len() <= MAX_BODY || from >= lines.len() { return body; }
-        // A tenth of what is left per pass, not one line.
-        from += ((lines.len() - from) / 10).max(1);
-    }
 }
 
 /// What the person reads before Send: one block per field, the log last.
@@ -261,10 +208,9 @@ fn preview(d: &Draft) -> String {
 }
 
 /// Posts [body] to [url] through `curl`'s standard input. The answer code (0: no connection) and text.
-fn post(url: &str, content_type: &str, body: &str) -> (u16, String) {
-    let header = format!("Content-Type: {content_type}");
+fn post(url: &str, body: &str) -> (u16, String) {
     let child = crate::update::quiet("curl")
-        .args(["-sS", "--max-time", "30", "-w", "\n%{http_code}", "-H", header.as_str(), "--data-binary", "@-", url])
+        .args(["-sS", "--max-time", "30", "-w", "\n%{http_code}", "-H", "Content-Type: application/json; charset=UTF-8", "--data-binary", "@-", url])
         .stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::null()).spawn();
     let Ok(mut child) = child else { return (0, String::new()) };
     if child.stdin.take().map(|mut i| i.write_all(body.as_bytes())).is_none() { return (0, String::new()); }
@@ -273,20 +219,17 @@ fn post(url: &str, content_type: &str, body: &str) -> (u16, String) {
     (code.trim().parse().unwrap_or(0), text.to_string())
 }
 
-/// Posts [d] to the Worker; to the Google Form only when the Worker is unreachable (no connection, or a 5xx).
+/// Posts [d] to the Worker.
 /// Returns (sent, the Worker's answer text when it refused the report).
 fn send(d: Draft) -> (bool, Option<String>) {
     let json = serde_json::json!({
         "app": format!("QuickBuds {} {}", env!("CARGO_PKG_VERSION"), if cfg!(windows) { "Windows" } else { "Linux" }),
         "model": d.model, "categories": d.categories, "description": d.description, "log": d.log, "crash": d.crash,
     });
-    let (code, text) = post(WORKER, "application/json; charset=UTF-8", &json.to_string());
-    if (1..500).contains(&code) {
-        let message = serde_json::from_str::<serde_json::Value>(&text).ok()
-            .and_then(|v| v["message"].as_str().map(String::from));
-        return (code == 200, if code == 200 { None } else { message });
-    }
-    (post(FORM, "application/x-www-form-urlencoded; charset=UTF-8", &body(&d)).0 == 200, None)
+    let (code, text) = post(WORKER, &json.to_string());
+    let message = serde_json::from_str::<serde_json::Value>(&text).ok()
+        .and_then(|v| v["message"].as_str().map(String::from));
+    (code == 200, if code == 200 { None } else { message })
 }
 
 /// The current form; None (with a note) without a description, when the model is not in the list (a crash
@@ -374,10 +317,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn macs_and_encoding() {
+    fn macs() {
         assert_eq!(scrub_macs("to AA:bb:01:02:03:04 ok"), "to XX:XX:XX:XX:XX:XX ok");
         assert_eq!(scrub_macs("12:34:56.789 RX AA 07"), "12:34:56.789 RX AA 07");
-        assert_eq!(dec(&enc("a b&c=ü\n")), "a b&c=ü\n");
     }
 
     #[test]
@@ -386,16 +328,5 @@ mod tests {
         assert!(known("oneplus buds 4"));
         assert!(!known("Xiaomi Buds 5"));
         assert!(!known(""));
-    }
-
-    #[test]
-    fn long_log_keeps_header_and_newest() {
-        let log = std::iter::once("HEADER".to_string()).chain((0..5000).map(|i| format!("line {i:05} xxxxxxxxxx"))).collect::<Vec<_>>().join("\n");
-        let d = Draft { model: "m".into(), categories: vec!["UI"], description: "d".into(), log: Some(log), crash: false };
-        let b = body(&d);
-        assert!(b.len() <= MAX_BODY);
-        let sent = dec(b.rsplit_once('=').unwrap().1);
-        assert!(sent.starts_with("HEADER\n") && sent.ends_with("line 04999 xxxxxxxxxx"));
-        assert!(b.contains(&format!("{ENTRY_CATEGORY}=UI")));
     }
 }
