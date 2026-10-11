@@ -308,7 +308,7 @@
     <string name="preset_hex">Culoare hex</string>
     <string name="widget_style_title">Stil</string>
     <string name="widget_background_title">Fundalul widgeturilor</string>
-    <string name="widget_background_sub">Dezactivat: widgeturile stau pe imaginea de fundal</string>
+    <string name="widget_background_sub">Dezactivat: widgetul stă pe imaginea de fundal</string>
     <string name="widget_style_classic">Clasic</string>
     <string name="widget_mode_anc_low">ANC scăzut</string>
     <string name="widget_mode_anc_medium">ANC mediu</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Când este în raza de acțiune, căștile se conectează mai întâi la el.</string>
     <string name="widget_pages_name">QuickBuds baterie și comenzi</string>
     <string name="widget_controls_name">QuickBuds comenzi</string>
+    <string name="widget_settings_title">Setările widgetului</string>
     <string name="widget_setup_title">Butoanele widgetului</string>
     <string name="widget_setup_hint">Alege până la 4 butoane. Widgetul le arată în această ordine.</string>
     <string name="problem_title">Raportează o problemă</string>

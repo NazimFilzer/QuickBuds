@@ -404,6 +404,7 @@
     <string name="dual_preferred_sub">在范围内时，耳机会优先连接此设备。</string>
     <string name="widget_pages_name">QuickBuds 电量和控制</string>
     <string name="widget_controls_name">QuickBuds 控制</string>
+    <string name="widget_settings_title">小部件设置</string>
     <string name="widget_setup_title">小组件按钮</string>
     <string name="widget_setup_hint">最多选择 4 个按钮。小组件按此顺序显示。</string>
     <string name="problem_title">报告问题</string>

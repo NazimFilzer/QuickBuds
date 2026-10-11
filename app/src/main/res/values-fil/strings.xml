@@ -308,7 +308,7 @@
     <string name="preset_hex">Hex na kulay</string>
     <string name="widget_style_title">Istilo</string>
     <string name="widget_background_title">Background ng widget</string>
-    <string name="widget_background_sub">Naka-off: nasa ibabaw ng wallpaper mo ang mga widget</string>
+    <string name="widget_background_sub">Naka-off: nasa ibabaw ng wallpaper mo ang widget</string>
     <string name="widget_style_classic">Classic</string>
     <string name="widget_mode_anc_low">ANC Mahina</string>
     <string name="widget_mode_anc_medium">ANC Katamtaman</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Kapag abot-kaya, dito unang kumokonekta ang earbuds.</string>
     <string name="widget_pages_name">QuickBuds baterya at kontrol</string>
     <string name="widget_controls_name">QuickBuds kontrol</string>
+    <string name="widget_settings_title">Mga setting ng widget</string>
     <string name="widget_setup_title">Mga button ng widget</string>
     <string name="widget_setup_hint">Pumili ng hanggang 4 na button. Ipinapakita ng widget ang mga ito sa ganitong ayos.</string>
     <string name="problem_title">Mag-ulat ng problema</string>

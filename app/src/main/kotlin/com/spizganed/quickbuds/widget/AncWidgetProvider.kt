@@ -84,6 +84,12 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
     companion object {
 
+        /** The kind of widget [id], from its provider; null for an unknown id. */
+        fun kindOf(c: Context, id: Int): Kind? {
+            val cls = AppWidgetManager.getInstance(c).getAppWidgetInfo(id)?.provider?.className ?: return null
+            return providers.firstOrNull { it.first.name == cls }?.second
+        }
+
         private val providers = listOf(
             BatteryWidgetProvider::class.java to Kind.BATTERY,
             BatteryOnlyWidgetProvider::class.java to Kind.BATTERY_ONLY,
@@ -163,7 +169,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
         /** The views and the flipper child to show (-1: the disconnected layout, no flippers); [update] decides whether to send the child. */
         private fun build(context: Context, state: WidgetStateStore.State, provider: Kind, id: Int): Pair<RemoteViews, Int> {
             val p = WidgetSettings.palette(context)
-            if (!state.connected) return disconnected(context, p, provider) to -1
+            if (!state.connected) return disconnected(context, p, provider, id) to -1
 
             val page = provider.page ?: WidgetSettings.page(context, id, Kind.BATTERY)
             val list = page == Kind.CONTROLS && WidgetSettings.listOpen(context, id)
@@ -172,7 +178,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             // a flipper's child animates. The flip side: every state set here must be set both ways
             // (visibility, click), or the previous update's sticks.
             val child = if (list) 2 else if (page == Kind.BATTERY) 0 else 1
-            boxBg(context, v, p)
+            boxBg(context, v, p, id)
             // Every tap on a two-page widget carries the other page, so a second tap swaps.
             val other = if (page == Kind.BATTERY) Kind.CONTROLS else Kind.BATTERY
             val swap = if (!list && provider.page == null) other else null
@@ -191,9 +197,9 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             if (WidgetSettings.nothingStyle(c)) R.drawable.widget_bg_n else R.drawable.widget_bg
 
         /** A panel or button inside the box, its corners parallel to the box's in the Nothing style. */
-        /** The widget box; Material without [WidgetSettings.background]: none, the content on the wallpaper. */
-        private fun boxBg(c: Context, v: RemoteViews, p: Palette) {
-            if (!WidgetSettings.background(c)) return v.setImageViewResource(R.id.w_bg, android.R.color.transparent)
+        /** Widget [id]'s box; Material without [WidgetSettings.background]: none, the content on the wallpaper. */
+        private fun boxBg(c: Context, v: RemoteViews, p: Palette, id: Int) {
+            if (!WidgetSettings.background(c, id)) return v.setImageViewResource(R.id.w_bg, android.R.color.transparent)
             v.setImageViewResource(R.id.w_bg, bgRes(c))
             v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
         }
@@ -265,10 +271,10 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             }
         }
 
-        private fun disconnected(context: Context, p: Palette, kind: Kind): RemoteViews {
+        private fun disconnected(context: Context, p: Palette, kind: Kind, id: Int): RemoteViews {
             val v = RemoteViews(context.packageName, if (WidgetSettings.nothingStyle(context)) R.layout.widget_disconnected_n
                 else if (WidgetSettings.materialStyle(context)) R.layout.widget_disconnected_md else R.layout.widget_disconnected)
-            boxBg(context, v, p)
+            boxBg(context, v, p, id)
             // Material: the chip is the widget's only control, so it keeps its fill (with or without the box).
             val chip = WidgetSettings.materialStyle(context)
             paint(context, v, CONN, p, chip)

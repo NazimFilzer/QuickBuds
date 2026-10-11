@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">範囲内にあるとき、イヤホンはまずこのデバイスに接続します。</string>
     <string name="widget_pages_name">QuickBuds バッテリーと操作</string>
     <string name="widget_controls_name">QuickBuds 操作</string>
+    <string name="widget_settings_title">ウィジェットの設定</string>
     <string name="widget_setup_title">ウィジェットのボタン</string>
     <string name="widget_setup_hint">ボタンを4つまで選べます。ウィジェットにはこの順で表示されます。</string>
     <string name="problem_title">問題を報告</string>

@@ -31,7 +31,22 @@ class WidgetSetupActivity : Activity() {
 
         val p = ThemeRes.palette(this)
         val root = SettingRowFactory.screen(this)
-        root.addView(SettingRowFactory.title(this, R.string.widget_setup_title))
+        root.addView(SettingRowFactory.title(this, R.string.widget_settings_title))
+        // Material: this widget's box on or off.
+        if (WidgetSettings.materialStyle(this)) {
+            val bgSwitch = SettingRowFactory.buildSwitch(this, WidgetSettings.background(this, id))
+            bgSwitch.setOnCheckedChangeListener { v, on -> WidgetSettings.setBackground(this, id, on); Haptics.commit(v) }
+            val bgRow = SettingRowFactory.build(this, 0, R.string.widget_background_title, 0, bgSwitch) { bgSwitch.performClick() }
+            SettingRowFactory.subtitle(this, bgRow).setText(R.string.widget_background_sub)
+            root.addView(SettingRowFactory.card(this).apply { addView(bgRow) })
+        }
+        // The buttons, for widgets with a controls page.
+        if (QuickBudsWidget.kindOf(this, id) == QuickBudsWidget.Kind.BATTERY_ONLY) {
+            if (root.childCount == 1) return finish()
+            setContentView(ScrollView(this).apply { setBackgroundColor(p.background); addView(root) })
+            return
+        }
+        root.addView(SettingRowFactory.sectionLabel(this, R.string.widget_setup_title))
         root.addView(TextView(this).apply {
             setText(R.string.widget_setup_hint)
             setTextColor(p.textSecondary)

@@ -308,7 +308,7 @@
     <string name="preset_hex">Hex renk</string>
     <string name="widget_style_title">Stil</string>
     <string name="widget_background_title">Widget arka planı</string>
-    <string name="widget_background_sub">Kapalı: widget\'lar doğrudan duvar kağıdının üzerinde durur</string>
+    <string name="widget_background_sub">Kapalı: widget doğrudan duvar kağıdının üzerinde durur</string>
     <string name="widget_style_classic">Klasik</string>
     <string name="widget_mode_anc_low">ANC Düşük</string>
     <string name="widget_mode_anc_medium">ANC Orta</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Menzildeyken kulaklıklar önce bu cihaza bağlanır.</string>
     <string name="widget_pages_name">QuickBuds pil ve kontroller</string>
     <string name="widget_controls_name">QuickBuds kontroller</string>
+    <string name="widget_settings_title">Widget ayarları</string>
     <string name="widget_setup_title">Widget düğmeleri</string>
     <string name="widget_setup_hint">En fazla 4 düğme seçin. Widget bunları bu sırayla gösterir.</string>
     <string name="problem_title">Sorun bildir</string>

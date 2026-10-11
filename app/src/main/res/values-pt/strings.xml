@@ -308,7 +308,7 @@
     <string name="preset_hex">Cor hex</string>
     <string name="widget_style_title">Estilo</string>
     <string name="widget_background_title">Fundo dos widgets</string>
-    <string name="widget_background_sub">Desativado: os widgets ficam sobre o papel de parede</string>
+    <string name="widget_background_sub">Desativado: o widget fica sobre o papel de parede</string>
     <string name="widget_style_classic">Clássico</string>
     <string name="widget_mode_anc_low">ANC baixo</string>
     <string name="widget_mode_anc_medium">ANC médio</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Quando estiver ao alcance, os fones se conectam a ele primeiro.</string>
     <string name="widget_pages_name">QuickBuds bateria e controlos</string>
     <string name="widget_controls_name">QuickBuds controlos</string>
+    <string name="widget_settings_title">Configurações do widget</string>
     <string name="widget_setup_title">Botões do widget</string>
     <string name="widget_setup_hint">Escolha até 4 botões. O widget mostra-os por esta ordem.</string>
     <string name="problem_title">Comunicar um problema</string>

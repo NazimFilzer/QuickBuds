@@ -308,7 +308,7 @@
     <string name="preset_hex">Цвет в HEX</string>
     <string name="widget_style_title">Стиль</string>
     <string name="widget_background_title">Фон виджетов</string>
-    <string name="widget_background_sub">Выкл.: виджеты лежат прямо на обоях</string>
+    <string name="widget_background_sub">Выкл.: виджет лежит прямо на обоях</string>
     <string name="widget_style_classic">Классический</string>
     <string name="widget_mode_anc_low">ANC низкий</string>
     <string name="widget_mode_anc_medium">ANC средний</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Когда оно рядом, наушники подключаются к нему в первую очередь.</string>
     <string name="widget_pages_name">QuickBuds батарея и управление</string>
     <string name="widget_controls_name">QuickBuds управление</string>
+    <string name="widget_settings_title">Настройки виджета</string>
     <string name="widget_setup_title">Кнопки виджета</string>
     <string name="widget_setup_hint">Выберите до 4 кнопок. Виджет показывает их в этом порядке.</string>
     <string name="problem_title">Сообщить о проблеме</string>

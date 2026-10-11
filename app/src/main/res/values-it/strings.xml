@@ -308,7 +308,7 @@
     <string name="preset_hex">Colore hex</string>
     <string name="widget_style_title">Stile</string>
     <string name="widget_background_title">Sfondo dei widget</string>
-    <string name="widget_background_sub">Disattivato: i widget stanno sullo sfondo</string>
+    <string name="widget_background_sub">Disattivato: il widget sta sullo sfondo</string>
     <string name="widget_style_classic">Classico</string>
     <string name="widget_mode_anc_low">ANC basso</string>
     <string name="widget_mode_anc_medium">ANC medio</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Quando è nel raggio d\'azione, gli auricolari si connettono prima a questo.</string>
     <string name="widget_pages_name">QuickBuds batteria e controlli</string>
     <string name="widget_controls_name">QuickBuds controlli</string>
+    <string name="widget_settings_title">Impostazioni widget</string>
     <string name="widget_setup_title">Pulsanti del widget</string>
     <string name="widget_setup_hint">Scegli fino a 4 pulsanti. Il widget li mostra in questo ordine.</string>
     <string name="problem_title">Segnala un problema</string>

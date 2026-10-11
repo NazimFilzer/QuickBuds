@@ -91,17 +91,6 @@ class ThemeActivity : Activity() {
                 }
             }
         })
-        // Material: the widgets' box can be left out, as on Google's widgets.
-        if (ThemeRes.material(this)) {
-            val bgSwitch = SettingRowFactory.buildSwitch(this, com.spizganed.quickbuds.widget.WidgetSettings.background(this))
-            bgSwitch.setOnCheckedChangeListener { _, on -> com.spizganed.quickbuds.widget.WidgetSettings.setBackground(this, on) }
-            val bgRow = SettingRowFactory.build(this, 0, R.string.widget_background_title, 0, bgSwitch) { bgSwitch.performClick() }
-            SettingRowFactory.subtitle(this, bgRow).setText(R.string.widget_background_sub)
-            root.addView(SettingRowFactory.card(this).apply {
-                (layoutParams as LinearLayout.LayoutParams).topMargin = ThemeRes.dp(this@ThemeActivity, 12f)
-                addView(bgRow)
-            })
-        }
 
         // --- Built-in: 3-column grid of preview tiles ---
         root.addView(SettingRowFactory.sectionLabel(this, R.string.theme_builtin))

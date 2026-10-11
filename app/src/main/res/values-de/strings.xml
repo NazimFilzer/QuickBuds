@@ -308,7 +308,7 @@
     <string name="preset_hex">Hex-Farbe</string>
     <string name="widget_style_title">Stil</string>
     <string name="widget_background_title">Widget-Hintergrund</string>
-    <string name="widget_background_sub">Aus: Die Widgets liegen direkt auf deinem Hintergrund</string>
+    <string name="widget_background_sub">Aus: Das Widget liegt direkt auf deinem Hintergrund</string>
     <string name="widget_style_classic">Klassisch</string>
     <string name="widget_mode_anc_low">ANC niedrig</string>
     <string name="widget_mode_anc_medium">ANC mittel</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Wenn es in Reichweite ist, verbinden sich die Ohrhörer zuerst damit.</string>
     <string name="widget_pages_name">QuickBuds Akku und Steuerung</string>
     <string name="widget_controls_name">QuickBuds Steuerung</string>
+    <string name="widget_settings_title">Widget-Einstellungen</string>
     <string name="widget_setup_title">Widget-Tasten</string>
     <string name="widget_setup_hint">Wähle bis zu 4 Tasten. Das Widget zeigt sie in dieser Reihenfolge.</string>
     <string name="problem_title">Problem melden</string>

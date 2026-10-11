@@ -310,7 +310,7 @@
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">स्टाइल</string>
     <string name="widget_background_title">विजेट का बैकग्राउंड</string>
-    <string name="widget_background_sub">बंद: विजेट आपके वॉलपेपर पर दिखते हैं</string>
+    <string name="widget_background_sub">बंद: विजेट आपके वॉलपेपर पर दिखता है</string>
     <string name="widget_style_classic">क्लासिक</string>
     <string name="widget_mode_anc_low">ANC कम</string>
     <string name="widget_mode_anc_medium">ANC मध्यम</string>
@@ -404,6 +404,7 @@
     <string name="dual_preferred_sub">रेंज में होने पर ईयरबड पहले इससे कनेक्ट होते हैं।</string>
     <string name="widget_pages_name">QuickBuds बैटरी और नियंत्रण</string>
     <string name="widget_controls_name">QuickBuds नियंत्रण</string>
+    <string name="widget_settings_title">विजेट सेटिंग</string>
     <string name="widget_setup_title">विजेट बटन</string>
     <string name="widget_setup_hint">अधिकतम 4 बटन चुनें। विजेट उन्हें इसी क्रम में दिखाता है।</string>
     <string name="problem_title">समस्या बताएं</string>

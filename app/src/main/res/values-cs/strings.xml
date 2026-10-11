@@ -308,7 +308,7 @@
     <string name="preset_hex">Barva hex</string>
     <string name="widget_style_title">Styl</string>
     <string name="widget_background_title">Pozadí widgetů</string>
-    <string name="widget_background_sub">Vypnuto: widgety leží přímo na tapetě</string>
+    <string name="widget_background_sub">Vypnuto: widget leží přímo na tapetě</string>
     <string name="widget_style_classic">Klasický</string>
     <string name="widget_mode_anc_low">ANC nízké</string>
     <string name="widget_mode_anc_medium">ANC střední</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Když je v dosahu, sluchátka se připojí nejdřív k němu.</string>
     <string name="widget_pages_name">QuickBuds baterie a ovládání</string>
     <string name="widget_controls_name">QuickBuds ovládání</string>
+    <string name="widget_settings_title">Nastavení widgetu</string>
     <string name="widget_setup_title">Tlačítka widgetu</string>
     <string name="widget_setup_hint">Vyberte až 4 tlačítka. Widget je zobrazí v tomto pořadí.</string>
     <string name="problem_title">Nahlásit problém</string>

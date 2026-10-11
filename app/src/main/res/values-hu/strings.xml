@@ -308,7 +308,7 @@
     <string name="preset_hex">Hex szín</string>
     <string name="widget_style_title">Stílus</string>
     <string name="widget_background_title">Modul háttere</string>
-    <string name="widget_background_sub">Ki: a modulok közvetlenül a háttérképen vannak</string>
+    <string name="widget_background_sub">Ki: a modul közvetlenül a háttérképen van</string>
     <string name="widget_style_classic">Klasszikus</string>
     <string name="widget_mode_anc_low">ANC alacsony</string>
     <string name="widget_mode_anc_medium">ANC közepes</string>
@@ -402,6 +402,7 @@
     <string name="dual_preferred_sub">Ha hatótávon belül van, a fülhallgató először ehhez csatlakozik.</string>
     <string name="widget_pages_name">QuickBuds akkumulátor és vezérlők</string>
     <string name="widget_controls_name">QuickBuds vezérlők</string>
+    <string name="widget_settings_title">Modul beállításai</string>
     <string name="widget_setup_title">Widget gombjai</string>
     <string name="widget_setup_hint">Válasszon legfeljebb 4 gombot. A widget ebben a sorrendben mutatja őket.</string>
     <string name="problem_title">Probléma jelentése</string>

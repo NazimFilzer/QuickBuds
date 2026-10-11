@@ -73,13 +73,13 @@ object WidgetSettings {
     /** The Material style ([ThemeRes.material]): Classic layouts on one background, only a selection filled, no outlines. */
     fun materialStyle(c: Context) = ThemeRes.material(c)
 
-    private const val KEY_BACKGROUND = "widgetBackground"
+    private const val KEY_BACKGROUND = "widgetBackground_"
 
-    /** Material style: the widget box is drawn (default) or left out, so the content sits on the wallpaper as on Google's widgets. */
-    fun background(c: Context) = !materialStyle(c) || prefs(c).getBoolean(KEY_BACKGROUND, true)
+    /** Material style: widget [id]'s box is drawn (default) or left out, so the content sits on the wallpaper as on Google's widgets. */
+    fun background(c: Context, id: Int) = !materialStyle(c) || prefs(c).getBoolean(KEY_BACKGROUND + id, true)
 
-    fun setBackground(c: Context, on: Boolean) {
-        prefs(c).edit().putBoolean(KEY_BACKGROUND, on).apply()
+    fun setBackground(c: Context, id: Int, on: Boolean) {
+        prefs(c).edit().putBoolean(KEY_BACKGROUND + id, on).apply()
         QuickBudsWidget.refreshAll(c)
     }
 
@@ -151,7 +151,7 @@ object WidgetSettings {
     /** Drops everything stored for widget [id] (removed from the home screen). */
     fun forget(c: Context, id: Int) {
         prefs(c).edit().apply {
-            for (k in listOf(KEY_LIST_AT, KEY_PAGE, KEY_CHILD, KEY_BUTTONS)) remove(k + id)
+            for (k in listOf(KEY_LIST_AT, KEY_PAGE, KEY_CHILD, KEY_BUTTONS, KEY_BACKGROUND)) remove(k + id)
         }.apply()
     }
 
