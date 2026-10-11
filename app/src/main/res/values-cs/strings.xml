@@ -421,5 +421,8 @@
     <string name="problem_sending">Odesílání…</string>
     <string name="problem_sent">Zpráva odeslána. Děkujeme!</string>
     <string name="problem_failed">Zprávu se nepodařilo odeslat. Zkontrolujte připojení k internetu a zkuste to znovu.</string>
+    <string name="problem_unsupported">QuickBuds podporuje pouze sluchátka OnePlus, OPPO a realme. Vyberte svůj model ze seznamu.</string>
+    <string name="problem_supported_list">Zobrazit všechna podporovaná sluchátka</string>
+    <string name="problem_log_empty">Protokol je prázdný: sluchátka se ještě nepřipojila. Nejprve připojte sluchátka, pak hlášení odešlete.</string>
     <string name="problem_notice_body">QuickBuds je testován jen na OnePlus Buds 4. Pokud na vašich sluchátkách něco nefunguje, použijte Nastavení › Nahlásit problém. Nic se neodešle, dokud neklepnete na Odeslat.</string>
 </resources>

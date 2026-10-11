@@ -421,5 +421,8 @@
     <string name="problem_sending">Gönderiliyor…</string>
     <string name="problem_sent">Rapor gönderildi. Teşekkürler!</string>
     <string name="problem_failed">Rapor gönderilemedi. İnternet bağlantısını kontrol edip tekrar deneyin.</string>
+    <string name="problem_unsupported">QuickBuds yalnızca OnePlus, OPPO ve realme kulaklıkları destekler. Listeden modelinizi seçin.</string>
+    <string name="problem_supported_list">Desteklenen tüm kulaklıkları gör</string>
+    <string name="problem_log_empty">Günlük boş: kulaklıklarınız henüz hiç bağlanmadı. Önce kulaklıkları bağlayın, sonra raporu gönderin.</string>
     <string name="problem_notice_body">QuickBuds yalnızca OnePlus Buds 4 ile test edildi. Kulaklığınızda bir şey çalışmıyorsa Ayarlar › Sorun bildir\'i kullanın. Gönder\'e dokunana kadar hiçbir şey gönderilmez.</string>
 </resources>

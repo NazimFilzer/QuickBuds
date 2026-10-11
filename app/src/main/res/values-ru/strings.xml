@@ -421,5 +421,8 @@
     <string name="problem_sending">Отправка…</string>
     <string name="problem_sent">Отчёт отправлен. Спасибо!</string>
     <string name="problem_failed">Не удалось отправить отчёт. Проверьте подключение к интернету и попробуйте снова.</string>
+    <string name="problem_unsupported">QuickBuds поддерживает только наушники OnePlus, OPPO и realme. Выберите свою модель из списка.</string>
+    <string name="problem_supported_list">Все поддерживаемые наушники</string>
+    <string name="problem_log_empty">Журнал пуст: наушники ещё ни разу не подключались. Сначала подключите наушники, затем отправьте отчёт.</string>
     <string name="problem_notice_body">QuickBuds проверен только на OnePlus Buds 4. Если на ваших наушниках что-то не работает, откройте Настройки › Сообщить о проблеме. Ничего не отправляется, пока вы не нажмёте «Отправить».</string>
 </resources>

@@ -421,5 +421,8 @@
     <string name="problem_sending">Invio…</string>
     <string name="problem_sent">Segnalazione inviata. Grazie!</string>
     <string name="problem_failed">Impossibile inviare la segnalazione. Controlla la connessione a internet e riprova.</string>
+    <string name="problem_unsupported">QuickBuds supporta solo auricolari OnePlus, OPPO e realme. Scegli il tuo modello dall\'elenco.</string>
+    <string name="problem_supported_list">Vedi tutti gli auricolari supportati</string>
+    <string name="problem_log_empty">Il log è vuoto: gli auricolari non si sono ancora connessi. Connetti prima gli auricolari, poi invia la segnalazione.</string>
     <string name="problem_notice_body">QuickBuds è testato solo sui OnePlus Buds 4. Se qualcosa non va sui tuoi auricolari, usa Impostazioni › Segnala un problema. Non viene inviato nulla finché non tocchi Invia.</string>
 </resources>

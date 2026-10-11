@@ -421,5 +421,8 @@
     <string name="problem_sending">Versturen…</string>
     <string name="problem_sent">Rapport verstuurd. Bedankt!</string>
     <string name="problem_failed">Het rapport kon niet worden verstuurd. Controleer de internetverbinding en probeer het opnieuw.</string>
+    <string name="problem_unsupported">QuickBuds ondersteunt alleen oordopjes van OnePlus, OPPO en realme. Kies je model uit de lijst.</string>
+    <string name="problem_supported_list">Bekijk alle ondersteunde oordopjes</string>
+    <string name="problem_log_empty">Het logboek is leeg: je oordopjes waren nog nooit verbonden. Verbind eerst je oordopjes en verstuur dan het rapport.</string>
     <string name="problem_notice_body">QuickBuds is alleen getest met de OnePlus Buds 4. Werkt er iets niet op jouw oordopjes, gebruik dan Instellingen › Probleem melden. Er gaat niets weg tot je op Versturen tikt.</string>
 </resources>

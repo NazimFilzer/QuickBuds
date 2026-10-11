@@ -3,7 +3,7 @@
 
 use crate::protocol::*;
 use crate::session::{Line, LOG};
-use crate::{with_app, App, MainWindow, Report};
+use crate::{with_app, App, MainWindow, Report, Tr};
 use slint::{ComponentHandle, Model, VecModel};
 use std::io::Write;
 use std::process::Stdio;
@@ -259,16 +259,26 @@ fn send(body: String) -> bool {
     child.wait().is_ok_and(|s| s.success())
 }
 
-/// The current form as a body; None (with a note) without a description. A person who cannot connect at all has no
-/// log, only words to reproduce it from.
+/// The current form as a body; None (with a note) without a description, or when the model is not in the list (a crash
+/// report sends with any model). A person who cannot connect at all has no log, only words to reproduce it from.
+/// A log without one RX frame gets a warning note: the buds never connected.
 fn current(a: &App) -> Option<String> {
     let r = a.main.global::<Report>();
+    let tr = a.main.global::<Tr>();
     let picked: Vec<&str> = (0..6).filter(|&i| r.get_picked().row_data(i).unwrap_or(false)).map(|i| CATEGORIES[i]).collect();
     let description = r.get_description().trim().to_string();
+    let crash = !CRASH.lock().unwrap().is_empty();
+    if !crash && !known(r.get_model().trim()) {
+        r.set_note(format!("{}\n{}: {}#supported-earbuds", tr.get_problem_unsupported(), tr.get_problem_supported_list(),
+            crate::update::PAGE.trim_end_matches("/releases/latest")).into());
+        return None;
+    }
     if description.is_empty() {
         r.set_note("Describe the problem: what you did and what happened.".into());
         return None;
     }
+    let no_frames = !crash && !LOG.lock().unwrap().iter().any(|l| l.dir == "RX");
+    r.set_note(if r.get_with_log() && no_frames { tr.get_problem_log_empty() } else { "".into() });
     let log = r.get_with_log().then(|| log_text(a));
     Some(body(r.get_model().trim(), &picked, &description, log.as_deref()))
 }
@@ -293,16 +303,13 @@ pub fn setup(main: &MainWindow) {
     }));
     r.on_show_preview(|| with_app(|a| {
         if let Some(b) = current(a) {
-            let r = a.main.global::<Report>();
-            r.set_note("".into());
-            r.set_preview(preview(&b).into());
+            a.main.global::<Report>().set_preview(preview(&b).into());
         }
     }));
     r.on_send(|| with_app(|a| {
         let Some(b) = current(a) else { return };
         let r = a.main.global::<Report>();
         r.set_busy(true);
-        r.set_note("".into());
         let weak = a.main.as_weak();
         std::thread::spawn(move || {
             let ok = send(b);
@@ -323,6 +330,11 @@ pub fn setup(main: &MainWindow) {
     }));
 }
 
+/// A model name from the list, any case.
+fn known(model: &str) -> bool {
+    models().iter().any(|m| m["name"].as_str().is_some_and(|n| n.eq_ignore_ascii_case(model)))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -332,6 +344,14 @@ mod tests {
         assert_eq!(scrub_macs("to AA:bb:01:02:03:04 ok"), "to XX:XX:XX:XX:XX:XX ok");
         assert_eq!(scrub_macs("12:34:56.789 RX AA 07"), "12:34:56.789 RX AA 07");
         assert_eq!(dec(&enc("a b&c=ü\n")), "a b&c=ü\n");
+    }
+
+    #[test]
+    fn known_models() {
+        assert!(known("OnePlus Buds 4"));
+        assert!(known("oneplus buds 4"));
+        assert!(!known("Xiaomi Buds 5"));
+        assert!(!known(""));
     }
 
     #[test]

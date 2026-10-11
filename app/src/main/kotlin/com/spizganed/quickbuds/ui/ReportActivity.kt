@@ -1,6 +1,8 @@
 package com.spizganed.quickbuds.ui
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,12 +18,15 @@ import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import com.spizganed.quickbuds.R
+import com.spizganed.quickbuds.bluetooth.PacketLogger
 import com.spizganed.quickbuds.protocol.ModelCatalog
 
 /**
  * Settings › Report a problem ([ProblemReport]): buds model (filled in, with the model list as suggestions),
  * categories, a description and the log. See the report shows exactly what Send posts. Nothing goes out
  * without Send. From the crash dialog, [EXTRA_CRASH] fills it in: category Other, and the crash report after the log.
+ * Send needs a model from the list, except for a crash report. A log without one RX frame gets a warning: the buds
+ * never connected.
  */
 class ReportActivity : Activity() {
 
@@ -29,6 +34,12 @@ class ReportActivity : Activity() {
     private lateinit var description: EditText
     private lateinit var withLog: Switch
     private lateinit var send: TextView
+    private lateinit var unsupported: LinearLayout
+    private lateinit var logEmpty: TextView
+    private lateinit var models: Set<String>
+    private var crash: String? = null
+    /** No RX frame in the packet log: the buds never answered, so the log holds nothing useful. */
+    private var noFrames = false
     private val categories = LinkedHashMap<String, Switch>()
     private var sending = false
 
@@ -62,7 +73,26 @@ class ReportActivity : Activity() {
         model.setText(ModelCatalog.current(this)?.name.orEmpty())
         model.setAdapter(ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, ModelCatalog.all(this).map { it.name }))
         model.threshold = 1
+        model.addTextChangedListener(watcher)
         root.addView(model)
+        models = ModelCatalog.all(this).map { it.name.lowercase() }.toSet()
+        fun note(text: Int, color: Int) = TextView(this).apply {
+            setText(text)
+            setTextColor(color)
+            textSize = 13f
+            setPadding(dp(4f), dp(6f), 0, 0)
+        }
+        unsupported = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            addView(note(R.string.problem_unsupported, p.textSecondary))
+            addView(note(R.string.problem_supported_list, p.accent).apply {
+                append(" ›")
+                setOnClickListener {
+                    runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutActivity.GITHUB_URL + "#supported-earbuds"))) }
+                }
+            })
+        }
+        root.addView(unsupported)
 
         root.addView(SettingRowFactory.sectionLabel(this, R.string.problem_category))
         val card = SettingRowFactory.card(this)
@@ -73,26 +103,26 @@ class ReportActivity : Activity() {
             SettingRowFactory.addRow(card, SettingRowFactory.build(this, 0, label, 0, sw) { sw.performClick() })
         }
         root.addView(card)
-        val crash = intent.getStringExtra(EXTRA_CRASH)
+        crash = intent.getStringExtra(EXTRA_CRASH)
+        noFrames = crash == null && PacketLogger.getFileContent().lines().none { it.contains("  RX") }
         if (crash != null) categories.getValue("Other").isChecked = true
 
         root.addView(SettingRowFactory.sectionLabel(this, R.string.problem_description))
         description = field(EditText(this), true)
         description.setHint(R.string.problem_description_hint)
         if (crash != null) description.setText("App crash")
-        description.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) = paintSend()
-        })
+        description.addTextChangedListener(watcher)
         root.addView(description)
 
         root.addView(android.view.View(this), LinearLayout.LayoutParams(1, dp(16f)))
         val logCard = SettingRowFactory.card(this)
         withLog = SettingRowFactory.buildSwitch(this, true)
+        withLog.setOnCheckedChangeListener { _, _ -> paintSend() }
         SettingRowFactory.addRow(logCard, SettingRowFactory.build(this, R.drawable.ic_dev_tools, R.string.problem_log_title,
             R.string.problem_log_sub, withLog) { withLog.performClick() })
         root.addView(logCard)
+        logEmpty = note(R.string.problem_log_empty, p.textSecondary)
+        root.addView(logEmpty)
 
         fun button(label: Int, primary: Boolean, onClick: () -> Unit) = TextView(this).apply {
             setText(label)
@@ -120,11 +150,23 @@ class ReportActivity : Activity() {
         })
     }
 
-    /** Send needs a description or a category. */
+    private val watcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun afterTextChanged(s: Editable?) = paintSend()
+    }
+
+    /** A model from the list; a crash report sends with any model. */
+    private fun known() = crash != null || model.text.toString().trim().lowercase() in models
+
+    /** Send needs a known model and a description. */
     // A description is required: a person who cannot connect at all has no log, only words to reproduce it from.
-    private fun ready() = !sending && description.text.isNotBlank()
+    private fun ready() = !sending && known() && description.text.isNotBlank()
 
     private fun paintSend() {
+        if (!::logEmpty.isInitialized) return
+        unsupported.visibility = if (known()) android.view.View.GONE else android.view.View.VISIBLE
+        logEmpty.visibility = if (noFrames && withLog.isChecked) android.view.View.VISIBLE else android.view.View.GONE
         send.isEnabled = ready()
         send.alpha = if (send.isEnabled) 1f else 0.4f
     }

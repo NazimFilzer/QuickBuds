@@ -421,5 +421,8 @@
     <string name="problem_sending">Wysyłanie…</string>
     <string name="problem_sent">Zgłoszenie wysłane. Dziękujemy!</string>
     <string name="problem_failed">Nie udało się wysłać zgłoszenia. Sprawdź połączenie z internetem i spróbuj ponownie.</string>
+    <string name="problem_unsupported">QuickBuds obsługuje tylko słuchawki OnePlus, OPPO i realme. Wybierz swój model z listy.</string>
+    <string name="problem_supported_list">Zobacz wszystkie obsługiwane słuchawki</string>
+    <string name="problem_log_empty">Dziennik jest pusty: słuchawki jeszcze się nie połączyły. Najpierw połącz słuchawki, potem wyślij zgłoszenie.</string>
     <string name="problem_notice_body">QuickBuds testowano tylko na OnePlus Buds 4. Jeśli coś nie działa na Twoich słuchawkach, użyj Ustawienia › Zgłoś problem. Nic nie zostanie wysłane, dopóki nie dotkniesz Wyślij.</string>
 </resources>

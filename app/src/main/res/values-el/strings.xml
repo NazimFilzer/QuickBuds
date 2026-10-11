@@ -421,5 +421,8 @@
     <string name="problem_sending">Αποστολή…</string>
     <string name="problem_sent">Η αναφορά στάλθηκε. Ευχαριστούμε!</string>
     <string name="problem_failed">Η αναφορά δεν στάλθηκε. Ελέγξτε τη σύνδεση στο διαδίκτυο και δοκιμάστε ξανά.</string>
+    <string name="problem_unsupported">Το QuickBuds υποστηρίζει μόνο ακουστικά OnePlus, OPPO και realme. Επιλέξτε το μοντέλο σας από τη λίστα.</string>
+    <string name="problem_supported_list">Δείτε όλα τα υποστηριζόμενα ακουστικά</string>
+    <string name="problem_log_empty">Το αρχείο καταγραφής είναι κενό: τα ακουστικά δεν έχουν συνδεθεί ακόμα. Συνδέστε πρώτα τα ακουστικά και μετά στείλτε την αναφορά.</string>
     <string name="problem_notice_body">Το QuickBuds έχει δοκιμαστεί μόνο στα OnePlus Buds 4. Αν κάτι δεν δουλεύει στα ακουστικά σας, χρησιμοποιήστε Ρυθμίσεις › Αναφορά προβλήματος. Τίποτα δεν στέλνεται πριν πατήσετε Αποστολή.</string>
 </resources>

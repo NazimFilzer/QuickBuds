@@ -423,5 +423,8 @@
     <string name="problem_sending">Mengirim…</string>
     <string name="problem_sent">Laporan terkirim. Terima kasih!</string>
     <string name="problem_failed">Laporan tidak terkirim. Periksa koneksi internet lalu coba lagi.</string>
+    <string name="problem_unsupported">QuickBuds hanya mendukung earbud OnePlus, OPPO, dan realme. Pilih model Anda dari daftar.</string>
+    <string name="problem_supported_list">Lihat semua earbud yang didukung</string>
+    <string name="problem_log_empty">Log kosong: earbud Anda belum pernah terhubung. Hubungkan earbud dulu, lalu kirim laporan.</string>
     <string name="problem_notice_body">QuickBuds hanya diuji pada OnePlus Buds 4. Jika ada yang tidak berfungsi pada earbud Anda, gunakan Setelan › Laporkan masalah. Tidak ada yang dikirim sampai Anda mengetuk Kirim.</string>
 </resources>

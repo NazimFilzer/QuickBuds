@@ -421,5 +421,8 @@
     <string name="problem_sending">পাঠানো হচ্ছে…</string>
     <string name="problem_sent">রিপোর্ট পাঠানো হয়েছে। ধন্যবাদ!</string>
     <string name="problem_failed">রিপোর্ট পাঠানো যায়নি। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।</string>
+    <string name="problem_unsupported">QuickBuds শুধু OnePlus, OPPO ও realme ইয়ারবাড সমর্থন করে। তালিকা থেকে আপনার মডেল বেছে নিন।</string>
+    <string name="problem_supported_list">সব সমর্থিত ইয়ারবাড দেখুন</string>
+    <string name="problem_log_empty">লগ খালি: আপনার বাড এখনও সংযুক্ত হয়নি। আগে বাড সংযুক্ত করুন, তারপর রিপোর্ট পাঠান।</string>
     <string name="problem_notice_body">QuickBuds শুধু OnePlus Buds 4-এ পরীক্ষিত। আপনার বাডে কিছু কাজ না করলে সেটিংস › সমস্যা জানান ব্যবহার করুন। পাঠান ট্যাপ না করা পর্যন্ত কিছুই পাঠানো হয় না।</string>
 </resources>

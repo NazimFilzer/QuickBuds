@@ -423,5 +423,8 @@
     <string name="problem_sending">傳送中…</string>
     <string name="problem_sent">報告已傳送。謝謝！</string>
     <string name="problem_failed">無法傳送報告。請檢查網路連線後再試一次。</string>
+    <string name="problem_unsupported">QuickBuds 僅支援 OnePlus、OPPO 和 realme 耳機。請從清單中選擇你的型號。</string>
+    <string name="problem_supported_list">查看所有支援的耳機</string>
+    <string name="problem_log_empty">記錄為空：你的耳機尚未連線過。請先連線耳機，再傳送回報。</string>
     <string name="problem_notice_body">QuickBuds 只在 OnePlus Buds 4 上測試過。如果你的耳機有功能無法使用，請使用 設定 › 回報問題。輕觸「傳送」之前不會傳送任何內容。</string>
 </resources>

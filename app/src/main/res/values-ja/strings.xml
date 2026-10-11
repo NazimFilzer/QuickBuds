@@ -421,5 +421,8 @@
     <string name="problem_sending">送信中…</string>
     <string name="problem_sent">レポートを送信しました。ありがとうございます！</string>
     <string name="problem_failed">レポートを送信できませんでした。インターネット接続を確認して、もう一度お試しください。</string>
+    <string name="problem_unsupported">QuickBuds が対応するのは OnePlus、OPPO、realme のイヤホンのみです。リストからモデルを選んでください。</string>
+    <string name="problem_supported_list">対応イヤホンの一覧を見る</string>
+    <string name="problem_log_empty">ログが空です。イヤホンがまだ一度も接続されていません。先にイヤホンを接続してからレポートを送信してください。</string>
     <string name="problem_notice_body">QuickBuds は OnePlus Buds 4 でのみテストされています。お使いのイヤホンで動かない機能があれば、設定 › 問題を報告 をご利用ください。送信をタップするまで何も送られません。</string>
 </resources>

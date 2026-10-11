@@ -423,5 +423,8 @@
     <string name="problem_sending">Đang gửi…</string>
     <string name="problem_sent">Đã gửi báo cáo. Cảm ơn bạn!</string>
     <string name="problem_failed">Không gửi được báo cáo. Hãy kiểm tra kết nối internet rồi thử lại.</string>
+    <string name="problem_unsupported">QuickBuds chỉ hỗ trợ tai nghe OnePlus, OPPO và realme. Hãy chọn mẫu của bạn trong danh sách.</string>
+    <string name="problem_supported_list">Xem tất cả tai nghe được hỗ trợ</string>
+    <string name="problem_log_empty">Nhật ký trống: tai nghe của bạn chưa từng kết nối. Hãy kết nối tai nghe trước, rồi gửi báo cáo.</string>
     <string name="problem_notice_body">QuickBuds chỉ được thử trên OnePlus Buds 4. Nếu có gì không hoạt động trên tai nghe của bạn, hãy dùng Cài đặt › Báo cáo sự cố. Không có gì được gửi cho đến khi bạn chạm Gửi.</string>
 </resources>

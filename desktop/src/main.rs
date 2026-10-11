@@ -386,6 +386,9 @@ fn set_texts(tr: &Tr, s: &[String]) {
     tr.set_problem_preview(t(s, "problem_preview").into());
     tr.set_problem_send(t(s, "problem_send").into());
     tr.set_problem_sending(t(s, "problem_sending").into());
+    tr.set_problem_unsupported(t(s, "problem_unsupported").into());
+    tr.set_problem_supported_list(t(s, "problem_supported_list").into());
+    tr.set_problem_log_empty(t(s, "problem_log_empty").into());
     tr.set_section_features(t(s, "earbuds_section_features").into());
     tr.set_section_about(t(s, "earbuds_section_about").into());
     tr.set_firmware_title(t(s, "row_firmware_title").into());

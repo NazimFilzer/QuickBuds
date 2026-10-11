@@ -421,5 +421,8 @@
     <string name="problem_sending">Küldés…</string>
     <string name="problem_sent">Jelentés elküldve. Köszönjük!</string>
     <string name="problem_failed">A jelentést nem sikerült elküldeni. Ellenőrizze az internetkapcsolatot, és próbálja újra.</string>
+    <string name="problem_unsupported">A QuickBuds csak OnePlus, OPPO és realme fülhallgatókat támogat. Válaszd ki a modelledet a listából.</string>
+    <string name="problem_supported_list">Az összes támogatott fülhallgató</string>
+    <string name="problem_log_empty">A napló üres: a fülhallgató még nem csatlakozott. Először csatlakoztasd a fülhallgatót, utána küldd el a jelentést.</string>
     <string name="problem_notice_body">A QuickBuds csak OnePlus Buds 4-en tesztelt. Ha valami nem működik a fülhallgatóján, használja a Beállítások › Probléma jelentése menüt. Semmi sem megy el, amíg nem koppint a Küldésre.</string>
 </resources>

@@ -421,5 +421,8 @@
     <string name="problem_sending">Se trimite…</string>
     <string name="problem_sent">Raport trimis. Mulțumim!</string>
     <string name="problem_failed">Raportul nu a putut fi trimis. Verifică conexiunea la internet și încearcă din nou.</string>
+    <string name="problem_unsupported">QuickBuds acceptă doar căștile OnePlus, OPPO și realme. Alege modelul tău din listă.</string>
+    <string name="problem_supported_list">Vezi toate căștile acceptate</string>
+    <string name="problem_log_empty">Jurnalul este gol: căștile nu s-au conectat încă. Conectează mai întâi căștile, apoi trimite raportul.</string>
     <string name="problem_notice_body">QuickBuds e testat doar pe OnePlus Buds 4. Dacă ceva nu merge pe căștile tale, folosește Setări › Raportează o problemă. Nimic nu se trimite până nu atingi Trimite.</string>
 </resources>

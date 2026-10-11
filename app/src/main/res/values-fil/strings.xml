@@ -421,5 +421,8 @@
     <string name="problem_sending">Ipinapadala…</string>
     <string name="problem_sent">Naipadala ang ulat. Salamat!</string>
     <string name="problem_failed">Hindi naipadala ang ulat. Tingnan ang koneksyon sa internet at subukan ulit.</string>
+    <string name="problem_unsupported">Sinusuportahan lang ng QuickBuds ang earbuds ng OnePlus, OPPO at realme. Piliin ang iyong modelo mula sa listahan.</string>
+    <string name="problem_supported_list">Tingnan ang lahat ng suportadong earbuds</string>
+    <string name="problem_log_empty">Walang laman ang log: hindi pa nakakonekta ang iyong buds. Ikonekta muna ang buds, saka ipadala ang ulat.</string>
     <string name="problem_notice_body">Sa OnePlus Buds 4 lang nasubukan ang QuickBuds. Kung may hindi gumagana sa iyong buds, gamitin ang Mga Setting › Mag-ulat ng problema. Walang ipapadala hangga\'t hindi mo tina-tap ang Ipadala.</string>
 </resources>

@@ -421,5 +421,8 @@
     <string name="problem_sending">Enviando…</string>
     <string name="problem_sent">Informe enviado. ¡Gracias!</string>
     <string name="problem_failed">No se pudo enviar el informe. Comprueba la conexión a internet y vuelve a intentarlo.</string>
+    <string name="problem_unsupported">QuickBuds solo es compatible con auriculares OnePlus, OPPO y realme. Elige tu modelo de la lista.</string>
+    <string name="problem_supported_list">Ver todos los auriculares compatibles</string>
+    <string name="problem_log_empty">El registro está vacío: tus auriculares aún no se han conectado. Conecta primero los auriculares y luego envía el informe.</string>
     <string name="problem_notice_body">QuickBuds solo se ha probado con los OnePlus Buds 4. Si algo no va en tus auriculares, usa Ajustes › Informar de un problema. No se envía nada hasta que tocas Enviar.</string>
 </resources>

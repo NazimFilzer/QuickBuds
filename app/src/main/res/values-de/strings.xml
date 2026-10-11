@@ -421,5 +421,8 @@
     <string name="problem_sending">Wird gesendet…</string>
     <string name="problem_sent">Bericht gesendet. Danke!</string>
     <string name="problem_failed">Der Bericht konnte nicht gesendet werden. Prüfe die Internetverbindung und versuche es erneut.</string>
+    <string name="problem_unsupported">QuickBuds unterstützt nur Ohrhörer von OnePlus, OPPO und realme. Wähle dein Modell aus der Liste.</string>
+    <string name="problem_supported_list">Alle unterstützten Ohrhörer ansehen</string>
+    <string name="problem_log_empty">Das Protokoll ist leer: Deine Ohrhörer waren noch nie verbunden. Verbinde zuerst deine Ohrhörer und sende dann den Bericht.</string>
     <string name="problem_notice_body">QuickBuds ist nur mit den OnePlus Buds 4 getestet. Wenn auf deinen Kopfhörern etwas nicht geht, nutze Einstellungen › Problem melden. Nichts wird gesendet, bevor du auf Senden tippst.</string>
 </resources>

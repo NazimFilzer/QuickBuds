@@ -423,5 +423,8 @@
     <string name="problem_sending">भेजा जा रहा है…</string>
     <string name="problem_sent">रिपोर्ट भेज दी गई। धन्यवाद!</string>
     <string name="problem_failed">रिपोर्ट नहीं भेजी जा सकी। इंटरनेट कनेक्शन जांचें और फिर से कोशिश करें।</string>
+    <string name="problem_unsupported">QuickBuds केवल OnePlus, OPPO और realme ईयरबड्स को सपोर्ट करता है। सूची से अपना मॉडल चुनें।</string>
+    <string name="problem_supported_list">सभी सपोर्टेड ईयरबड्स देखें</string>
+    <string name="problem_log_empty">लॉग खाली है: आपके बड्स अभी तक कनेक्ट नहीं हुए। पहले बड्स कनेक्ट करें, फिर रिपोर्ट भेजें।</string>
     <string name="problem_notice_body">QuickBuds का परीक्षण केवल OnePlus Buds 4 पर हुआ है। अगर आपके बड्स पर कुछ काम नहीं करता, तो सेटिंग › समस्या बताएं का उपयोग करें। भेजें पर टैप करने तक कुछ नहीं भेजा जाता।</string>
 </resources>

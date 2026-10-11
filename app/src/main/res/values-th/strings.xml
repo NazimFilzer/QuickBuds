@@ -423,5 +423,8 @@
     <string name="problem_sending">กำลังส่ง…</string>
     <string name="problem_sent">ส่งรายงานแล้ว ขอบคุณ!</string>
     <string name="problem_failed">ส่งรายงานไม่ได้ ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองอีกครั้ง</string>
+    <string name="problem_unsupported">QuickBuds รองรับเฉพาะหูฟัง OnePlus, OPPO และ realme เลือกรุ่นของคุณจากรายการ</string>
+    <string name="problem_supported_list">ดูหูฟังที่รองรับทั้งหมด</string>
+    <string name="problem_log_empty">บันทึกว่างเปล่า: หูฟังของคุณยังไม่เคยเชื่อมต่อ เชื่อมต่อหูฟังก่อน แล้วจึงส่งรายงาน</string>
     <string name="problem_notice_body">QuickBuds ทดสอบกับ OnePlus Buds 4 เท่านั้น หากมีสิ่งใดใช้ไม่ได้กับหูฟังของคุณ ให้ใช้ การตั้งค่า › รายงานปัญหา จะไม่มีอะไรถูกส่งจนกว่าคุณจะแตะส่ง</string>
 </resources>
