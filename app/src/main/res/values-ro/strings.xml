@@ -271,6 +271,8 @@
     <string name="theme_builtin">Integrate</string>
     <string name="theme_auto">Ca sistemul</string>
     <string name="theme_auto_sub">%1$s în modul luminos, %2$s în modul întunecat</string>
+    <string name="theme_wallpaper">Culorile imaginii de fundal</string>
+    <string name="theme_wallpaper_sub">Temele integrate preiau culorile din imaginea de fundal</string>
     <string name="theme_oled_black">Negru OLED</string>
     <string name="theme_classic_dark">Întunecat clasic</string>
     <string name="theme_white">Alb</string>

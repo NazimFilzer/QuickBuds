@@ -271,6 +271,8 @@
     <string name="theme_builtin">बिल्ट-इन</string>
     <string name="theme_auto">सिस्टम के अनुसार</string>
     <string name="theme_auto_sub">लाइट मोड में %1$s, डार्क मोड में %2$s</string>
+    <string name="theme_wallpaper">वॉलपेपर के रंग</string>
+    <string name="theme_wallpaper_sub">बिल्ट-इन थीम आपके वॉलपेपर से रंग लेती हैं</string>
     <string name="theme_oled_black">OLED ब्लैक</string>
     <string name="theme_classic_dark">क्लासिक डार्क</string>
     <string name="theme_white">सफ़ेद</string>

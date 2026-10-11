@@ -271,6 +271,8 @@
     <string name="theme_builtin">Вбудовані</string>
     <string name="theme_auto">Як у системі</string>
     <string name="theme_auto_sub">%1$s у світлому режимі, %2$s у темному</string>
+    <string name="theme_wallpaper">Кольори шпалер</string>
+    <string name="theme_wallpaper_sub">Вбудовані теми беруть кольори з ваших шпалер</string>
     <string name="theme_oled_black">OLED чорна</string>
     <string name="theme_classic_dark">Класична темна</string>
     <string name="theme_white">Біла</string>

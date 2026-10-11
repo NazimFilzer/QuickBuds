@@ -271,6 +271,8 @@
     <string name="theme_builtin">Встроенные</string>
     <string name="theme_auto">Как в системе</string>
     <string name="theme_auto_sub">%1$s в светлом режиме, %2$s в тёмном</string>
+    <string name="theme_wallpaper">Цвета обоев</string>
+    <string name="theme_wallpaper_sub">Встроенные темы берут цвета из ваших обоев</string>
     <string name="theme_oled_black">OLED чёрная</string>
     <string name="theme_classic_dark">Классическая тёмная</string>
     <string name="theme_white">Белая</string>

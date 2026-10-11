@@ -271,6 +271,8 @@
     <string name="theme_builtin">Ingebouwd</string>
     <string name="theme_auto">Systeem volgen</string>
     <string name="theme_auto_sub">%1$s in lichte modus, %2$s in donkere modus</string>
+    <string name="theme_wallpaper">Achtergrondkleuren</string>
+    <string name="theme_wallpaper_sub">Ingebouwde thema\'s nemen de kleuren van je achtergrond over</string>
     <string name="theme_oled_black">OLED-zwart</string>
     <string name="theme_classic_dark">Klassiek donker</string>
     <string name="theme_white">Wit</string>

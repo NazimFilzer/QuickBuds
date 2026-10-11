@@ -271,6 +271,8 @@
     <string name="theme_builtin">Ενσωματωμένα</string>
     <string name="theme_auto">Όπως το σύστημα</string>
     <string name="theme_auto_sub">%1$s σε φωτεινή λειτουργία, %2$s σε σκοτεινή</string>
+    <string name="theme_wallpaper">Χρώματα ταπετσαρίας</string>
+    <string name="theme_wallpaper_sub">Τα ενσωματωμένα θέματα παίρνουν τα χρώματα της ταπετσαρίας σας</string>
     <string name="theme_oled_black">OLED Μαύρο</string>
     <string name="theme_classic_dark">Κλασικό Σκούρο</string>
     <string name="theme_white">Λευκό</string>

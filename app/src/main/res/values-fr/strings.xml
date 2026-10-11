@@ -271,6 +271,8 @@
     <string name="theme_builtin">Intégrés</string>
     <string name="theme_auto">Suivre le système</string>
     <string name="theme_auto_sub">%1$s en mode clair, %2$s en mode sombre</string>
+    <string name="theme_wallpaper">Couleurs du fond d\'écran</string>
+    <string name="theme_wallpaper_sub">Les thèmes intégrés prennent les couleurs de votre fond d\'écran</string>
     <string name="theme_oled_black">Noir OLED</string>
     <string name="theme_classic_dark">Sombre classique</string>
     <string name="theme_white">Blanc</string>

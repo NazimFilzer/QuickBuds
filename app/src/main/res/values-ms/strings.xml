@@ -271,6 +271,8 @@
     <string name="theme_builtin">Terbina dalam</string>
     <string name="theme_auto">Ikut sistem</string>
     <string name="theme_auto_sub">%1$s dalam mod cerah, %2$s dalam mod gelap</string>
+    <string name="theme_wallpaper">Warna kertas dinding</string>
+    <string name="theme_wallpaper_sub">Tema terbina dalam mengambil warna daripada kertas dinding anda</string>
     <string name="theme_oled_black">Hitam OLED</string>
     <string name="theme_classic_dark">Gelap Klasik</string>
     <string name="theme_white">Putih</string>

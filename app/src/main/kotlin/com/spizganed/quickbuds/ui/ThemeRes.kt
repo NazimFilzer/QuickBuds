@@ -102,11 +102,14 @@ object ThemeRes {
     )
 
     @Volatile private var cached: Palette? = null
+    @Volatile private var cachedWallpaper = 0
 
     /** The active preset. Cached; [invalidate] after changing presets. Under Match system the
      *  cache also drops when the system's light / dark setting no longer matches it. */
     fun palette(context: Context): Palette {
-        cached?.let { if (!PaletteStore.auto(context) || it.isLight == PaletteStore.systemLight(context)) return it }
+        val wallpaper = PaletteStore.wallpaperKey(context)
+        cached?.let { if (wallpaper == cachedWallpaper && (!PaletteStore.auto(context) || it.isLight == PaletteStore.systemLight(context))) return it }
+        cachedWallpaper = wallpaper
         return PaletteStore.active(context.applicationContext).also { cached = it }
     }
 
@@ -216,10 +219,10 @@ object ThemeRes {
     fun select(activity: Activity) {
         applyLegacyLanguage(activity)
         val p = palette(activity)
-        if (p.builtIn && PaletteStore.accentOverride(activity, p.id) == null) {
+        if (p.builtIn && PaletteStore.accentOverride(activity, p.id) == null && !PaletteStore.wallpaper(activity)) {
             activity.setTheme(styleFor(p.id))
         } else {
-            // Custom preset, or a built-in with the user's accent: its style, or the matching
+            // Custom preset, or a built-in with the user's accent or wallpaper colours: its style, or the matching
             // light/dark one, plus the preset's values at inflation time.
             activity.setTheme(styleFor(if (p.builtIn) p.id else if (p.isLight) PaletteStore.WHITE else PaletteStore.OLED))
             activity.layoutInflater.factory2 = PaletteFactory(p)

@@ -271,6 +271,8 @@
     <string name="theme_builtin">기본 제공</string>
     <string name="theme_auto">시스템 설정 따르기</string>
     <string name="theme_auto_sub">라이트 모드에서는 %1$s, 다크 모드에서는 %2$s</string>
+    <string name="theme_wallpaper">배경화면 색상</string>
+    <string name="theme_wallpaper_sub">기본 테마가 배경화면의 색상을 사용합니다</string>
     <string name="theme_oled_black">OLED 블랙</string>
     <string name="theme_classic_dark">클래식 다크</string>
     <string name="theme_white">화이트</string>

@@ -140,6 +140,14 @@ class ThemeActivity : Activity() {
         root.addView(SettingRowFactory.card(this).apply {
             (layoutParams as LinearLayout.LayoutParams).topMargin = dp(18f)
             addView(autoRow)
+            // Wallpaper colours (Android 12+): the built-in presets from the system's tonal palettes.
+            if (PaletteStore.wallpaperSupported()) {
+                val wallSwitch = SettingRowFactory.buildSwitch(this@ThemeActivity, PaletteStore.wallpaper(this@ThemeActivity))
+                wallSwitch.setOnCheckedChangeListener { v, on -> PaletteStore.setWallpaper(this@ThemeActivity, on); v.postDelayed({ ThemeRes.recreateFaded(this@ThemeActivity) }, 260) }
+                val wallRow = SettingRowFactory.build(this@ThemeActivity, 0, R.string.theme_wallpaper, 0, wallSwitch) { wallSwitch.performClick() }
+                SettingRowFactory.subtitle(this@ThemeActivity, wallRow).setText(R.string.theme_wallpaper_sub)
+                SettingRowFactory.addRow(this, wallRow)
+            }
         })
 
         // --- Accent of the applied built-in preset ---

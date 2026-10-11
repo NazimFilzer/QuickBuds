@@ -271,6 +271,8 @@
     <string name="theme_builtin">Có sẵn</string>
     <string name="theme_auto">Theo hệ thống</string>
     <string name="theme_auto_sub">%1$s ở chế độ sáng, %2$s ở chế độ tối</string>
+    <string name="theme_wallpaper">Màu hình nền</string>
+    <string name="theme_wallpaper_sub">Các chủ đề tích hợp lấy màu từ hình nền của bạn</string>
     <string name="theme_oled_black">Đen OLED</string>
     <string name="theme_classic_dark">Tối cổ điển</string>
     <string name="theme_white">Trắng</string>

@@ -271,6 +271,8 @@
     <string name="theme_builtin">Yerleşik</string>
     <string name="theme_auto">Sistemi izle</string>
     <string name="theme_auto_sub">Açık modda %1$s, koyu modda %2$s</string>
+    <string name="theme_wallpaper">Duvar kağıdı renkleri</string>
+    <string name="theme_wallpaper_sub">Yerleşik temalar renklerini duvar kağıdınızdan alır</string>
     <string name="theme_oled_black">OLED Siyah</string>
     <string name="theme_classic_dark">Klasik Koyu</string>
     <string name="theme_white">Beyaz</string>

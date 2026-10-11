@@ -271,6 +271,8 @@
     <string name="theme_builtin">Built-in</string>
     <string name="theme_auto">Sundan ang system</string>
     <string name="theme_auto_sub">%1$s sa light mode, %2$s sa dark mode</string>
+    <string name="theme_wallpaper">Mga kulay ng wallpaper</string>
+    <string name="theme_wallpaper_sub">Kinukuha ng mga built-in na tema ang kulay mula sa iyong wallpaper</string>
     <string name="theme_oled_black">OLED Black</string>
     <string name="theme_classic_dark">Classic Dark</string>
     <string name="theme_white">White</string>

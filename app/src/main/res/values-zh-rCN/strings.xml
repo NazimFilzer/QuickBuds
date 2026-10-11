@@ -271,6 +271,8 @@
     <string name="theme_builtin">内置</string>
     <string name="theme_auto">跟随系统</string>
     <string name="theme_auto_sub">浅色模式用%1$s，深色模式用%2$s</string>
+    <string name="theme_wallpaper">壁纸颜色</string>
+    <string name="theme_wallpaper_sub">内置主题使用壁纸的颜色</string>
     <string name="theme_oled_black">OLED 纯黑</string>
     <string name="theme_classic_dark">经典深色</string>
     <string name="theme_white">白色</string>

@@ -271,6 +271,8 @@
     <string name="theme_builtin">Wbudowane</string>
     <string name="theme_auto">Jak w systemie</string>
     <string name="theme_auto_sub">%1$s w trybie jasnym, %2$s w trybie ciemnym</string>
+    <string name="theme_wallpaper">Kolory tapety</string>
+    <string name="theme_wallpaper_sub">Wbudowane motywy biorą kolory z tapety</string>
     <string name="theme_oled_black">Czerń OLED</string>
     <string name="theme_classic_dark">Klasyczny ciemny</string>
     <string name="theme_white">Biały</string>

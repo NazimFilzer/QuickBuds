@@ -271,6 +271,8 @@
     <string name="theme_builtin">Bawaan</string>
     <string name="theme_auto">Ikuti sistem</string>
     <string name="theme_auto_sub">%1$s di mode terang, %2$s di mode gelap</string>
+    <string name="theme_wallpaper">Warna wallpaper</string>
+    <string name="theme_wallpaper_sub">Tema bawaan mengambil warna dari wallpaper Anda</string>
     <string name="theme_oled_black">Hitam OLED</string>
     <string name="theme_classic_dark">Gelap klasik</string>
     <string name="theme_white">Putih</string>

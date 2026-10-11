@@ -271,6 +271,8 @@
     <string name="theme_builtin">Inbyggda</string>
     <string name="theme_auto">Följ systemet</string>
     <string name="theme_auto_sub">%1$s i ljust läge, %2$s i mörkt läge</string>
+    <string name="theme_wallpaper">Bakgrundsfärger</string>
+    <string name="theme_wallpaper_sub">Inbyggda teman tar färgerna från din bakgrundsbild</string>
     <string name="theme_oled_black">OLED-svart</string>
     <string name="theme_classic_dark">Klassiskt mörkt</string>
     <string name="theme_white">Vitt</string>

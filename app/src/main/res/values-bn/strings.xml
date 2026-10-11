@@ -271,6 +271,8 @@
     <string name="theme_builtin">বিল্ট-ইন</string>
     <string name="theme_auto">সিস্টেম অনুযায়ী</string>
     <string name="theme_auto_sub">লাইট মোডে %1$s, ডার্ক মোডে %2$s</string>
+    <string name="theme_wallpaper">ওয়ালপেপারের রং</string>
+    <string name="theme_wallpaper_sub">বিল্ট-ইন থিম আপনার ওয়ালপেপার থেকে রং নেয়</string>
     <string name="theme_oled_black">OLED কালো</string>
     <string name="theme_classic_dark">ক্লাসিক ডার্ক</string>
     <string name="theme_white">সাদা</string>

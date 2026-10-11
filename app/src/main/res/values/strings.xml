@@ -349,6 +349,8 @@
     <string name="theme_builtin">Built-in</string>
     <string name="theme_auto">Match system</string>
     <string name="theme_auto_sub">%1$s in light mode, %2$s in dark mode</string>
+    <string name="theme_wallpaper">Wallpaper colors</string>
+    <string name="theme_wallpaper_sub">Built-in themes take their colors from your wallpaper</string>
     <string name="theme_oled_black">OLED Black</string>
     <string name="theme_classic_dark">Classic Dark</string>
     <string name="theme_white">White</string>

@@ -271,6 +271,8 @@
     <string name="theme_builtin">Predefiniti</string>
     <string name="theme_auto">Come il sistema</string>
     <string name="theme_auto_sub">%1$s in modalità chiara, %2$s in modalità scura</string>
+    <string name="theme_wallpaper">Colori dello sfondo</string>
+    <string name="theme_wallpaper_sub">I temi integrati prendono i colori dallo sfondo</string>
     <string name="theme_oled_black">Nero OLED</string>
     <string name="theme_classic_dark">Scuro classico</string>
     <string name="theme_white">Bianco</string>
