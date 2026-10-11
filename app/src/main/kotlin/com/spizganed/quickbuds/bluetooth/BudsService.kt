@@ -131,6 +131,7 @@ class BudsService : Service(), BudsConnectionManager.Listener {
                     manager?.sendHoldAncModes(mask, intent.getIntExtra(EXTRA_HOLD_TYPE, OpoProtocol.HOLD_TYPE_SHARED))
                 }
             }
+            ACTION_MODEL_PICKED -> manager?.modelPicked()
             ACTION_FIND_BUDS -> {
                 val on = intent.getBooleanExtra(EXTRA_FIND_ON, false)
                 statusLog("<< FIND_BUDS: $on")
@@ -404,6 +405,8 @@ class BudsService : Service(), BudsConnectionManager.Listener {
         /** On-call gestures (`btn 0x06`). See BudsConnectionManager.sendOnCall*(). */
         const val ACTION_SET_ON_CALL = "com.spizganed.quickbuds.SET_ON_CALL"
         const val ACTION_FIND_BUDS = "com.spizganed.quickbuds.FIND_BUDS"
+        /** The model list changed the model ([BudsConnectionManager.modelPicked]). */
+        const val ACTION_MODEL_PICKED = "com.spizganed.quickbuds.MODEL_PICKED"
         const val PREF_SMART_PAUSE = "smart_auto_pause"
 
         /** Delay for a FORCE_CONNECT, in ms (the ACL fallback in KeepAliveReceiver). */

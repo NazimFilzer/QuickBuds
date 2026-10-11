@@ -1,6 +1,7 @@
 package com.spizganed.quickbuds.ui
 
 import android.app.Activity
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
@@ -8,8 +9,10 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import com.spizganed.quickbuds.R
+import com.spizganed.quickbuds.bluetooth.BudsService
 import com.spizganed.quickbuds.protocol.ModelCatalog
 import com.spizganed.quickbuds.widget.AncWidgetProvider
+import com.spizganed.quickbuds.widget.WidgetStateStore
 
 /**
  * The model list, opened from the header button before the connect pill: Automatic (what
@@ -43,6 +46,9 @@ class ModelActivity : Activity() {
                 Haptics.commit(root)
                 onPick()
                 AncWidgetProvider.refreshAll(this)
+                // Connected, the service is running: it reads the features again for the new model.
+                if (WidgetStateStore.read(this).connected)
+                    startService(Intent(this, BudsService::class.java).setAction(BudsService.ACTION_MODEL_PICKED))
                 show()
             }
             val t = r.findViewWithTag<TextView>(SettingRowFactory.TITLE_TAG).apply { text = title }

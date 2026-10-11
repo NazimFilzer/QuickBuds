@@ -807,6 +807,15 @@ class BudsConnectionManager(private val context: Context) {
 
     fun requestFullStatus() { sendRaw(statusQuery(), "manual status") }
 
+    /**
+     * A model picked by hand ([ModelCatalog.setManual]): `0x010D` again with the new model's id list, and every screen
+     * relays out. Without it the features stayed the old model's until the next connect.
+     */
+    fun modelPicked() {
+        if (isConnected()) requestFullStatus()
+        handler.post { listeners.forEach { it.onCapabilities() } }
+    }
+
     /** `0x010D` for the model in use (PROTOCOL.md §9): its own id list, wind noise only where the model has the flag. */
     private fun statusQuery() = ModelCatalog.current(context)?.json.let {
         OpoProtocol.queryStatus(it?.optString("statusQuery")?.ifEmpty { null }, it?.optInt("windNoise") == 1)
