@@ -307,6 +307,8 @@
     <string name="preset_recent">최근</string>
     <string name="preset_hex">16진수 색상</string>
     <string name="widget_style_title">스타일</string>
+    <string name="widget_background_title">위젯 배경</string>
+    <string name="widget_background_sub">끄기: 위젯이 배경화면 위에 바로 표시됩니다</string>
     <string name="widget_style_classic">클래식</string>
     <string name="widget_mode_anc_low">ANC 낮음</string>
     <string name="widget_mode_anc_medium">ANC 보통</string>

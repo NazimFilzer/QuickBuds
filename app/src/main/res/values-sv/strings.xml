@@ -307,6 +307,8 @@
     <string name="preset_recent">Senaste</string>
     <string name="preset_hex">Hexfärg</string>
     <string name="widget_style_title">Stil</string>
+    <string name="widget_background_title">Widgetbakgrund</string>
+    <string name="widget_background_sub">Av: widgetarna ligger direkt på bakgrundsbilden</string>
     <string name="widget_style_classic">Klassisk</string>
     <string name="widget_mode_anc_low">ANC låg</string>
     <string name="widget_mode_anc_medium">ANC medel</string>

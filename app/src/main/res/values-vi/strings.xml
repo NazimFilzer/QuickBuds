@@ -309,6 +309,8 @@
 
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">Kiểu</string>
+    <string name="widget_background_title">Nền tiện ích</string>
+    <string name="widget_background_sub">Tắt: tiện ích nằm trực tiếp trên hình nền</string>
     <string name="widget_style_classic">Cổ điển</string>
     <string name="widget_mode_anc_low">ANC Thấp</string>
     <string name="widget_mode_anc_medium">ANC Vừa</string>

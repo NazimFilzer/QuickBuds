@@ -309,6 +309,8 @@
 
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">สไตล์</string>
+    <string name="widget_background_title">พื้นหลังวิดเจ็ต</string>
+    <string name="widget_background_sub">ปิด: วิดเจ็ตวางอยู่บนวอลเปเปอร์โดยตรง</string>
     <string name="widget_style_classic">คลาสสิก</string>
     <string name="widget_mode_anc_low">ANC ต่ำ</string>
     <string name="widget_mode_anc_medium">ANC กลาง</string>

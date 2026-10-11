@@ -307,6 +307,8 @@
     <string name="preset_recent">Недавние</string>
     <string name="preset_hex">Цвет в HEX</string>
     <string name="widget_style_title">Стиль</string>
+    <string name="widget_background_title">Фон виджетов</string>
+    <string name="widget_background_sub">Выкл.: виджеты лежат прямо на обоях</string>
     <string name="widget_style_classic">Классический</string>
     <string name="widget_mode_anc_low">ANC низкий</string>
     <string name="widget_mode_anc_medium">ANC средний</string>

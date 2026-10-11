@@ -307,6 +307,8 @@
     <string name="preset_recent">Legutóbbiak</string>
     <string name="preset_hex">Hex szín</string>
     <string name="widget_style_title">Stílus</string>
+    <string name="widget_background_title">Modul háttere</string>
+    <string name="widget_background_sub">Ki: a modulok közvetlenül a háttérképen vannak</string>
     <string name="widget_style_classic">Klasszikus</string>
     <string name="widget_mode_anc_low">ANC alacsony</string>
     <string name="widget_mode_anc_medium">ANC közepes</string>

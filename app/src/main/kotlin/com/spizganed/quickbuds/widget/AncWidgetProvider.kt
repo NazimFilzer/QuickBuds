@@ -172,8 +172,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             // a flipper's child animates. The flip side: every state set here must be set both ways
             // (visibility, click), or the previous update's sticks.
             val child = if (list) 2 else if (page == Kind.BATTERY) 0 else 1
-            v.setImageViewResource(R.id.w_bg, bgRes(context))
-            v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
+            boxBg(context, v, p)
             // Every tap on a two-page widget carries the other page, so a second tap swaps.
             val other = if (page == Kind.BATTERY) Kind.CONTROLS else Kind.BATTERY
             val swap = if (!list && provider.page == null) other else null
@@ -192,6 +191,20 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             if (WidgetSettings.nothingStyle(c)) R.drawable.widget_bg_n else R.drawable.widget_bg
 
         /** A panel or button inside the box, its corners parallel to the box's in the Nothing style. */
+        /** The widget box; Material without [WidgetSettings.background]: none, the content on the wallpaper. */
+        private fun boxBg(c: Context, v: RemoteViews, p: Palette) {
+            if (!WidgetSettings.background(c)) return v.setImageViewResource(R.id.w_bg, android.R.color.transparent)
+            v.setImageViewResource(R.id.w_bg, bgRes(c))
+            v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
+        }
+
+        /** A battery panel or the case row's panel. Material draws none (one background). */
+        private fun panelBg(c: Context, v: RemoteViews, id: Int, p: Palette) {
+            if (WidgetSettings.materialStyle(c)) return v.setImageViewResource(id, android.R.color.transparent)
+            v.setImageViewResource(id, panelRes(c))
+            v.setInt(id, "setColorFilter", panelColor(c, p))
+        }
+
         private fun panelRes(c: Context) =
             if (WidgetSettings.nothingStyle(c)) R.drawable.widget_panel_n else R.drawable.widget_panel
 
@@ -225,13 +238,12 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             val n = WidgetSettings.nothingStyle(c)
             v.setImageViewResource(b.bg, panelRes(c))
             if (WidgetSettings.materialStyle(c)) {
-                // Material: a tonal fill when selected, and the stroke in the fill's own colour (no outline).
-                val fill = if (!selected) panelColor(c, p)
-                    else if (WidgetSettings.systemRoles(c) && android.os.Build.VERSION.SDK_INT >= 31) WidgetSettings.systemSelected(c, p.isLight)
-                    else Palette.blend(panelColor(c, p), p.accent, 0.35f)
-                v.setInt(b.bg, "setColorFilter", fill)
-                v.setImageViewResource(b.stroke, R.drawable.widget_panel_stroke)
-                v.setInt(b.stroke, "setColorFilter", fill)
+                // Material: only a selected button is filled (tonal); no outline, no box otherwise.
+                v.setImageViewResource(b.stroke, android.R.color.transparent)
+                if (!selected) return v.setImageViewResource(b.bg, android.R.color.transparent)
+                v.setInt(b.bg, "setColorFilter",
+                    if (WidgetSettings.systemRoles(c) && android.os.Build.VERSION.SDK_INT >= 31) WidgetSettings.systemSelected(c, p.isLight)
+                    else Palette.blend(panelColor(c, p), p.accent, 0.35f))
                 return
             }
             v.setInt(b.bg, "setColorFilter", if (selected && !n) p.accent else panelColor(c, p))
@@ -256,10 +268,11 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
         private fun disconnected(context: Context, p: Palette, kind: Kind): RemoteViews {
             val v = RemoteViews(context.packageName, if (WidgetSettings.nothingStyle(context)) R.layout.widget_disconnected_n
                 else if (WidgetSettings.materialStyle(context)) R.layout.widget_disconnected_md else R.layout.widget_disconnected)
-            v.setImageViewResource(R.id.w_bg, bgRes(context))
-            v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
-            paint(context, v, CONN, p, false)
-            content(context, v, CONN, p, false, R.drawable.ic_status_dot_empty, context.getString(R.string.conn_action_connect), 10f, 10f / 5)
+            boxBg(context, v, p)
+            // Material: the chip is the widget's only control, so it keeps its fill (with or without the box).
+            val chip = WidgetSettings.materialStyle(context)
+            paint(context, v, CONN, p, chip)
+            content(context, v, CONN, p, chip, R.drawable.ic_status_dot_empty, context.getString(R.string.conn_action_connect), 10f, 10f / 5)
             v.setContentDescription(CONN.root, context.getString(R.string.conn_off) + ". " + context.getString(R.string.conn_action_connect))
             v.setOnClickPendingIntent(CONN.root, connectPI(context))
             return v
@@ -275,8 +288,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             val slots = if (caseBar) listOf(0, 2) else listOf(0, 1, 2)
             for (slot in slots) {
                 val (bgId, ringId, pct, label, strokeId) = PANELS[slot].toList()
-                v.setImageViewResource(bgId, panelRes(context))
-                v.setInt(bgId, "setColorFilter", panelColor(context, p))
+                panelBg(context, v, bgId, p)
                 panelOutline(context, v, strokeId, p)
                 v.setImageViewBitmap(ringId, ring(context, p, levels[slot], slot, statuses[slot], ringDp))
                 pctText(context, v, pct, p, levels[slot])
@@ -289,8 +301,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 setText(context, v, label, if (inEar && !noLabel) semibold(text) else text, if (inEar) p.text else p.textSecondary)
             }
             if (caseBar) {
-                v.setImageViewResource(R.id.w_bar_bg, panelRes(context))
-                v.setInt(R.id.w_bar_bg, "setColorFilter", panelColor(context, p))
+                panelBg(context, v, R.id.w_bar_bg, p)
                 panelOutline(context, v, R.id.w_bar_stroke, p)
                 // The case icon takes all the height the rings leave ([caseRowDp]). Nothing: at the rings' dot pitch,
                 // so the big icon keeps the app's case details (lid cut, LED).

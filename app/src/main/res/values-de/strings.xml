@@ -307,6 +307,8 @@
     <string name="preset_recent">Zuletzt</string>
     <string name="preset_hex">Hex-Farbe</string>
     <string name="widget_style_title">Stil</string>
+    <string name="widget_background_title">Widget-Hintergrund</string>
+    <string name="widget_background_sub">Aus: Die Widgets liegen direkt auf deinem Hintergrund</string>
     <string name="widget_style_classic">Klassisch</string>
     <string name="widget_mode_anc_low">ANC niedrig</string>
     <string name="widget_mode_anc_medium">ANC mittel</string>

@@ -307,6 +307,8 @@
     <string name="preset_recent">Recent</string>
     <string name="preset_hex">Hex-kleur</string>
     <string name="widget_style_title">Stijl</string>
+    <string name="widget_background_title">Widgetachtergrond</string>
+    <string name="widget_background_sub">Uit: de widgets staan direct op je achtergrond</string>
     <string name="widget_style_classic">Klassiek</string>
     <string name="widget_mode_anc_low">ANC laag</string>
     <string name="widget_mode_anc_medium">ANC gemiddeld</string>

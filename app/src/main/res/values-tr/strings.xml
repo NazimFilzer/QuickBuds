@@ -307,6 +307,8 @@
     <string name="preset_recent">Son kullanılanlar</string>
     <string name="preset_hex">Hex renk</string>
     <string name="widget_style_title">Stil</string>
+    <string name="widget_background_title">Widget arka planı</string>
+    <string name="widget_background_sub">Kapalı: widget\'lar doğrudan duvar kağıdının üzerinde durur</string>
     <string name="widget_style_classic">Klasik</string>
     <string name="widget_mode_anc_low">ANC Düşük</string>
     <string name="widget_mode_anc_medium">ANC Orta</string>

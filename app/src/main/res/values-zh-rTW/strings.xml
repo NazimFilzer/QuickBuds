@@ -309,6 +309,8 @@
 
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">樣式</string>
+    <string name="widget_background_title">小工具背景</string>
+    <string name="widget_background_sub">關閉：小工具直接顯示在桌布上</string>
     <string name="widget_style_classic">經典</string>
     <string name="widget_mode_anc_low">降噪 低</string>
     <string name="widget_mode_anc_medium">降噪 中</string>

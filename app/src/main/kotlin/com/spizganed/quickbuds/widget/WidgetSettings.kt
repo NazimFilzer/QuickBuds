@@ -73,6 +73,16 @@ object WidgetSettings {
     /** The Material style ([ThemeRes.material]): Classic layouts on one background, only a selection filled, no outlines. */
     fun materialStyle(c: Context) = ThemeRes.material(c)
 
+    private const val KEY_BACKGROUND = "widgetBackground"
+
+    /** Material style: the widget box is drawn (default) or left out, so the content sits on the wallpaper as on Google's widgets. */
+    fun background(c: Context) = !materialStyle(c) || prefs(c).getBoolean(KEY_BACKGROUND, true)
+
+    fun setBackground(c: Context, on: Boolean) {
+        prefs(c).edit().putBoolean(KEY_BACKGROUND, on).apply()
+        QuickBudsWidget.refreshAll(c)
+    }
+
     /** Material style with wallpaper colours: the widget takes the system's widget roles, as Google's widgets do. */
     fun systemRoles(c: Context) = materialStyle(c) && com.spizganed.quickbuds.ui.PaletteStore.wallpaper(c)
 
