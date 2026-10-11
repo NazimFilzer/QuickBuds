@@ -130,8 +130,8 @@ object ThemeRes {
     private const val KEY_MATERIAL = "styleMaterial"
 
     /**
-     * Material style (M3): tonal cards without outlines, pill buttons, the M3 switch. App screens only;
-     * the widgets draw Classic. Never true together with [nothing].
+     * Material style (M3): tonal cards without outlines, pill buttons, the M3 switch. The widgets keep
+     * the Classic layouts with tonal colours. Never true together with [nothing].
      */
     fun material(context: Context) = !nothing(context) &&
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_MATERIAL, false)

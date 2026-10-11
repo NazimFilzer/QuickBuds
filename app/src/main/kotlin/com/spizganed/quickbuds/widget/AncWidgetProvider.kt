@@ -204,7 +204,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
          * no boxes: `card` itself, so panels melt into the widget background.
          */
         private fun panelColor(c: Context, p: Palette) =
-            if (WidgetSettings.nothingStyle(c)) Palette.blend(boxColor(p), p.text, 0.07f) else Palette.blend(boxColor(p), p.text, 0.04f)
+            if (WidgetSettings.materialStyle(c)) Palette.blend(boxColor(p), p.accent, 0.10f)
+            else if (WidgetSettings.nothingStyle(c)) Palette.blend(boxColor(p), p.text, 0.07f) else Palette.blend(boxColor(p), p.text, 0.04f)
 
         /** Dot style: the panel's dashed grey outline, as the buttons have it. Classic draws none, so it is hidden (set both ways). */
         private fun panelOutline(c: Context, v: RemoteViews, id: Int, p: Palette) {
@@ -222,6 +223,14 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
         private fun paint(c: Context, v: RemoteViews, b: Btn, p: Palette, selected: Boolean) {
             val n = WidgetSettings.nothingStyle(c)
             v.setImageViewResource(b.bg, panelRes(c))
+            if (WidgetSettings.materialStyle(c)) {
+                // Material: a tonal fill when selected, and the stroke in the fill's own colour (no outline).
+                val fill = if (selected) Palette.blend(panelColor(c, p), p.accent, 0.30f) else panelColor(c, p)
+                v.setInt(b.bg, "setColorFilter", fill)
+                v.setImageViewResource(b.stroke, R.drawable.widget_panel_stroke)
+                v.setInt(b.stroke, "setColorFilter", fill)
+                return
+            }
             v.setInt(b.bg, "setColorFilter", if (selected && !n) p.accent else panelColor(c, p))
             v.setImageViewResource(b.stroke, if (n) (if (selected) R.drawable.widget_panel_select_n else R.drawable.widget_panel_dots_n)
                 else R.drawable.widget_panel_stroke)
@@ -230,7 +239,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** Paints [b] with [icon] and [text]: selected on-accent (Classic fill) or accent (Nothing outline), else secondary. */
         private fun content(context: Context, v: RemoteViews, b: Btn, p: Palette, selected: Boolean, icon: Int, text: CharSequence?, iconDp: Float, pitch: Float = DOT_DP) {
-            val fg = if (!selected) p.textSecondary else if (WidgetSettings.nothingStyle(context)) p.accent else p.onAccent
+            val fg = if (!selected) p.textSecondary else if (WidgetSettings.nothingStyle(context)) p.accent
+                else if (WidgetSettings.materialStyle(context)) p.text else p.onAccent
             icon(context, v, b.icon, icon, iconDp, pitch)
             v.setInt(b.icon, "setColorFilter", fg)
             if (text == null) v.setViewVisibility(b.label, View.GONE)

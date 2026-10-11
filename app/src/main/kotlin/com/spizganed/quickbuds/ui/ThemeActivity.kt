@@ -75,7 +75,7 @@ class ThemeActivity : Activity() {
         if (!::selection.isInitialized) selection = SelectionSlider(root, "theme")
         root.addView(SettingRowFactory.title(this, R.string.theme_title))
 
-        // --- Style: Classic, Nothing or Material, for the app and the widgets (Material: app only) ---
+        // --- Style: Classic, Nothing or Material, for the app and the widgets ---
         root.addView(SettingRowFactory.sectionLabel(this, R.string.widget_style_title))
         root.addView(AncSegmentedView(this, listOf(getString(R.string.widget_style_classic), getString(R.string.widget_style_nothing),
             getString(R.string.widget_style_material))).apply {

@@ -70,6 +70,9 @@ object WidgetSettings {
      */
     fun nothingStyle(c: Context) = ThemeRes.nothing(c)
 
+    /** The Material style ([ThemeRes.material]): Classic layouts with tonal panels and a tonal selection, no outlines. */
+    fun materialStyle(c: Context) = ThemeRes.material(c)
+
     /** The page widget [id] shows, BATTERY or CONTROLS; [default] is its provider's own. */
     fun page(c: Context, id: Int, default: QuickBudsWidget.Kind): QuickBudsWidget.Kind =
         prefs(c).getString(KEY_PAGE + id, null)?.let { runCatching { QuickBudsWidget.Kind.valueOf(it) }.getOrNull() } ?: default
