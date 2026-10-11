@@ -70,7 +70,7 @@ object WidgetSettings {
      */
     fun nothingStyle(c: Context) = ThemeRes.nothing(c)
 
-    /** The Material style ([ThemeRes.material]): Classic layouts with tonal panels and a tonal selection, no outlines. */
+    /** The Material style ([ThemeRes.material]): Classic layouts on one background, only a selection filled, no outlines. */
     fun materialStyle(c: Context) = ThemeRes.material(c)
 
     /** Material style with wallpaper colours: the widget takes the system's widget roles, as Google's widgets do. */
@@ -94,9 +94,7 @@ object WidgetSettings {
             textSecondary = s(android.R.color.system_accent2_200), outline = s(android.R.color.system_accent2_600))
     }
 
-    /** [systemRoles]: a panel inside the box (tone 30 dark, 90 light) and a selected button (primary container). */
-    @android.annotation.TargetApi(31)
-    fun systemPanel(c: Context, light: Boolean) = c.getColor(if (light) android.R.color.system_accent2_100 else android.R.color.system_accent2_700)
+    /** [systemRoles]: a selected button's fill (primary container). */
     @android.annotation.TargetApi(31)
     fun systemSelected(c: Context, light: Boolean) = c.getColor(if (light) android.R.color.system_accent1_100 else android.R.color.system_accent1_700)
 

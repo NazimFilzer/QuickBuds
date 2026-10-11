@@ -204,8 +204,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
          * no boxes: `card` itself, so panels melt into the widget background.
          */
         private fun panelColor(c: Context, p: Palette) =
-            if (WidgetSettings.systemRoles(c) && android.os.Build.VERSION.SDK_INT >= 31) WidgetSettings.systemPanel(c, p.isLight)
-            else if (WidgetSettings.materialStyle(c)) Palette.blend(boxColor(p), p.accent, 0.10f)
+            // Material: one background, as Google's widgets have; panels melt into the box and only a selection is filled.
+            if (WidgetSettings.materialStyle(c)) boxColor(p)
             else if (WidgetSettings.nothingStyle(c)) Palette.blend(boxColor(p), p.text, 0.07f) else Palette.blend(boxColor(p), p.text, 0.04f)
 
         /** Dot style: the panel's dashed grey outline, as the buttons have it. Classic draws none, so it is hidden (set both ways). */
@@ -228,7 +228,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 // Material: a tonal fill when selected, and the stroke in the fill's own colour (no outline).
                 val fill = if (!selected) panelColor(c, p)
                     else if (WidgetSettings.systemRoles(c) && android.os.Build.VERSION.SDK_INT >= 31) WidgetSettings.systemSelected(c, p.isLight)
-                    else Palette.blend(panelColor(c, p), p.accent, 0.30f)
+                    else Palette.blend(panelColor(c, p), p.accent, 0.35f)
                 v.setInt(b.bg, "setColorFilter", fill)
                 v.setImageViewResource(b.stroke, R.drawable.widget_panel_stroke)
                 v.setInt(b.stroke, "setColorFilter", fill)
