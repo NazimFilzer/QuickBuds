@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Claritate HD</string>
     <string name="eq_pure_vocals">Voci pure</string>
     <string name="eq_thundering_bass">Bas tunător</string>
+    <string name="eq_pure_raw">Sunet pur</string>
+    <string name="eq_deep_bass">Bas profund</string>
+    <string name="eq_pure_bass">Bas pur</string>
     <string name="eq_dyn_featured">Dynaudio recomandat</string>
     <string name="eq_galactic">Monolog galactic</string>
     <string name="eq_vibrant">Vibrant</string>

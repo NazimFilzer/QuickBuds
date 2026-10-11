@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">高清解析</string>
     <string name="eq_pure_vocals">纯享人声</string>
     <string name="eq_thundering_bass">澎湃低音</string>
+    <string name="eq_pure_raw">纯净原声</string>
+    <string name="eq_deep_bass">深沉低音</string>
+    <string name="eq_pure_bass">纯净低音</string>
     <string name="eq_dyn_featured">丹拿特调</string>
     <string name="eq_galactic">星河独白</string>
     <string name="eq_vibrant">活力动感</string>

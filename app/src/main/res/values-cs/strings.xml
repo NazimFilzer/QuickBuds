@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD čistota</string>
     <string name="eq_pure_vocals">Čisté vokály</string>
     <string name="eq_thundering_bass">Hromové basy</string>
+    <string name="eq_pure_raw">Čistý originál</string>
+    <string name="eq_deep_bass">Hluboké basy</string>
+    <string name="eq_pure_bass">Čisté basy</string>
     <string name="eq_dyn_featured">Dynaudio doporučuje</string>
     <string name="eq_galactic">Galaktický monolog</string>
     <string name="eq_vibrant">Živý</string>

@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD na linaw</string>
     <string name="eq_pure_vocals">Purong boses</string>
     <string name="eq_thundering_bass">Dumadagundong na bass</string>
+    <string name="eq_pure_raw">Purong orihinal</string>
+    <string name="eq_deep_bass">Malalim na bass</string>
+    <string name="eq_pure_bass">Purong bass</string>
     <string name="eq_dyn_featured">Dynaudio featured</string>
     <string name="eq_galactic">Monologo ng kalawakan</string>
     <string name="eq_vibrant">Masigla</string>

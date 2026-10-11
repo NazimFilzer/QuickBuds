@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">ความคมชัดระดับ HD</string>
     <string name="eq_pure_vocals">เสียงร้องที่ชัดเจน</string>
     <string name="eq_thundering_bass">เสียงเบสที่ดังกึกก้อง</string>
+    <string name="eq_pure_raw">เสียงดั้งเดิมบริสุทธิ์</string>
+    <string name="eq_deep_bass">เบสลึก</string>
+    <string name="eq_pure_bass">เบสบริสุทธิ์</string>
     <string name="eq_dyn_featured">ฟีเจอร์ของ Dynaudio</string>
     <string name="eq_galactic">Galactic Monologue</string>
     <string name="eq_vibrant">มีชีวิตชีวา</string>

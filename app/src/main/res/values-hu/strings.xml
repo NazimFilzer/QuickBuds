@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD tisztaság</string>
     <string name="eq_pure_vocals">Tiszta ének</string>
     <string name="eq_thundering_bass">Dörgő basszus</string>
+    <string name="eq_pure_raw">Tiszta eredeti</string>
+    <string name="eq_deep_bass">Mély basszus</string>
+    <string name="eq_pure_bass">Tiszta basszus</string>
     <string name="eq_dyn_featured">Dynaudio ajánlata</string>
     <string name="eq_galactic">Galaktikus monológ</string>
     <string name="eq_vibrant">Élénk</string>

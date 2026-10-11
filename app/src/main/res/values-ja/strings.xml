@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD クラリティ</string>
     <string name="eq_pure_vocals">ピュアボーカル</string>
     <string name="eq_thundering_bass">サンダリングベース</string>
+    <string name="eq_pure_raw">ピュアロー</string>
+    <string name="eq_deep_bass">ディープベース</string>
+    <string name="eq_pure_bass">ピュアベース</string>
     <string name="eq_dyn_featured">Dynaudio フィーチャード</string>
     <string name="eq_galactic">銀河のモノローグ</string>
     <string name="eq_vibrant">刺激的</string>

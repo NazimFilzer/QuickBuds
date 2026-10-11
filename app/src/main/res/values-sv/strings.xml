@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD-klarhet</string>
     <string name="eq_pure_vocals">Rena vokaler</string>
     <string name="eq_thundering_bass">Dånande bas</string>
+    <string name="eq_pure_raw">Rent original</string>
+    <string name="eq_deep_bass">Djup bas</string>
+    <string name="eq_pure_bass">Ren bas</string>
     <string name="eq_dyn_featured">Dynaudio utvald</string>
     <string name="eq_galactic">Galaktisk monolog</string>
     <string name="eq_vibrant">Livfull</string>

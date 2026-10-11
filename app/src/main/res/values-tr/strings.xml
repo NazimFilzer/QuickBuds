@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD netliği</string>
     <string name="eq_pure_vocals">Saf vokaller</string>
     <string name="eq_thundering_bass">Gür bas ses</string>
+    <string name="eq_pure_raw">Saf orijinal</string>
+    <string name="eq_deep_bass">Derin bas</string>
+    <string name="eq_pure_bass">Saf bas</string>
     <string name="eq_dyn_featured">Dynaudio özellikli</string>
     <string name="eq_galactic">Galaktik monolog</string>
     <string name="eq_vibrant">Enerjik</string>

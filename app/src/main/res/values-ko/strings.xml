@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD 선명도</string>
     <string name="eq_pure_vocals">퓨어 보컬</string>
     <string name="eq_thundering_bass">강력한 베이스</string>
+    <string name="eq_pure_raw">퓨어 로우</string>
+    <string name="eq_deep_bass">딥 베이스</string>
+    <string name="eq_pure_bass">퓨어 베이스</string>
     <string name="eq_dyn_featured">Dynaudio 추천</string>
     <string name="eq_galactic">은하의 독백</string>
     <string name="eq_vibrant">생동감</string>

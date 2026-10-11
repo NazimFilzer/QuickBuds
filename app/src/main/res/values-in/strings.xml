@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Kejelasan HD</string>
     <string name="eq_pure_vocals">Vokal jernih</string>
     <string name="eq_thundering_bass">Bass yang menggelegar</string>
+    <string name="eq_pure_raw">Asli murni</string>
+    <string name="eq_deep_bass">Bass dalam</string>
+    <string name="eq_pure_bass">Bass murni</string>
     <string name="eq_dyn_featured">Dynaudio unggulan</string>
     <string name="eq_galactic">Monolog Galaksi</string>
     <string name="eq_vibrant">Cerah</string>

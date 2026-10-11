@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Чіткість HD</string>
     <string name="eq_pure_vocals">Чистий вокал</string>
     <string name="eq_thundering_bass">Громовий бас</string>
+    <string name="eq_pure_raw">Чистий звук</string>
+    <string name="eq_deep_bass">Глибокий бас</string>
+    <string name="eq_pure_bass">Чистий бас</string>
     <string name="eq_dyn_featured">Рекомендоване налаштування Dynaudio</string>
     <string name="eq_galactic">Галактичний монолог</string>
     <string name="eq_vibrant">Яскравий</string>

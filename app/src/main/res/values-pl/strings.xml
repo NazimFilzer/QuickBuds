@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Wyrazistość HD</string>
     <string name="eq_pure_vocals">Czysty głos</string>
     <string name="eq_thundering_bass">Dudniący bas</string>
+    <string name="eq_pure_raw">Czysty oryginał</string>
+    <string name="eq_deep_bass">Głęboki bas</string>
+    <string name="eq_pure_bass">Czysty bas</string>
     <string name="eq_dyn_featured">Dynaudio: polecane</string>
     <string name="eq_galactic">Galaktyczny monolog</string>
     <string name="eq_vibrant">Wigor</string>

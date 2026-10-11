@@ -176,6 +176,9 @@
     <string name="eq_hd_clarity">HD clarity</string>
     <string name="eq_pure_vocals">Pure vocals</string>
     <string name="eq_thundering_bass">Thundering bass</string>
+    <string name="eq_pure_raw">Pure raw</string>
+    <string name="eq_deep_bass">Deep bass</string>
+    <string name="eq_pure_bass">Pure bass</string>
     <string name="eq_dyn_featured">Dynaudio featured</string>
     <string name="eq_galactic">Galactic Monologue</string>
     <string name="eq_vibrant">Vibrant</string>

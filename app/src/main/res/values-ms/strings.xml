@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Kejelasan HD</string>
     <string name="eq_pure_vocals">Vokal tulen</string>
     <string name="eq_thundering_bass">Bes bergemuruh</string>
+    <string name="eq_pure_raw">Asli tulen</string>
+    <string name="eq_deep_bass">Bes dalam</string>
+    <string name="eq_pure_bass">Bes tulen</string>
     <string name="eq_dyn_featured">Pilihan Dynaudio</string>
     <string name="eq_galactic">Monolog galaksi</string>
     <string name="eq_vibrant">Bertenaga ceria</string>

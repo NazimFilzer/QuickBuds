@@ -143,6 +143,11 @@ class EqActivity : Activity(), BudsConnectionManager.Listener {
                 34 -> R.string.eq_vibrant
                 40 -> R.string.eq_dyn_vocal
                 41 -> R.string.eq_clear_crisp
+                // realme Link's four presets; HeyMelody has none, so the types are ours (PROTOCOL.md §9).
+                101 -> R.string.eq_pure_raw
+                102 -> R.string.eq_deep_bass
+                103 -> R.string.eq_pure_vocals
+                104 -> R.string.eq_pure_bass
                 else -> null  // unnamed in HeyMelody too
             } ?: return@mapNotNull null
             mode.getInt("protocolIndex") to name

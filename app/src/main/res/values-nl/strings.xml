@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD-helderheid</string>
     <string name="eq_pure_vocals">Heldere zang</string>
     <string name="eq_thundering_bass">Heavy bass</string>
+    <string name="eq_pure_raw">Puur origineel</string>
+    <string name="eq_deep_bass">Diepe bas</string>
+    <string name="eq_pure_bass">Pure bas</string>
     <string name="eq_dyn_featured">Dynaudio-modus</string>
     <string name="eq_galactic">Galactic Monologue</string>
     <string name="eq_vibrant">Levendig</string>

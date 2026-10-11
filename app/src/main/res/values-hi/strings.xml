@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD स्पष्टता</string>
     <string name="eq_pure_vocals">शुद्ध स्वर</string>
     <string name="eq_thundering_bass">थंडरिंग बास</string>
+    <string name="eq_pure_raw">शुद्ध मूल</string>
+    <string name="eq_deep_bass">गहरा बेस</string>
+    <string name="eq_pure_bass">शुद्ध बेस</string>
     <string name="eq_dyn_featured">Dynaudio चुनिंदा</string>
     <string name="eq_galactic">गैलेक्टिक मोनोलॉग</string>
     <string name="eq_vibrant">जीवंत</string>

@@ -674,8 +674,12 @@ push 0x0504 <id>                     EQ changed
   falls back to `00`). **Ids are renumbered after create / delete: always re-read `0x0122`.**
 - **Built-ins differ per model** `[VENDOR]`: `equalizerMode` lists `{modeType, protocolIndex}`;
   `protocolIndex` is the `0x0406` id. Buds 4: 0 Balanced, 1 Clear Vocals, 2 Bass; Nord Buds 2r: 0, 1
-  Bold, 2. Types 1-4 are named differently where `equalizer` is `2` (or Enco R / Air2). 67 of 137
-  models have none. Firmware-gated: use `equalizerModeCompat`, else `equalizerModeByVersion`, else
+  Bold, 2. Types 1-4 are named differently where `equalizer` is `2` (or Enco R / Air2). 40 of 137
+  models have none.
+- **realme** `[VENDOR]` realme Link: 27 realme models have four built-ins, not in HeyMelody's list.
+  `0x0406` ids: 0 Pure Raw, 1 Deep Bass, 2 Pure Voice, 3 Pure Bass. `models.json` gives them our own
+  types 101-104 (Pure Raw, Deep Bass, Pure Voice, Pure Bass), `equalizer` 1. T110 and T01 have three
+  other presets with unknown ids: no EQ until a capture. Firmware-gated: use `equalizerModeCompat`, else `equalizerModeByVersion`, else
   `equalizerMode`; drop entries whose `minFirmVersion` is above the buds' firmware (the lower non-zero
   of left and right, `138` on Buds 4; unreadable = 0); stable sort by `order` (0 if absent).
 - **What a model shows** `[VENDOR]`: EQ row where `equalizer` is 1-4 or custom presets exist; custom

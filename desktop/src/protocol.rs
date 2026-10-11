@@ -461,6 +461,11 @@ pub fn eq_builtins(model: Option<&Value>, firmware: Option<&str>) -> Vec<(u8, &'
             34 => "eq_vibrant",
             40 => "eq_dyn_vocal",
             41 => "eq_clear_crisp",
+            // realme Link's four presets; HeyMelody has none, so the types are ours (PROTOCOL.md §9).
+            101 => "eq_pure_raw",
+            102 => "eq_deep_bass",
+            103 => "eq_pure_vocals",
+            104 => "eq_pure_bass",
             _ => return None, // unnamed in HeyMelody too
         };
         Some((m["protocolIndex"].as_u64()? as u8, key))

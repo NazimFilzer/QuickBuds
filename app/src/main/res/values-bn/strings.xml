@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD স্পষ্টতা</string>
     <string name="eq_pure_vocals">বিশুদ্ধ কণ্ঠ</string>
     <string name="eq_thundering_bass">গর্জনশীল বেস</string>
+    <string name="eq_pure_raw">বিশুদ্ধ মূল</string>
+    <string name="eq_deep_bass">গভীর বেস</string>
+    <string name="eq_pure_bass">বিশুদ্ধ বেস</string>
     <string name="eq_dyn_featured">Dynaudio বিশেষ</string>
     <string name="eq_galactic">ছায়াপথের স্বগতোক্তি</string>
     <string name="eq_vibrant">প্রাণবন্ত</string>

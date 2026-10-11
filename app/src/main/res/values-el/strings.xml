@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Καθαρότητα HD</string>
     <string name="eq_pure_vocals">Καθαρά φωνητικά</string>
     <string name="eq_thundering_bass">Βροντερά μπάσα</string>
+    <string name="eq_pure_raw">Καθαρός αρχικός ήχος</string>
+    <string name="eq_deep_bass">Βαθιά μπάσα</string>
+    <string name="eq_pure_bass">Καθαρά μπάσα</string>
     <string name="eq_dyn_featured">Dynaudio Προτεινόμενο</string>
     <string name="eq_galactic">Γαλαξιακός μονόλογος</string>
     <string name="eq_vibrant">Ζωντανό</string>

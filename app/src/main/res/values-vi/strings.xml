@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Độ rõ HD</string>
     <string name="eq_pure_vocals">Giọng hát thuần khiết</string>
     <string name="eq_thundering_bass">Bass uy lực</string>
+    <string name="eq_pure_raw">Nguyên bản thuần khiết</string>
+    <string name="eq_deep_bass">Bass sâu</string>
+    <string name="eq_pure_bass">Bass thuần khiết</string>
     <string name="eq_dyn_featured">Dynaudio đặc biệt</string>
     <string name="eq_galactic">Độc thoại ngân hà</string>
     <string name="eq_vibrant">Sôi động</string>

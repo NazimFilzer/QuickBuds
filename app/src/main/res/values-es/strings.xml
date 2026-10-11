@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">Claridad de alta definición</string>
     <string name="eq_pure_vocals">Voz pura</string>
     <string name="eq_thundering_bass">Graves atronadores</string>
+    <string name="eq_pure_raw">Sonido puro</string>
+    <string name="eq_deep_bass">Graves profundos</string>
+    <string name="eq_pure_bass">Graves puros</string>
     <string name="eq_dyn_featured">Dynaudio destacado</string>
     <string name="eq_galactic">Monólogo galáctico</string>
     <string name="eq_vibrant">Vibrante</string>

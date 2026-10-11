@@ -147,6 +147,9 @@
     <string name="eq_hd_clarity">HD-Klarheit</string>
     <string name="eq_pure_vocals">Reiner Gesang</string>
     <string name="eq_thundering_bass">Donnernder Bass</string>
+    <string name="eq_pure_raw">Rein und unverfälscht</string>
+    <string name="eq_deep_bass">Tiefer Bass</string>
+    <string name="eq_pure_bass">Reiner Bass</string>
     <string name="eq_dyn_featured">Dynaudio ausgewählt</string>
     <string name="eq_galactic">Galaktischer Monolog</string>
     <string name="eq_vibrant">Lebendig</string>
