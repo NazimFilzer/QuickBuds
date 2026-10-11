@@ -2,8 +2,7 @@
 
 Thanks for helping. The most useful contribution is **a report from an owner of earbuds other than
 the OnePlus Buds 4**. The writes for every other model come from HeyMelody's data. Owners have
-confirmed only the realme Buds Air7 Pro and the OPPO Enco Buds2. Code contributions are welcome too. This page takes you from a clone to a running
-build.
+confirmed only the realme Buds Air7 Pro and the OPPO Enco Buds2. Code contributions are welcome too. This page links the build guides and the rules.
 
 ## Reporting a model
 
@@ -19,42 +18,27 @@ log with your description, without Bluetooth addresses. For a longer exchange, o
 For anything the app's log does not explain, [PACKET-CAPTURE.md](/docs/PACKET-CAPTURE.md) shows how to
 capture the Bluetooth traffic itself, including what HeyMelody sends.
 
-## Build quickstart
+## Build
 
-You need JDK 21 and the Android SDK with platform 37. Android Studio brings both; its bundled JBR
-works as `JAVA_HOME`.
+- [Android app](./build-android.md)
+- [Desktop app on Linux](./build-linux.md)
+- [Desktop app on Windows](./build-windows.md)
 
-```bash
-git clone https://github.com/spizganed/QuickBuds.git
-cd QuickBuds
-echo "sdk.dir=$HOME/Android/Sdk" > local.properties   # your SDK path
-./gradlew assembleDebug
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
-
-- The first build downloads Gradle 9.6.0 through the wrapper. Nothing else to install: the only
-  library is `androidx.core`.
-- **A debug build cannot install over the release app** (different signing key). Uninstall the
-  release first, and uninstall the debug build before going back.
-- `./gradlew assembleRelease` without the release key builds an unsigned APK. That is expected.
-
-Versions: Gradle 9.6.0, AGP 9.4.0, Kotlin 2.4.0, `compileSdk` / `targetSdk` 37, `minSdk` 26. AGP 9
-compiles Kotlin itself, so do not add the `org.jetbrains.kotlin.android` plugin.
-
-### Desktop app
-
-Rust (stable). Windows needs nothing else; Linux needs BlueZ and the development packages for D-Bus, GTK 3,
-and libayatana-appindicator (Arch: `dbus gtk3 libayatana-appindicator`).
+## Tests
 
 ```bash
-cd desktop
-cargo test
-cargo run --release
+python3 scripts/check-locales.py   # every string in all 26 locales
+cd desktop && cargo test           # the desktop tests
 ```
 
-Pair the earbuds in the system's Bluetooth settings first; the app connects to them once their audio
-is connected. Icons, strings and `models.json` are read from the Android app at build time, so the two
-apps never hold separate copies.
+`scripts/release-build.sh` runs every check of the Build workflow and builds all release files. It
+needs the release key. Without the key, run the two commands above.
+
+## Translations
+
+Strings are in `app/src/main/res/values/strings.xml` (English) and one `values-<code>/strings.xml`
+per locale. The desktop app uses the same files. A fix to a translation is welcome as a pull request.
+A new string needs all 26 locales. Machine drafts are fine.
 
 ## Where things are
 

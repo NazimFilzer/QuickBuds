@@ -29,6 +29,8 @@ Finish each step before the next one starts.
 
 ## Decided against — do not suggest again
 
+- Other brands (Xiaomi, Samsung, Sony, Huawei, Soundcore): each is a separate protocol, and one
+  person cannot test them. QuickBuds stays with OnePlus, OPPO and realme (2026-10-11).
 - A resizable 2x2 widget, a 3x3 size, and 3x2 / 2x3 shapes: they broke the layout (2026-09-30).
 - More widget sizes (4x1, 2x1): not until he has a good idea for one (2026-09-30).
 - Right-to-left languages (Arabic, Urdu, Persian, Hebrew): they need a mirrored layout and a check of

@@ -144,10 +144,17 @@ that model. The app asks the same once, on first launch.
 
 ## For developers
 
-- [CONTRIBUTING.md](./docs/CONTRIBUTING.md): build quickstart (Android and desktop), where things are, the rules that matter.
+- **Build:** [Android](./docs/build-android.md), [desktop on Linux](./docs/build-linux.md),
+  [desktop on Windows](./docs/build-windows.md).
+- **Tests:** `python3 scripts/check-locales.py`, then `cargo test` in `desktop/`.
+- **Translations:** fix a string in `app/src/main/res/values-<code>/strings.xml` and open a pull request.
+- [CONTRIBUTING.md](./docs/CONTRIBUTING.md): where things are, and the rules that matter.
 - [PACKET-CAPTURE.md](./docs/PACKET-CAPTURE.md): capturing the earbuds' traffic, HeyMelody's included.
 - [PROTOCOL.md](./docs/PROTOCOL.md): the wire format, every claim tagged with its source.
 - [ROADMAP.md](./docs/ROADMAP.md): the plan, and the features decided against.
+
+Everything to build and release QuickBuds is in this repository, except the signing key. If the
+project stops, anyone can fork it and publish their own signed build.
 
 ## Credits
 
