@@ -3,7 +3,8 @@
 import catalog from "../../app/src/main/assets/models.json";
 
 const MODELS = new Set(catalog.whiteList.map((m) => m.name.toLowerCase()));
-const CATEGORIES = new Set(["UI", "Lag", "Connection", "Feature not working", "Battery", "Other"]);
+// "Test": a model test (Test my earbuds). It always carries the log.
+const CATEGORIES = new Set(["UI", "Lag", "Connection", "Feature not working", "Battery", "Other", "Test"]);
 const MAX_LOG = 1_000_000; // characters; a D1 value holds up to 2 MB
 const MAX_TEXT = 5_000;
 const PER_HOUR = 5; // reports per sender
@@ -36,6 +37,8 @@ async function report(req, env) {
 
   if (!crash && !MODELS.has(model.toLowerCase()))
     return answer(422, "QuickBuds supports OnePlus, OPPO and realme earbuds only. Pick your model from the list.");
+  if (categories.includes("Test") && log === null)
+    return answer(422, "A model test needs the log. Run the test again.");
   if (!crash && log !== null && !RX_FRAME.test(log))
     return answer(422, "The log is empty. Connect your earbuds first, then send the report.");
   if (!crash && !description) return answer(422, "Describe the problem: what you did and what happened.");

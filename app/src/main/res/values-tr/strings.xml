@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Nişancı oyunları</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Kulaklığınızın çalışmasına yardım edin</string>
-    <string name="report_later">Anladım</string>
     <string name="row_smart_volume_title">Akıllı ses seviyesi</string>
     <string name="row_smart_volume_sub">Ses seviyesini ortam gürültüsüne göre ayarlar</string>
     <string name="row_adaptive_volume_title">Uyarlanabilir ses seviyesi</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds yalnızca OnePlus, OPPO ve realme kulaklıkları destekler. Listeden modelinizi seçin.</string>
     <string name="problem_supported_list">Desteklenen tüm kulaklıkları gör</string>
     <string name="problem_log_empty">Günlük boş: kulaklıklarınız henüz hiç bağlanmadı. Önce kulaklıkları bağlayın, sonra raporu gönderin.</string>
-    <string name="problem_notice_body">QuickBuds yalnızca OnePlus Buds 4 ile test edildi. Kulaklığınızda bir şey çalışmıyorsa Ayarlar › Sorun bildir\'i kullanın. Gönder\'e dokunana kadar hiçbir şey gönderilmez.</string>
+    <string name="test_title">Kulaklıklarımı test et</string>
+    <string name="test_sub">Her özelliği deneyin ve sonucu gönderin</string>
+    <string name="test_ask_body">QuickBuds bu kulaklıklarda henüz doğrulanmadı. Kısa bir test neyin çalıştığını gösterir. Gönder\'e dokunana kadar hiçbir şey gönderilmez.</string>
+    <string name="test_ask_later">Şimdi değil</string>
+    <string name="test_intro">Başlat, kulaklıkları yeniden bağlar ve günlüğü temizler. Ardından QuickBuds\'ta her özelliği deneyin, buraya dönün ve işaretleyin.</string>
+    <string name="test_start">Başlat</string>
+    <string name="test_restart">Yeniden başlat</string>
+    <string name="test_reconnecting">Yeniden bağlanıyor…</string>
+    <string name="test_failed">Kulaklıklar yeniden bağlanmadı. Açık ve yakında olduklarını kontrol edip tekrar deneyin.</string>
+    <string name="test_section_check">Otomatik kontrol</string>
+    <string name="test_check_battery">Pil seviyesi</string>
+    <string name="test_check_features">Özellik listesi</string>
+    <string name="test_check_states">Özellik durumları</string>
+    <string name="test_answered">Yanıt verdi</string>
+    <string name="test_no_answer">Yanıt yok</string>
+    <string name="test_section_features">Özellikler</string>
+    <string name="test_works">Çalışıyor</string>
+    <string name="test_broken">Çalışmıyor</string>
+    <string name="test_skip">Atla</string>
+    <string name="test_skipped">Atlandı</string>
+    <string name="test_not_marked">İşaretlenmedi</string>
+    <string name="test_broken_hint">Ne oldu? Bir satır yeterli.</string>
+    <string name="test_mark_all">Sonucu göndermek için her özelliği işaretleyin.</string>
 </resources>

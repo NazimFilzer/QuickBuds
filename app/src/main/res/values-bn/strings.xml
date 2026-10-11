@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">শুটিং গেম</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">আপনার ইয়ারবাড চালু রাখতে সাহায্য করুন</string>
-    <string name="report_later">বুঝেছি</string>
     <string name="row_smart_volume_title">স্মার্ট ভলিউম</string>
     <string name="row_smart_volume_sub">চারপাশের শব্দ অনুযায়ী ভলিউম</string>
     <string name="row_adaptive_volume_title">অ্যাডাপ্টিভ ভলিউম</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds শুধু OnePlus, OPPO ও realme ইয়ারবাড সমর্থন করে। তালিকা থেকে আপনার মডেল বেছে নিন।</string>
     <string name="problem_supported_list">সব সমর্থিত ইয়ারবাড দেখুন</string>
     <string name="problem_log_empty">লগ খালি: আপনার বাড এখনও সংযুক্ত হয়নি। আগে বাড সংযুক্ত করুন, তারপর রিপোর্ট পাঠান।</string>
-    <string name="problem_notice_body">QuickBuds শুধু OnePlus Buds 4-এ পরীক্ষিত। আপনার বাডে কিছু কাজ না করলে সেটিংস › সমস্যা জানান ব্যবহার করুন। পাঠান ট্যাপ না করা পর্যন্ত কিছুই পাঠানো হয় না।</string>
+    <string name="test_title">আমার ইয়ারবাড পরীক্ষা করুন</string>
+    <string name="test_sub">প্রতিটি ফিচার চেষ্টা করে ফলাফল পাঠান</string>
+    <string name="test_ask_body">এই ইয়ারবাডে QuickBuds এখনও নিশ্চিত নয়। একটি ছোট পরীক্ষা দেখায় কী কাজ করে। পাঠান চাপার আগে কিছুই পাঠানো হয় না।</string>
+    <string name="test_ask_later">এখন নয়</string>
+    <string name="test_intro">শুরু করুন ইয়ারবাড আবার সংযুক্ত করে এবং লগ মুছে দেয়। তারপর QuickBuds-এ প্রতিটি ফিচার চেষ্টা করুন, এখানে ফিরে এসে চিহ্নিত করুন।</string>
+    <string name="test_start">শুরু করুন</string>
+    <string name="test_restart">আবার শুরু করুন</string>
+    <string name="test_reconnecting">আবার সংযুক্ত হচ্ছে…</string>
+    <string name="test_failed">ইয়ারবাড আবার সংযুক্ত হয়নি। সেগুলো চালু ও কাছে আছে কিনা দেখুন, তারপর আবার চেষ্টা করুন।</string>
+    <string name="test_section_check">স্বয়ংক্রিয় পরীক্ষা</string>
+    <string name="test_check_battery">ব্যাটারির মাত্রা</string>
+    <string name="test_check_features">ফিচারের তালিকা</string>
+    <string name="test_check_states">ফিচারের অবস্থা</string>
+    <string name="test_answered">উত্তর দিয়েছে</string>
+    <string name="test_no_answer">উত্তর নেই</string>
+    <string name="test_section_features">ফিচার</string>
+    <string name="test_works">কাজ করে</string>
+    <string name="test_broken">কাজ করে না</string>
+    <string name="test_skip">বাদ দিন</string>
+    <string name="test_skipped">বাদ দেওয়া হয়েছে</string>
+    <string name="test_not_marked">চিহ্নিত নয়</string>
+    <string name="test_broken_hint">কী হয়েছে? এক লাইনই যথেষ্ট।</string>
+    <string name="test_mark_all">ফলাফল পাঠাতে প্রতিটি ফিচার চিহ্নিত করুন।</string>
 </resources>

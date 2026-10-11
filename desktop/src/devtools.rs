@@ -146,7 +146,7 @@ pub fn setup(main: &MainWindow) {
 }
 
 /// Adds the lines logged since the last call, newest on top; everything again after a mode change or Clear.
-fn refresh(a: &mut App) {
+pub(crate) fn refresh(a: &mut App) {
     let d = a.main.global::<DevLog>();
     let log = LOG.lock().unwrap();
     if a.log_shown == log.len() && a.log_shown != 0 { return; }

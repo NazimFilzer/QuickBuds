@@ -173,6 +173,8 @@ impl Caps {
         Some(Caps(Some(out)))
     }
     pub fn supports(&self, cmd: u16) -> bool { self.0.as_ref().map_or(true, |c| c.contains(&cmd)) }
+    /// The buds answered the bitmap query.
+    pub fn read(&self) -> bool { self.0.is_some() }
     pub fn game_mode_id(&self) -> u8 {
         if self.supports(CMD_GAME_SOUND) { FEATURE_GAME_MODE_MAIN } else { FEATURE_GAME_MODE }
     }

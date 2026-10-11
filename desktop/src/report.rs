@@ -73,7 +73,7 @@ fn device_bytes(l: &Line) -> bool {
 
 /// The log as sent: header, every line, the newest stderr, then the last crash report; without Bluetooth addresses,
 /// device data or this computer's name.
-fn log_text(a: &App) -> String {
+pub(crate) fn log_text(a: &App) -> String {
     scrub(header(a) + "\n" + &lines(&LOG.lock().unwrap()) + &stderr_tail() + CRASH.lock().unwrap().as_str())
 }
 
@@ -136,6 +136,11 @@ pub fn folder() -> std::path::PathBuf {
 /// The crash report the Report page sends after a crash; "" otherwise.
 static CRASH: Mutex<String> = Mutex::new(String::new());
 
+/// The crash report opened the Report page this start: no other launch prompt shows (`modeltest.rs`).
+static CRASH_SHOWN: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+pub fn crash_shown() -> bool { CRASH_SHOWN.load(std::sync::atomic::Ordering::Relaxed) }
+
 /// First thing in `main`: a panic writes `crash-<seconds>.txt` to [folder], with the newest log lines. The release
 /// build aborts on a panic and Windows shows no console, so this file is the only record.
 pub fn catch_panics() {
@@ -162,6 +167,7 @@ pub fn show_crash(a: &mut App) {
     crate::save_setting("crash_shown", name.clone().into());
     let Ok(text) = std::fs::read_to_string(folder().join(&name)) else { return };
     *CRASH.lock().unwrap() = format!("\n{text}");
+    CRASH_SHOWN.store(true, std::sync::atomic::Ordering::Relaxed);
     open(a);
     let r = a.main.global::<Report>();
     r.get_picked().set_row_data(5, true);
@@ -190,16 +196,16 @@ fn scrub_macs(s: &str) -> String {
 }
 
 /// One report; [Draft::log] is None when the person turned it off.
-struct Draft {
-    model: String,
-    categories: Vec<&'static str>,
-    description: String,
-    log: Option<String>,
-    crash: bool,
+pub(crate) struct Draft {
+    pub model: String,
+    pub categories: Vec<&'static str>,
+    pub description: String,
+    pub log: Option<String>,
+    pub crash: bool,
 }
 
 /// What the person reads before Send: one block per field, the log last.
-fn preview(d: &Draft) -> String {
+pub(crate) fn preview(d: &Draft) -> String {
     let mut blocks = vec![format!("Model:\n{}", d.model)];
     if !d.categories.is_empty() { blocks.push(format!("Category:\n{}", d.categories.join(", "))); }
     blocks.push(format!("Description:\n{}", d.description));
@@ -221,7 +227,7 @@ fn post(url: &str, body: &str) -> (u16, String) {
 
 /// Posts [d] to the Worker.
 /// Returns (sent, the Worker's answer text when it refused the report).
-fn send(d: Draft) -> (bool, Option<String>) {
+pub(crate) fn send(d: Draft) -> (bool, Option<String>) {
     let json = serde_json::json!({
         "app": format!("QuickBuds {} {}", env!("CARGO_PKG_VERSION"), if cfg!(windows) { "Windows" } else { "Linux" }),
         "model": d.model, "categories": d.categories, "description": d.description, "log": d.log, "crash": d.crash,

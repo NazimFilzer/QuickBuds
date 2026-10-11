@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Jocuri shooter</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Ajută-ne să facem căștile tale să meargă</string>
-    <string name="report_later">Am înțeles</string>
     <string name="row_smart_volume_title">Volum inteligent</string>
     <string name="row_smart_volume_sub">Ajustează volumul după zgomotul ambiant</string>
     <string name="row_adaptive_volume_title">Volum adaptiv</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds acceptă doar căștile OnePlus, OPPO și realme. Alege modelul tău din listă.</string>
     <string name="problem_supported_list">Vezi toate căștile acceptate</string>
     <string name="problem_log_empty">Jurnalul este gol: căștile nu s-au conectat încă. Conectează mai întâi căștile, apoi trimite raportul.</string>
-    <string name="problem_notice_body">QuickBuds e testat doar pe OnePlus Buds 4. Dacă ceva nu merge pe căștile tale, folosește Setări › Raportează o problemă. Nimic nu se trimite până nu atingi Trimite.</string>
+    <string name="test_title">Testează căștile</string>
+    <string name="test_sub">Încearcă fiecare funcție și trimite rezultatul</string>
+    <string name="test_ask_body">QuickBuds nu este încă confirmat pe aceste căști. Un test scurt arată ce funcționează. Nu se trimite nimic până nu atingi Trimite.</string>
+    <string name="test_ask_later">Nu acum</string>
+    <string name="test_intro">Start reconectează căștile și golește jurnalul. Apoi încearcă fiecare funcție în QuickBuds, revino aici și marcheaz-o.</string>
+    <string name="test_start">Start</string>
+    <string name="test_restart">Începe din nou</string>
+    <string name="test_reconnecting">Se reconectează…</string>
+    <string name="test_failed">Căștile nu s-au reconectat. Verifică dacă sunt pornite și aproape, apoi încearcă din nou.</string>
+    <string name="test_section_check">Verificare automată</string>
+    <string name="test_check_battery">Nivelul bateriei</string>
+    <string name="test_check_features">Lista de funcții</string>
+    <string name="test_check_states">Starea funcțiilor</string>
+    <string name="test_answered">Au răspuns</string>
+    <string name="test_no_answer">Fără răspuns</string>
+    <string name="test_section_features">Funcții</string>
+    <string name="test_works">Funcționează</string>
+    <string name="test_broken">Nu funcționează</string>
+    <string name="test_skip">Omite</string>
+    <string name="test_skipped">Omisă</string>
+    <string name="test_not_marked">Nemarcată</string>
+    <string name="test_broken_hint">Ce s-a întâmplat? Un rând este suficient.</string>
+    <string name="test_mark_all">Marchează fiecare funcție ca să trimiți rezultatul.</string>
 </resources>

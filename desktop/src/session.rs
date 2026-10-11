@@ -147,7 +147,7 @@ pub static LOG: Mutex<Vec<Line>> = Mutex::new(Vec::new());
 /// Hearing profile replies and pushes, in order, for the page and the test to take (`hearing::apply`).
 pub static HEARING: Mutex<Vec<HearingEv>> = Mutex::new(Vec::new());
 
-fn log(dir: &'static str, bytes: Vec<u8>, human: Option<String>) {
+pub(crate) fn log(dir: &'static str, bytes: Vec<u8>, human: Option<String>) {
     let [.., h, mi, sec, ms] = crate::local_now();
     LOG.lock().unwrap().push(Line { at: format!("{h:02}:{mi:02}:{sec:02}.{ms:03}"), dir, bytes, human });
 }

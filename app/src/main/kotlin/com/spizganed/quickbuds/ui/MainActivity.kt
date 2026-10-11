@@ -369,22 +369,47 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
         WidgetStateStore.addListener(storeListener)
 
         checkPermissions()
-        UpdateChecker.maybeAutoCheck(this)
-        showReportNoteOnce()
+        UpdateChecker.maybeAutoCheck(this) { claimPrompt() }
     }
 
     /**
-     * Once per install (and once for users updating into it): only Buds 4 is tested, so point owners of
-     * other models to Settings › Report a problem, and say that nothing is sent without Send.
+     * At most one launch prompt per screen start, in this order: crash report, permissions, update, model test.
+     * A prompt shows only when no sheet is open and this screen has the focus (no permission request on top).
      */
-    private fun showReportNoteOnce() {
-        val prefs = getSharedPreferences(ThemeRes.PREFS_NAME, MODE_PRIVATE)
-        if (prefs.getBoolean(KEY_REPORT_NOTE, false)) return
-        prefs.edit().putBoolean(KEY_REPORT_NOTE, true).apply()
+    private var promptShown = false
+
+    /** True, and taken, when a launch prompt may show now. */
+    private fun claimPrompt(): Boolean {
+        if (promptShown || BottomSheetDialog.open > 0 || !hasWindowFocus() || isFinishing) return false
+        promptShown = true
+        return true
+    }
+
+    private var askTestPending = false
+
+    /** Asks [maybeAskTest] a little later, once the connect's reads (model, `0x810D`) are in. */
+    private fun scheduleAskTest() {
+        if (askTestPending || promptShown) return
+        askTestPending = true
+        featureList.postDelayed(askTest, 3000)
+    }
+
+    private val askTest = Runnable { askTestPending = false; maybeAskTest() }
+
+    /** Once per model: connected buds with a feature shown that no owner confirmed ([ModelTest]). */
+    private fun maybeAskTest() {
+        if (!WidgetStateStore.read(this).connected || !ModelTest.shouldAsk(this) || !claimPrompt()) return
+        ModelTest.markAsked(this)
         ConfirmDialog.show(
-            this, getString(R.string.report_title), getString(R.string.problem_notice_body),
-            getString(R.string.problem_title), R.string.report_later
-        ) { startActivity(Intent(this, ReportActivity::class.java)) }
+            this, getString(R.string.report_title), getString(R.string.test_ask_body),
+            getString(R.string.test_title), R.string.test_ask_later
+        ) { startActivity(Intent(this, ModelTestActivity::class.java)) }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        // A sheet or the permission request closed: the model test may ask now.
+        if (hasFocus) scheduleAskTest()
     }
 
     /** Sends the Connect / Disconnect service action for the header chip. */
@@ -473,6 +498,7 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
 
         val prefs = getSharedPreferences(ThemeRes.PREFS_NAME, Context.MODE_PRIVATE)
         if (prefs.getString(ThemeRes.KEY_LAST_SHOWN_CRASH, null) == stamp) return
+        promptShown = true
 
         val dp = { v: Float -> ThemeRes.dp(this, v) }
 
@@ -513,6 +539,7 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
 
     override fun onDestroy() {
         WidgetStateStore.removeListener(storeListener)
+        featureList.removeCallbacks(askTest)
         unbind()
         super.onDestroy()
     }
@@ -973,23 +1000,9 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
 
     private fun featureOn(id: Int) = manager.featureStates[id] == 1
 
-    /**
-     * Spatial audio as HeyMelody picks it (PROTOCOL.md §9): buds whose bitmap has `0x012A` (or a
-     * hand-picked model with head tracking) take a type through `0x0422`, the rest feature `0x1B`.
-     */
-    private fun spatialByType() = !spatialSwitchOnly() &&
-        (Capabilities.supports(this, OpoProtocol.CMD_QUERY_SPATIAL_TYPE) ||
-            (ModelCatalog.manual(this) != null && spatialHeadTracking()))
-
-    /**
-     * Our own key `spatialSwitch` (realme Link data, PROTOCOL.md §9): spatial is feature `1B` alone and
-     * Hi-Res `18` alone, never written together, whatever the bitmap says.
-     */
-    private fun spatialSwitchOnly() = ModelCatalog.current(this)?.json?.optInt("spatialSwitch") == 1
-
-    /** The model's `spatialTypes` has `2`: Off / Fixed / Head tracking instead of a plain switch. */
-    private fun spatialHeadTracking() =
-        ModelCatalog.current(this)?.json?.optJSONArray("spatialTypes")?.toString()?.contains('2') == true
+    private fun spatialByType() = MainActivity.spatialByType(this)
+    private fun spatialSwitchOnly() = MainActivity.spatialSwitchOnly(this)
+    private fun spatialHeadTracking() = MainActivity.spatialHeadTracking(this)
 
     private fun spatialOn() = if (spatialByType()) (manager.spatialType ?: 0) != 0
         else featureOn(OpoProtocol.FEATURE_SPATIAL_SOUND)
@@ -1013,12 +1026,7 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
         confirmReconnect(R.string.codec_msg_spatial_drops_hires, write)
     }
 
-    /**
-     * `[VENDOR]` HeyMelody's "High-quality audio" screen on `highAudio` models (PROTOCOL.md §9): the row
-     * picks the codec, and the switch (Hi-Res) is live only with LDAC or LHDC V5, as there.
-     */
-    private fun codecPicker() = ModelCatalog.current(this)?.json?.optInt("highAudio") == 1 &&
-        Capabilities.supports(this, OpoProtocol.CMD_QUERY_CODEC_LIST)
+    private fun codecPicker() = MainActivity.codecPicker(this)
 
     private fun codecName(codec: Int) =
         listOf("SBC", "AAC", "LDAC", "aptX", "aptX HD", "aptX Adaptive", "LHDC", "LHDC").getOrNull(codec - 1) ?: "#$codec"
@@ -1074,6 +1082,7 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
 
     override fun onFeatureStates(states: Map<Int, Int>) {
         relayoutIfSupportChanged()
+        scheduleAskTest()
         // Disconnected, the switches stay neutral (SPEC 3.2); setConnectedUi repaints on connect.
         if (connectedUi == false) return
         states[OpoProtocol.FEATURE_HIRES_CODEC]?.let { v ->
@@ -1092,7 +1101,7 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
         }
     }
 
-    override fun onCapabilities() { showModelName(); relayoutIfSupportChanged() }
+    override fun onCapabilities() { showModelName(); relayoutIfSupportChanged(); scheduleAskTest() }
 
     /** The model's name from the model list; its Bluetooth name if the list has no match. */
     private fun showModelName() {
@@ -1101,21 +1110,7 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
             ?: getString(R.string.default_device_name)
     }
 
-    /**
-     * Whether the connected buds have a row's feature at all (see [Capabilities]): a `0x0403`
-     * switch must be in their `0x810D` reply, a command in their `0x8100` bitmap. Nothing read
-     * yet = shown. Earbud settings gates its own rows.
-     */
-    private fun rowSupported(key: String): Boolean = when (key) {
-        "wind" -> Capabilities.offered(this, OpoProtocol.FEATURE_WIND_NOISE, "windNoise")
-        "game" -> Capabilities.hasFeature(this, Capabilities.gameModeId(this))
-        "hires" -> Capabilities.hasFeature(this, OpoProtocol.FEATURE_HIRES_CODEC) || codecPicker()
-        "spatial" -> Capabilities.hasFeature(this, OpoProtocol.FEATURE_SPATIAL_SOUND) || spatialByType()
-        "golden" -> Capabilities.hasFeature(this, OpoProtocol.FEATURE_GOLDEN_SOUND)
-        "eq" -> EqActivity.hasEq(this)
-        "dual" -> Capabilities.hasFeature(this, OpoProtocol.FEATURE_DUAL_DEVICE)
-        else -> true
-    }
+    private fun rowSupported(key: String) = MainActivity.rowSupported(this, key)
 
     private var supportSignature: String? = null
 
@@ -1192,6 +1187,7 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
             // Nothing to ask for — normal launch path.
             startAndBindServiceIfPermitted()
         } else {
+            promptShown = true
             requestPermissions(needed.toTypedArray(), REQUEST_PERMISSIONS)
         }
     }
@@ -1301,10 +1297,50 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
         )
 
         private const val KEY_ANC_LEVEL = "homeAncLevel"
-        private const val KEY_REPORT_NOTE = "problemReportNoteShown"
         /** Home screen sound-settings rows: order and hidden set, by row key (Settings › Home layout). */
         const val KEY_ROW_ORDER = "homeRowOrder"
         const val KEY_ROW_HIDDEN = "homeRowHidden"
+
+        /**
+         * Whether the connected buds have a row's feature at all (see [Capabilities]): a `0x0403`
+         * switch must be in their `0x810D` reply, a command in their `0x8100` bitmap. Nothing read
+         * yet = shown. Earbud settings gates its own rows. [ModelTest] lists the same rows.
+         */
+        fun rowSupported(c: Context, key: String): Boolean = when (key) {
+            "wind" -> Capabilities.offered(c, OpoProtocol.FEATURE_WIND_NOISE, "windNoise")
+            "game" -> Capabilities.hasFeature(c, Capabilities.gameModeId(c))
+            "hires" -> Capabilities.hasFeature(c, OpoProtocol.FEATURE_HIRES_CODEC) || codecPicker(c)
+            "spatial" -> Capabilities.hasFeature(c, OpoProtocol.FEATURE_SPATIAL_SOUND) || spatialByType(c)
+            "golden" -> Capabilities.hasFeature(c, OpoProtocol.FEATURE_GOLDEN_SOUND)
+            "eq" -> EqActivity.hasEq(c)
+            "dual" -> Capabilities.hasFeature(c, OpoProtocol.FEATURE_DUAL_DEVICE)
+            else -> true
+        }
+
+        /**
+         * Spatial audio as HeyMelody picks it (PROTOCOL.md §9): buds whose bitmap has `0x012A` (or a
+         * hand-picked model with head tracking) take a type through `0x0422`, the rest feature `0x1B`.
+         */
+        fun spatialByType(c: Context) = !spatialSwitchOnly(c) &&
+            (Capabilities.supports(c, OpoProtocol.CMD_QUERY_SPATIAL_TYPE) ||
+                (ModelCatalog.manual(c) != null && spatialHeadTracking(c)))
+
+        /**
+         * Our own key `spatialSwitch` (realme Link data, PROTOCOL.md §9): spatial is feature `1B` alone and
+         * Hi-Res `18` alone, never written together, whatever the bitmap says.
+         */
+        fun spatialSwitchOnly(c: Context) = ModelCatalog.current(c)?.json?.optInt("spatialSwitch") == 1
+
+        /** The model's `spatialTypes` has `2`: Off / Fixed / Head tracking instead of a plain switch. */
+        fun spatialHeadTracking(c: Context) =
+            ModelCatalog.current(c)?.json?.optJSONArray("spatialTypes")?.toString()?.contains('2') == true
+
+        /**
+         * `[VENDOR]` HeyMelody's "High-quality audio" screen on `highAudio` models (PROTOCOL.md §9): the row
+         * picks the codec, and the switch (Hi-Res) is live only with LDAC or LHDC V5, as there.
+         */
+        fun codecPicker(c: Context) = ModelCatalog.current(c)?.json?.optInt("highAudio") == 1 &&
+            Capabilities.supports(c, OpoProtocol.CMD_QUERY_CODEC_LIST)
 
         /** Saved row order, completed with any key it does not name, in [defaults] order. */
         fun rowOrder(prefs: android.content.SharedPreferences, defaults: List<String>): List<String> {

@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Strzelanki</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Pomóż dopracować obsługę Twoich słuchawek</string>
-    <string name="report_later">Rozumiem</string>
     <string name="row_smart_volume_title">Inteligentna głośność</string>
     <string name="row_smart_volume_sub">Dopasowuje głośność do hałasu otoczenia</string>
     <string name="row_adaptive_volume_title">Głośność adaptacyjna</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds obsługuje tylko słuchawki OnePlus, OPPO i realme. Wybierz swój model z listy.</string>
     <string name="problem_supported_list">Zobacz wszystkie obsługiwane słuchawki</string>
     <string name="problem_log_empty">Dziennik jest pusty: słuchawki jeszcze się nie połączyły. Najpierw połącz słuchawki, potem wyślij zgłoszenie.</string>
-    <string name="problem_notice_body">QuickBuds testowano tylko na OnePlus Buds 4. Jeśli coś nie działa na Twoich słuchawkach, użyj Ustawienia › Zgłoś problem. Nic nie zostanie wysłane, dopóki nie dotkniesz Wyślij.</string>
+    <string name="test_title">Przetestuj słuchawki</string>
+    <string name="test_sub">Wypróbuj każdą funkcję i wyślij wynik</string>
+    <string name="test_ask_body">QuickBuds nie jest jeszcze potwierdzony na tych słuchawkach. Krótki test pokazuje, co działa. Nic nie zostanie wysłane, dopóki nie dotkniesz Wyślij.</string>
+    <string name="test_ask_later">Nie teraz</string>
+    <string name="test_intro">Start ponownie łączy słuchawki i czyści dziennik. Potem wypróbuj każdą funkcję w QuickBuds, wróć tutaj i ją oznacz.</string>
+    <string name="test_start">Start</string>
+    <string name="test_restart">Zacznij od nowa</string>
+    <string name="test_reconnecting">Ponowne łączenie…</string>
+    <string name="test_failed">Słuchawki nie połączyły się ponownie. Sprawdź, czy są włączone i blisko, i spróbuj jeszcze raz.</string>
+    <string name="test_section_check">Automatyczne sprawdzenie</string>
+    <string name="test_check_battery">Poziom baterii</string>
+    <string name="test_check_features">Lista funkcji</string>
+    <string name="test_check_states">Stan funkcji</string>
+    <string name="test_answered">Odpowiedziały</string>
+    <string name="test_no_answer">Brak odpowiedzi</string>
+    <string name="test_section_features">Funkcje</string>
+    <string name="test_works">Działa</string>
+    <string name="test_broken">Nie działa</string>
+    <string name="test_skip">Pomiń</string>
+    <string name="test_skipped">Pominięto</string>
+    <string name="test_not_marked">Nieoznaczone</string>
+    <string name="test_broken_hint">Co się stało? Wystarczy jedna linijka.</string>
+    <string name="test_mark_all">Oznacz każdą funkcję, aby wysłać wynik.</string>
 </resources>

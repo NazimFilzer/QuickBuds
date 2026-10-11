@@ -68,6 +68,9 @@ class SettingsActivity : Activity() {
         section(
             R.string.settings_app,
             updateRow,
+            link(R.drawable.ic_earbud, R.string.test_title, R.string.test_sub) {
+                startActivity(Intent(this, ModelTestActivity::class.java))
+            },
             link(R.drawable.ic_dev_tools, R.string.problem_title, R.string.problem_sub) {
                 startActivity(Intent(this, ReportActivity::class.java))
             },

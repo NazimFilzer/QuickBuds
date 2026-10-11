@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">슈팅 게임</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">이어버드 지원에 도움을 주세요</string>
-    <string name="report_later">확인</string>
     <string name="row_smart_volume_title">스마트 볼륨</string>
     <string name="row_smart_volume_sub">주변 소음에 맞춰 볼륨 조절</string>
     <string name="row_adaptive_volume_title">적응형 볼륨</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds는 OnePlus, OPPO, realme 이어버드만 지원합니다. 목록에서 모델을 선택하세요.</string>
     <string name="problem_supported_list">지원되는 이어버드 모두 보기</string>
     <string name="problem_log_empty">로그가 비어 있습니다. 이어버드가 아직 연결된 적이 없습니다. 먼저 이어버드를 연결한 후 보고서를 보내세요.</string>
-    <string name="problem_notice_body">QuickBuds는 OnePlus Buds 4에서만 테스트되었습니다. 이어버드에서 작동하지 않는 것이 있으면 설정 › 문제 신고를 이용하세요. 보내기를 탭하기 전에는 아무것도 전송되지 않습니다.</string>
+    <string name="test_title">내 이어버드 테스트</string>
+    <string name="test_sub">각 기능을 사용해 보고 결과를 보내세요</string>
+    <string name="test_ask_body">QuickBuds는 아직 이 이어버드에서 확인되지 않았습니다. 짧은 테스트로 작동하는 기능을 알 수 있습니다. 보내기를 누르기 전에는 아무것도 전송되지 않습니다.</string>
+    <string name="test_ask_later">나중에</string>
+    <string name="test_intro">시작을 누르면 이어버드를 다시 연결하고 로그를 지웁니다. 그런 다음 QuickBuds에서 각 기능을 사용해 보고, 여기로 돌아와 표시하세요.</string>
+    <string name="test_start">시작</string>
+    <string name="test_restart">다시 시작</string>
+    <string name="test_reconnecting">다시 연결하는 중…</string>
+    <string name="test_failed">이어버드가 다시 연결되지 않았습니다. 전원이 켜져 있고 가까이 있는지 확인한 후 다시 시도하세요.</string>
+    <string name="test_section_check">자동 확인</string>
+    <string name="test_check_battery">배터리 잔량</string>
+    <string name="test_check_features">기능 목록</string>
+    <string name="test_check_states">기능 상태</string>
+    <string name="test_answered">응답함</string>
+    <string name="test_no_answer">응답 없음</string>
+    <string name="test_section_features">기능</string>
+    <string name="test_works">작동함</string>
+    <string name="test_broken">작동 안 함</string>
+    <string name="test_skip">건너뛰기</string>
+    <string name="test_skipped">건너뜀</string>
+    <string name="test_not_marked">표시 안 됨</string>
+    <string name="test_broken_hint">무슨 일이 있었나요? 한 줄이면 충분합니다.</string>
+    <string name="test_mark_all">결과를 보내려면 모든 기능을 표시하세요.</string>
 </resources>

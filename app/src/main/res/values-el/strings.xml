@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Παιχνίδια σκοποβολής</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Βοήθησε να λειτουργούν τα ακουστικά σου</string>
-    <string name="report_later">Κατάλαβα</string>
     <string name="row_smart_volume_title">Έξυπνη ένταση</string>
     <string name="row_smart_volume_sub">Προσαρμόζει την ένταση στον θόρυβο</string>
     <string name="row_adaptive_volume_title">Προσαρμοστική ένταση</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">Το QuickBuds υποστηρίζει μόνο ακουστικά OnePlus, OPPO και realme. Επιλέξτε το μοντέλο σας από τη λίστα.</string>
     <string name="problem_supported_list">Δείτε όλα τα υποστηριζόμενα ακουστικά</string>
     <string name="problem_log_empty">Το αρχείο καταγραφής είναι κενό: τα ακουστικά δεν έχουν συνδεθεί ακόμα. Συνδέστε πρώτα τα ακουστικά και μετά στείλτε την αναφορά.</string>
-    <string name="problem_notice_body">Το QuickBuds έχει δοκιμαστεί μόνο στα OnePlus Buds 4. Αν κάτι δεν δουλεύει στα ακουστικά σας, χρησιμοποιήστε Ρυθμίσεις › Αναφορά προβλήματος. Τίποτα δεν στέλνεται πριν πατήσετε Αποστολή.</string>
+    <string name="test_title">Δοκιμή ακουστικών</string>
+    <string name="test_sub">Δοκιμάστε κάθε λειτουργία και στείλτε το αποτέλεσμα</string>
+    <string name="test_ask_body">Το QuickBuds δεν έχει επιβεβαιωθεί ακόμη σε αυτά τα ακουστικά. Μια σύντομη δοκιμή δείχνει τι λειτουργεί. Τίποτα δεν αποστέλλεται πριν πατήσετε Αποστολή.</string>
+    <string name="test_ask_later">Όχι τώρα</string>
+    <string name="test_intro">Η Έναρξη επανασυνδέει τα ακουστικά και καθαρίζει το αρχείο καταγραφής. Μετά δοκιμάστε κάθε λειτουργία στο QuickBuds, επιστρέψτε εδώ και σημειώστε την.</string>
+    <string name="test_start">Έναρξη</string>
+    <string name="test_restart">Ξανά από την αρχή</string>
+    <string name="test_reconnecting">Επανασύνδεση…</string>
+    <string name="test_failed">Τα ακουστικά δεν επανασυνδέθηκαν. Ελέγξτε ότι είναι ανοιχτά και κοντά και δοκιμάστε ξανά.</string>
+    <string name="test_section_check">Αυτόματος έλεγχος</string>
+    <string name="test_check_battery">Επίπεδο μπαταρίας</string>
+    <string name="test_check_features">Λίστα λειτουργιών</string>
+    <string name="test_check_states">Κατάσταση λειτουργιών</string>
+    <string name="test_answered">Απάντησαν</string>
+    <string name="test_no_answer">Χωρίς απάντηση</string>
+    <string name="test_section_features">Λειτουργίες</string>
+    <string name="test_works">Λειτουργεί</string>
+    <string name="test_broken">Δεν λειτουργεί</string>
+    <string name="test_skip">Παράλειψη</string>
+    <string name="test_skipped">Παραλείφθηκε</string>
+    <string name="test_not_marked">Χωρίς σήμανση</string>
+    <string name="test_broken_hint">Τι συνέβη; Αρκεί μία γραμμή.</string>
+    <string name="test_mark_all">Σημειώστε κάθε λειτουργία για να στείλετε το αποτέλεσμα.</string>
 </resources>

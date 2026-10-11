@@ -7,8 +7,9 @@ welcome too.
 
 ## Reporting a model
 
-The quickest way is in the app: Settings › **Report a problem** (desktop: App settings). It sends the
-log with your description, without Bluetooth addresses. For a longer exchange, open an
+The quickest way is in the app: Settings › **Test my earbuds** (desktop: App settings). Mark each
+feature as works, does not work or skip, then tap Send. The report holds a fresh log, without Bluetooth
+addresses. Settings › **Report a problem** sends one problem with your description. For a longer exchange, open an
 [issue](https://github.com/spizganed/QuickBuds/issues) with:
 
 1. The earbuds' model, and the phone or PC it runs on (model, Android / Windows / Linux version).
@@ -55,7 +56,8 @@ The desktop app is `desktop/`: `src/protocol.rs` (the same wire format), `src/se
 `src/bt.rs` (Bluetooth sockets), `ui/app.slint` (the UI).
 
 Per-model data (features, noise control modes, EQ presets, gestures) is in
-`app/src/main/assets/models.json`.
+`app/src/main/assets/models.json`. Our own key `confirmed` lists the features an owner confirmed
+(`ModelTest.FEATURES` keys). A model whose list covers every feature the app shows gets no test prompt.
 
 Read before changing anything:
 

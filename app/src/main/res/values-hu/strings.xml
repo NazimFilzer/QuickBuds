@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Lövöldözős játékok</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Segíts, hogy a fülhallgatód működjön</string>
-    <string name="report_later">Értem</string>
     <string name="row_smart_volume_title">Intelligens hangerő</string>
     <string name="row_smart_volume_sub">A hangerőt a környezeti zajhoz igazítja</string>
     <string name="row_adaptive_volume_title">Adaptív hangerő</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">A QuickBuds csak OnePlus, OPPO és realme fülhallgatókat támogat. Válaszd ki a modelledet a listából.</string>
     <string name="problem_supported_list">Az összes támogatott fülhallgató</string>
     <string name="problem_log_empty">A napló üres: a fülhallgató még nem csatlakozott. Először csatlakoztasd a fülhallgatót, utána küldd el a jelentést.</string>
-    <string name="problem_notice_body">A QuickBuds csak OnePlus Buds 4-en tesztelt. Ha valami nem működik a fülhallgatóján, használja a Beállítások › Probléma jelentése menüt. Semmi sem megy el, amíg nem koppint a Küldésre.</string>
+    <string name="test_title">Fülhallgató tesztelése</string>
+    <string name="test_sub">Próbálj ki minden funkciót, és küldd el az eredményt</string>
+    <string name="test_ask_body">A QuickBuds még nincs megerősítve ezen a fülhallgatón. Egy rövid teszt megmutatja, mi működik. Semmi nem megy el, amíg nem koppintasz a Küldés gombra.</string>
+    <string name="test_ask_later">Most nem</string>
+    <string name="test_intro">A Start újracsatlakoztatja a fülhallgatót, és törli a naplót. Ezután próbálj ki minden funkciót a QuickBudsban, gyere vissza ide, és jelöld meg.</string>
+    <string name="test_start">Start</string>
+    <string name="test_restart">Újrakezdés</string>
+    <string name="test_reconnecting">Újracsatlakozás…</string>
+    <string name="test_failed">A fülhallgató nem csatlakozott újra. Ellenőrizd, hogy be van-e kapcsolva és közel van-e, majd próbáld újra.</string>
+    <string name="test_section_check">Automatikus ellenőrzés</string>
+    <string name="test_check_battery">Akkumulátorszint</string>
+    <string name="test_check_features">Funkciólista</string>
+    <string name="test_check_states">Funkciók állapota</string>
+    <string name="test_answered">Válaszolt</string>
+    <string name="test_no_answer">Nincs válasz</string>
+    <string name="test_section_features">Funkciók</string>
+    <string name="test_works">Működik</string>
+    <string name="test_broken">Nem működik</string>
+    <string name="test_skip">Kihagyás</string>
+    <string name="test_skipped">Kihagyva</string>
+    <string name="test_not_marked">Nincs megjelölve</string>
+    <string name="test_broken_hint">Mi történt? Egy sor elég.</string>
+    <string name="test_mark_all">Jelölj meg minden funkciót az eredmény elküldéséhez.</string>
 </resources>

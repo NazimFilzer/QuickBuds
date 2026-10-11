@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">शूटिंग गेम</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">अपने ईयरबड्स को चलाने में मदद करें</string>
-    <string name="report_later">समझ गया</string>
     <string name="row_smart_volume_title">स्मार्ट वॉल्यूम</string>
     <string name="row_smart_volume_sub">आसपास के शोर के अनुसार वॉल्यूम</string>
     <string name="row_adaptive_volume_title">अडैप्टिव वॉल्यूम</string>
@@ -426,5 +425,27 @@
     <string name="problem_unsupported">QuickBuds केवल OnePlus, OPPO और realme ईयरबड्स को सपोर्ट करता है। सूची से अपना मॉडल चुनें।</string>
     <string name="problem_supported_list">सभी सपोर्टेड ईयरबड्स देखें</string>
     <string name="problem_log_empty">लॉग खाली है: आपके बड्स अभी तक कनेक्ट नहीं हुए। पहले बड्स कनेक्ट करें, फिर रिपोर्ट भेजें।</string>
-    <string name="problem_notice_body">QuickBuds का परीक्षण केवल OnePlus Buds 4 पर हुआ है। अगर आपके बड्स पर कुछ काम नहीं करता, तो सेटिंग › समस्या बताएं का उपयोग करें। भेजें पर टैप करने तक कुछ नहीं भेजा जाता।</string>
+    <string name="test_title">मेरे ईयरबड्स जांचें</string>
+    <string name="test_sub">हर फ़ीचर आज़माएँ और नतीजा भेजें</string>
+    <string name="test_ask_body">इन ईयरबड्स पर QuickBuds अभी पुष्ट नहीं है। एक छोटा टेस्ट दिखाता है कि क्या काम करता है। भेजें टैप करने तक कुछ नहीं भेजा जाता।</string>
+    <string name="test_ask_later">अभी नहीं</string>
+    <string name="test_intro">शुरू करें ईयरबड्स को फिर से जोड़ता है और लॉग साफ़ करता है। फिर QuickBuds में हर फ़ीचर आज़माएँ, यहाँ लौटें और उसे चिह्नित करें।</string>
+    <string name="test_start">शुरू करें</string>
+    <string name="test_restart">फिर से शुरू करें</string>
+    <string name="test_reconnecting">फिर से जोड़ रहे हैं…</string>
+    <string name="test_failed">ईयरबड्स फिर से नहीं जुड़े। देखें कि वे चालू और पास हैं, फिर दोबारा कोशिश करें।</string>
+    <string name="test_section_check">स्वचालित जाँच</string>
+    <string name="test_check_battery">बैटरी स्तर</string>
+    <string name="test_check_features">फ़ीचर सूची</string>
+    <string name="test_check_states">फ़ीचर की स्थिति</string>
+    <string name="test_answered">जवाब मिला</string>
+    <string name="test_no_answer">कोई जवाब नहीं</string>
+    <string name="test_section_features">फ़ीचर</string>
+    <string name="test_works">काम करता है</string>
+    <string name="test_broken">काम नहीं करता</string>
+    <string name="test_skip">छोड़ें</string>
+    <string name="test_skipped">छोड़ा गया</string>
+    <string name="test_not_marked">चिह्नित नहीं</string>
+    <string name="test_broken_hint">क्या हुआ? एक पंक्ति काफ़ी है।</string>
+    <string name="test_mark_all">नतीजा भेजने के लिए हर फ़ीचर चिह्नित करें।</string>
 </resources>

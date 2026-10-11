@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Mga shooting game</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Tumulong para gumana ang iyong earbuds</string>
-    <string name="report_later">Sige</string>
     <string name="row_smart_volume_title">Smart volume</string>
     <string name="row_smart_volume_sub">Iniaangkop ang volume sa ingay sa paligid</string>
     <string name="row_adaptive_volume_title">Adaptive volume</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">Sinusuportahan lang ng QuickBuds ang earbuds ng OnePlus, OPPO at realme. Piliin ang iyong modelo mula sa listahan.</string>
     <string name="problem_supported_list">Tingnan ang lahat ng suportadong earbuds</string>
     <string name="problem_log_empty">Walang laman ang log: hindi pa nakakonekta ang iyong buds. Ikonekta muna ang buds, saka ipadala ang ulat.</string>
-    <string name="problem_notice_body">Sa OnePlus Buds 4 lang nasubukan ang QuickBuds. Kung may hindi gumagana sa iyong buds, gamitin ang Mga Setting › Mag-ulat ng problema. Walang ipapadala hangga\'t hindi mo tina-tap ang Ipadala.</string>
+    <string name="test_title">Subukan ang aking earbuds</string>
+    <string name="test_sub">Subukan ang bawat feature at ipadala ang resulta</string>
+    <string name="test_ask_body">Hindi pa kumpirmado ang QuickBuds sa earbuds na ito. Ipinapakita ng maikling test kung ano ang gumagana. Walang ipapadala hangga\'t hindi mo pinipindot ang Ipadala.</string>
+    <string name="test_ask_later">Hindi ngayon</string>
+    <string name="test_intro">Muling ikinokonekta ng Simulan ang earbuds at binubura ang log. Pagkatapos, subukan ang bawat feature sa QuickBuds, bumalik dito at markahan ito.</string>
+    <string name="test_start">Simulan</string>
+    <string name="test_restart">Simulan ulit</string>
+    <string name="test_reconnecting">Muling kumokonekta…</string>
+    <string name="test_failed">Hindi muling kumonekta ang earbuds. Tingnan kung naka-on at malapit ang mga ito, saka subukan ulit.</string>
+    <string name="test_section_check">Awtomatikong check</string>
+    <string name="test_check_battery">Antas ng baterya</string>
+    <string name="test_check_features">Listahan ng feature</string>
+    <string name="test_check_states">Estado ng feature</string>
+    <string name="test_answered">Sumagot</string>
+    <string name="test_no_answer">Walang sagot</string>
+    <string name="test_section_features">Mga feature</string>
+    <string name="test_works">Gumagana</string>
+    <string name="test_broken">Hindi gumagana</string>
+    <string name="test_skip">Laktawan</string>
+    <string name="test_skipped">Nilaktawan</string>
+    <string name="test_not_marked">Hindi namarkahan</string>
+    <string name="test_broken_hint">Ano ang nangyari? Sapat na ang isang linya.</string>
+    <string name="test_mark_all">Markahan ang bawat feature para maipadala ang resulta.</string>
 </resources>

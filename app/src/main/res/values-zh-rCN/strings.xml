@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">射击游戏</string>
     <string name="game_sound_type_peace">和平精英</string>
     <string name="report_title">帮助完善对你的耳机的支持</string>
-    <string name="report_later">知道了</string>
     <string name="row_smart_volume_title">智能音量</string>
     <string name="row_smart_volume_sub">根据环境噪声调节音量</string>
     <string name="row_adaptive_volume_title">自适应音量</string>
@@ -426,5 +425,27 @@
     <string name="problem_unsupported">QuickBuds 仅支持 OnePlus、OPPO 和 realme 耳机。请从列表中选择你的型号。</string>
     <string name="problem_supported_list">查看所有支持的耳机</string>
     <string name="problem_log_empty">日志为空：你的耳机尚未连接过。请先连接耳机，再发送报告。</string>
-    <string name="problem_notice_body">QuickBuds 仅在 OnePlus Buds 4 上测试过。如果你的耳机有功能不起作用，请使用 设置 › 报告问题。点按“发送”之前不会发送任何内容。</string>
+    <string name="test_title">测试我的耳机</string>
+    <string name="test_sub">逐一试用各项功能并发送结果</string>
+    <string name="test_ask_body">QuickBuds 尚未在这款耳机上得到确认。简短的测试可以显示哪些功能可用。在您点按“发送”之前，不会发送任何内容。</string>
+    <string name="test_ask_later">以后再说</string>
+    <string name="test_intro">“开始”会重新连接耳机并清除日志。然后在 QuickBuds 中逐一试用各项功能，回到这里进行标记。</string>
+    <string name="test_start">开始</string>
+    <string name="test_restart">重新开始</string>
+    <string name="test_reconnecting">正在重新连接…</string>
+    <string name="test_failed">耳机未能重新连接。请确认耳机已开启且在附近，然后重试。</string>
+    <string name="test_section_check">自动检查</string>
+    <string name="test_check_battery">电池电量</string>
+    <string name="test_check_features">功能列表</string>
+    <string name="test_check_states">功能状态</string>
+    <string name="test_answered">已响应</string>
+    <string name="test_no_answer">无响应</string>
+    <string name="test_section_features">功能</string>
+    <string name="test_works">正常</string>
+    <string name="test_broken">不正常</string>
+    <string name="test_skip">跳过</string>
+    <string name="test_skipped">已跳过</string>
+    <string name="test_not_marked">未标记</string>
+    <string name="test_broken_hint">发生了什么？一行就够了。</string>
+    <string name="test_mark_all">标记所有功能后即可发送结果。</string>
 </resources>

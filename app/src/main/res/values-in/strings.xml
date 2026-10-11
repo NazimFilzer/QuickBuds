@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Game tembak-tembakan</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Bantu buat earbud Anda berfungsi</string>
-    <string name="report_later">Mengerti</string>
     <string name="row_smart_volume_title">Volume pintar</string>
     <string name="row_smart_volume_sub">Menyesuaikan volume dengan kebisingan</string>
     <string name="row_adaptive_volume_title">Volume adaptif</string>
@@ -426,5 +425,27 @@
     <string name="problem_unsupported">QuickBuds hanya mendukung earbud OnePlus, OPPO, dan realme. Pilih model Anda dari daftar.</string>
     <string name="problem_supported_list">Lihat semua earbud yang didukung</string>
     <string name="problem_log_empty">Log kosong: earbud Anda belum pernah terhubung. Hubungkan earbud dulu, lalu kirim laporan.</string>
-    <string name="problem_notice_body">QuickBuds hanya diuji pada OnePlus Buds 4. Jika ada yang tidak berfungsi pada earbud Anda, gunakan Setelan › Laporkan masalah. Tidak ada yang dikirim sampai Anda mengetuk Kirim.</string>
+    <string name="test_title">Uji earbud saya</string>
+    <string name="test_sub">Coba setiap fitur dan kirim hasilnya</string>
+    <string name="test_ask_body">QuickBuds belum dikonfirmasi pada earbud ini. Tes singkat menunjukkan apa yang berfungsi. Tidak ada yang dikirim sampai Anda mengetuk Kirim.</string>
+    <string name="test_ask_later">Jangan sekarang</string>
+    <string name="test_intro">Mulai menyambungkan ulang earbud dan menghapus log. Lalu coba setiap fitur di QuickBuds, kembali ke sini dan tandai.</string>
+    <string name="test_start">Mulai</string>
+    <string name="test_restart">Mulai lagi</string>
+    <string name="test_reconnecting">Menyambungkan ulang…</string>
+    <string name="test_failed">Earbud tidak tersambung ulang. Pastikan earbud menyala dan dekat, lalu coba lagi.</string>
+    <string name="test_section_check">Pemeriksaan otomatis</string>
+    <string name="test_check_battery">Level baterai</string>
+    <string name="test_check_features">Daftar fitur</string>
+    <string name="test_check_states">Status fitur</string>
+    <string name="test_answered">Menjawab</string>
+    <string name="test_no_answer">Tidak ada jawaban</string>
+    <string name="test_section_features">Fitur</string>
+    <string name="test_works">Berfungsi</string>
+    <string name="test_broken">Tidak berfungsi</string>
+    <string name="test_skip">Lewati</string>
+    <string name="test_skipped">Dilewati</string>
+    <string name="test_not_marked">Belum ditandai</string>
+    <string name="test_broken_hint">Apa yang terjadi? Satu baris sudah cukup.</string>
+    <string name="test_mark_all">Tandai setiap fitur untuk mengirim hasilnya.</string>
 </resources>

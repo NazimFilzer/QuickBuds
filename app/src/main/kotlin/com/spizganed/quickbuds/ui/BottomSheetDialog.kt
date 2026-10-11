@@ -281,8 +281,9 @@ class BottomSheetDialog(private val activity: Activity) {
             )
         }
 
-        d.setOnDismissListener { dialog = null; onDismiss?.invoke() }
+        d.setOnDismissListener { dialog = null; open--; onDismiss?.invoke() }
         dialog = d
+        open++
         d.show()
     }
 
@@ -340,5 +341,11 @@ class BottomSheetDialog(private val activity: Activity) {
         if (item.selected) row.foreground = ThemeRes.selectedBorder(activity, if (item.enabled) accent else secondary)
 
         return row
+    }
+
+    companion object {
+        /** Sheets showing now, in every screen. A launch prompt waits while one is open (MainActivity). */
+        var open = 0
+            private set
     }
 }

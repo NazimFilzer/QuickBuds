@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Shootergames</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Help je oordopjes goed te laten werken</string>
-    <string name="report_later">Begrepen</string>
     <string name="row_smart_volume_title">Slim volume</string>
     <string name="row_smart_volume_sub">Past het volume aan omgevingsgeluid aan</string>
     <string name="row_adaptive_volume_title">Adaptief volume</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds ondersteunt alleen oordopjes van OnePlus, OPPO en realme. Kies je model uit de lijst.</string>
     <string name="problem_supported_list">Bekijk alle ondersteunde oordopjes</string>
     <string name="problem_log_empty">Het logboek is leeg: je oordopjes waren nog nooit verbonden. Verbind eerst je oordopjes en verstuur dan het rapport.</string>
-    <string name="problem_notice_body">QuickBuds is alleen getest met de OnePlus Buds 4. Werkt er iets niet op jouw oordopjes, gebruik dan Instellingen › Probleem melden. Er gaat niets weg tot je op Versturen tikt.</string>
+    <string name="test_title">Mijn oordopjes testen</string>
+    <string name="test_sub">Probeer elke functie en verstuur het resultaat</string>
+    <string name="test_ask_body">QuickBuds is nog niet bevestigd op deze oordopjes. Een korte test laat zien wat werkt. Er wordt niets verstuurd tot je op Versturen tikt.</string>
+    <string name="test_ask_later">Niet nu</string>
+    <string name="test_intro">Start verbindt de oordopjes opnieuw en wist het logboek. Probeer daarna elke functie in QuickBuds, kom hier terug en markeer hem.</string>
+    <string name="test_start">Start</string>
+    <string name="test_restart">Opnieuw beginnen</string>
+    <string name="test_reconnecting">Opnieuw verbinden…</string>
+    <string name="test_failed">De oordopjes zijn niet opnieuw verbonden. Controleer of ze aan staan en dichtbij zijn, en probeer het opnieuw.</string>
+    <string name="test_section_check">Automatische controle</string>
+    <string name="test_check_battery">Batterijniveau</string>
+    <string name="test_check_features">Functielijst</string>
+    <string name="test_check_states">Functiestatus</string>
+    <string name="test_answered">Geantwoord</string>
+    <string name="test_no_answer">Geen antwoord</string>
+    <string name="test_section_features">Functies</string>
+    <string name="test_works">Werkt</string>
+    <string name="test_broken">Werkt niet</string>
+    <string name="test_skip">Overslaan</string>
+    <string name="test_skipped">Overgeslagen</string>
+    <string name="test_not_marked">Niet gemarkeerd</string>
+    <string name="test_broken_hint">Wat gebeurde er? Eén regel is genoeg.</string>
+    <string name="test_mark_all">Markeer elke functie om het resultaat te versturen.</string>
 </resources>

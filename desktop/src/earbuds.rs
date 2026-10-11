@@ -57,7 +57,7 @@ fn exclusive(s: &Snapshot) -> bool { !s.model.is_some_and(|m| m["spatialSwitch"]
 
 /// 3D audio as HeyMelody picks it (§9): buds whose bitmap has `0x012A` (or a hand-picked model with head
 /// tracking) take a type through `0x0422`, the rest feature `1B`.
-fn spatial_by_type(s: &Snapshot) -> bool {
+pub(crate) fn spatial_by_type(s: &Snapshot) -> bool {
     exclusive(s) && (s.caps.supports(CMD_QUERY_SPATIAL_TYPE) || s.manual && head_tracking(s))
 }
 
@@ -67,7 +67,7 @@ fn head_tracking(s: &Snapshot) -> bool {
 }
 
 /// The codec picker replaces the Hi-Res write on `highAudio` models with the `0x0123` read (§9).
-fn codec_picker(s: &Snapshot) -> bool { s.model.is_some_and(|m| m["highAudio"] == 1) && s.caps.supports(CMD_QUERY_CODEC_LIST) }
+pub(crate) fn codec_picker(s: &Snapshot) -> bool { s.model.is_some_and(|m| m["highAudio"] == 1) && s.caps.supports(CMD_QUERY_CODEC_LIST) }
 
 fn spatial_on(s: &Snapshot) -> bool {
     if spatial_by_type(s) { s.spatial_type.unwrap_or(0) != 0 } else { s.features.contains(&(FEATURE_SPATIAL, 1)) }

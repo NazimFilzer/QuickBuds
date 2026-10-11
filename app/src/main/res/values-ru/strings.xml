@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Шутеры</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Помогите наладить работу ваших наушников</string>
-    <string name="report_later">Понятно</string>
     <string name="row_smart_volume_title">Умная громкость</string>
     <string name="row_smart_volume_sub">Подстраивает громкость под окружающий шум</string>
     <string name="row_adaptive_volume_title">Адаптивная громкость</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds поддерживает только наушники OnePlus, OPPO и realme. Выберите свою модель из списка.</string>
     <string name="problem_supported_list">Все поддерживаемые наушники</string>
     <string name="problem_log_empty">Журнал пуст: наушники ещё ни разу не подключались. Сначала подключите наушники, затем отправьте отчёт.</string>
-    <string name="problem_notice_body">QuickBuds проверен только на OnePlus Buds 4. Если на ваших наушниках что-то не работает, откройте Настройки › Сообщить о проблеме. Ничего не отправляется, пока вы не нажмёте «Отправить».</string>
+    <string name="test_title">Проверить наушники</string>
+    <string name="test_sub">Попробуйте каждую функцию и отправьте результат</string>
+    <string name="test_ask_body">Работа QuickBuds с этими наушниками ещё не подтверждена. Короткая проверка покажет, что работает. Ничего не отправляется, пока вы не нажмёте «Отправить».</string>
+    <string name="test_ask_later">Не сейчас</string>
+    <string name="test_intro">«Начать» переподключает наушники и очищает журнал. Затем попробуйте каждую функцию в QuickBuds, вернитесь сюда и отметьте её.</string>
+    <string name="test_start">Начать</string>
+    <string name="test_restart">Начать заново</string>
+    <string name="test_reconnecting">Переподключение…</string>
+    <string name="test_failed">Наушники не переподключились. Убедитесь, что они включены и рядом, и попробуйте снова.</string>
+    <string name="test_section_check">Автоматическая проверка</string>
+    <string name="test_check_battery">Уровень заряда</string>
+    <string name="test_check_features">Список функций</string>
+    <string name="test_check_states">Состояние функций</string>
+    <string name="test_answered">Ответили</string>
+    <string name="test_no_answer">Нет ответа</string>
+    <string name="test_section_features">Функции</string>
+    <string name="test_works">Работает</string>
+    <string name="test_broken">Не работает</string>
+    <string name="test_skip">Пропустить</string>
+    <string name="test_skipped">Пропущено</string>
+    <string name="test_not_marked">Не отмечено</string>
+    <string name="test_broken_hint">Что произошло? Хватит одной строки.</string>
+    <string name="test_mark_all">Отметьте каждую функцию, чтобы отправить результат.</string>
 </resources>

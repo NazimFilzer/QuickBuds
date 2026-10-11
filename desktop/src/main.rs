@@ -10,6 +10,7 @@ mod earbuds;
 mod eq;
 mod hearing;
 mod models;
+mod modeltest;
 mod protocol;
 mod report;
 mod session;
@@ -378,6 +379,20 @@ fn set_texts(tr: &Tr, s: &[String]) {
     tr.set_problem_title(t(s, "problem_title").into());
     tr.set_problem_sub(t(s, "problem_sub").into());
     tr.set_problem_intro(t(s, "problem_intro").into());
+    tr.set_report_title(t(s, "report_title").into());
+    tr.set_test_title(t(s, "test_title").into());
+    tr.set_test_sub(t(s, "test_sub").into());
+    tr.set_test_ask_body(t(s, "test_ask_body").into());
+    tr.set_test_ask_later(t(s, "test_ask_later").into());
+    tr.set_test_intro(t(s, "test_intro").into());
+    tr.set_test_start(t(s, "test_start").into());
+    tr.set_test_restart(t(s, "test_restart").into());
+    tr.set_test_section_check(t(s, "test_section_check").into());
+    tr.set_test_section_features(t(s, "test_section_features").into());
+    tr.set_test_works(t(s, "test_works").into());
+    tr.set_test_broken(t(s, "test_broken").into());
+    tr.set_test_skip(t(s, "test_skip").into());
+    tr.set_test_broken_hint(t(s, "test_broken_hint").into());
     tr.set_problem_model(t(s, "problem_model").into());
     tr.set_problem_category(t(s, "problem_category").into());
     tr.set_problem_description(t(s, "problem_description").into());
@@ -560,6 +575,7 @@ impl App {
             if !match self.main.get_page() { 1 => h.eq, 2 => h.controls, 3 => h.hearing, 4 => h.dual, _ => true } { self.main.set_page(0); }
         }
         earbuds::home(self);
+        modeltest::apply(self);
         if let Some(a) = s.anc.as_deref().filter(|a| LEVELS.contains(a)) { self.last_level = Some(a.into()); }
         let level_names = ["anc_mode_low", "anc_mode_medium", "anc_mode_high", "anc_mode_smart"];
         let levels: Vec<Level> = self.modes.levels().into_iter().map(|id| {
@@ -771,6 +787,7 @@ fn main() {
     controls::setup(&main);
     devtools::setup(&main);
     report::setup(&main);
+    modeltest::setup(&main);
     theme::setup(&main);
     language_ui(&main, &tr);
     main.global::<Update>().on_set_language(|i| with_app(|a| a.set_language(i as usize)));

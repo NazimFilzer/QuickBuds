@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">Game bắn súng</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">Giúp tai nghe của bạn hoạt động tốt</string>
-    <string name="report_later">Đã hiểu</string>
     <string name="row_smart_volume_title">Âm lượng thông minh</string>
     <string name="row_smart_volume_sub">Điều chỉnh âm lượng theo tiếng ồn</string>
     <string name="row_adaptive_volume_title">Âm lượng thích ứng</string>
@@ -426,5 +425,27 @@
     <string name="problem_unsupported">QuickBuds chỉ hỗ trợ tai nghe OnePlus, OPPO và realme. Hãy chọn mẫu của bạn trong danh sách.</string>
     <string name="problem_supported_list">Xem tất cả tai nghe được hỗ trợ</string>
     <string name="problem_log_empty">Nhật ký trống: tai nghe của bạn chưa từng kết nối. Hãy kết nối tai nghe trước, rồi gửi báo cáo.</string>
-    <string name="problem_notice_body">QuickBuds chỉ được thử trên OnePlus Buds 4. Nếu có gì không hoạt động trên tai nghe của bạn, hãy dùng Cài đặt › Báo cáo sự cố. Không có gì được gửi cho đến khi bạn chạm Gửi.</string>
+    <string name="test_title">Kiểm tra tai nghe</string>
+    <string name="test_sub">Thử từng tính năng và gửi kết quả</string>
+    <string name="test_ask_body">QuickBuds chưa được xác nhận trên tai nghe này. Một bài kiểm tra ngắn cho thấy tính năng nào hoạt động. Không có gì được gửi cho đến khi bạn nhấn Gửi.</string>
+    <string name="test_ask_later">Để sau</string>
+    <string name="test_intro">Bắt đầu sẽ kết nối lại tai nghe và xóa nhật ký. Sau đó thử từng tính năng trong QuickBuds, quay lại đây và đánh dấu.</string>
+    <string name="test_start">Bắt đầu</string>
+    <string name="test_restart">Bắt đầu lại</string>
+    <string name="test_reconnecting">Đang kết nối lại…</string>
+    <string name="test_failed">Tai nghe không kết nối lại. Hãy kiểm tra tai nghe đang bật và ở gần, rồi thử lại.</string>
+    <string name="test_section_check">Kiểm tra tự động</string>
+    <string name="test_check_battery">Mức pin</string>
+    <string name="test_check_features">Danh sách tính năng</string>
+    <string name="test_check_states">Trạng thái tính năng</string>
+    <string name="test_answered">Đã phản hồi</string>
+    <string name="test_no_answer">Không phản hồi</string>
+    <string name="test_section_features">Tính năng</string>
+    <string name="test_works">Hoạt động</string>
+    <string name="test_broken">Không hoạt động</string>
+    <string name="test_skip">Bỏ qua</string>
+    <string name="test_skipped">Đã bỏ qua</string>
+    <string name="test_not_marked">Chưa đánh dấu</string>
+    <string name="test_broken_hint">Đã xảy ra chuyện gì? Một dòng là đủ.</string>
+    <string name="test_mark_all">Đánh dấu mọi tính năng để gửi kết quả.</string>
 </resources>

@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">เกมยิงปืน</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">ช่วยให้หูฟังของคุณใช้งานได้</string>
-    <string name="report_later">เข้าใจแล้ว</string>
     <string name="row_smart_volume_title">ระดับเสียงอัจฉริยะ</string>
     <string name="row_smart_volume_sub">ปรับระดับเสียงตามเสียงรบกวนรอบข้าง</string>
     <string name="row_adaptive_volume_title">ระดับเสียงปรับได้</string>
@@ -426,5 +425,27 @@
     <string name="problem_unsupported">QuickBuds รองรับเฉพาะหูฟัง OnePlus, OPPO และ realme เลือกรุ่นของคุณจากรายการ</string>
     <string name="problem_supported_list">ดูหูฟังที่รองรับทั้งหมด</string>
     <string name="problem_log_empty">บันทึกว่างเปล่า: หูฟังของคุณยังไม่เคยเชื่อมต่อ เชื่อมต่อหูฟังก่อน แล้วจึงส่งรายงาน</string>
-    <string name="problem_notice_body">QuickBuds ทดสอบกับ OnePlus Buds 4 เท่านั้น หากมีสิ่งใดใช้ไม่ได้กับหูฟังของคุณ ให้ใช้ การตั้งค่า › รายงานปัญหา จะไม่มีอะไรถูกส่งจนกว่าคุณจะแตะส่ง</string>
+    <string name="test_title">ทดสอบหูฟัง</string>
+    <string name="test_sub">ลองใช้ทุกฟีเจอร์แล้วส่งผลลัพธ์</string>
+    <string name="test_ask_body">QuickBuds ยังไม่ได้รับการยืนยันกับหูฟังนี้ การทดสอบสั้น ๆ จะแสดงว่าอะไรใช้งานได้ ไม่มีสิ่งใดถูกส่งจนกว่าคุณจะแตะส่ง</string>
+    <string name="test_ask_later">ไม่ใช่ตอนนี้</string>
+    <string name="test_intro">เริ่มจะเชื่อมต่อหูฟังใหม่และล้างบันทึก จากนั้นลองใช้ทุกฟีเจอร์ใน QuickBuds กลับมาที่นี่แล้วทำเครื่องหมาย</string>
+    <string name="test_start">เริ่ม</string>
+    <string name="test_restart">เริ่มใหม่</string>
+    <string name="test_reconnecting">กำลังเชื่อมต่อใหม่…</string>
+    <string name="test_failed">หูฟังไม่ได้เชื่อมต่อใหม่ ตรวจสอบว่าเปิดอยู่และอยู่ใกล้ แล้วลองอีกครั้ง</string>
+    <string name="test_section_check">การตรวจสอบอัตโนมัติ</string>
+    <string name="test_check_battery">ระดับแบตเตอรี่</string>
+    <string name="test_check_features">รายการฟีเจอร์</string>
+    <string name="test_check_states">สถานะฟีเจอร์</string>
+    <string name="test_answered">ตอบกลับแล้ว</string>
+    <string name="test_no_answer">ไม่มีการตอบกลับ</string>
+    <string name="test_section_features">ฟีเจอร์</string>
+    <string name="test_works">ใช้งานได้</string>
+    <string name="test_broken">ใช้งานไม่ได้</string>
+    <string name="test_skip">ข้าม</string>
+    <string name="test_skipped">ข้ามแล้ว</string>
+    <string name="test_not_marked">ยังไม่ได้ทำเครื่องหมาย</string>
+    <string name="test_broken_hint">เกิดอะไรขึ้น? หนึ่งบรรทัดก็พอ</string>
+    <string name="test_mark_all">ทำเครื่องหมายทุกฟีเจอร์เพื่อส่งผลลัพธ์</string>
 </resources>

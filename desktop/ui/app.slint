@@ -195,6 +195,20 @@ export global Tr {
     in property <string> problem-title;
     in property <string> problem-sub;
     in property <string> problem-intro;
+    in property <string> report-title;
+    in property <string> test-title;
+    in property <string> test-sub;
+    in property <string> test-ask-body;
+    in property <string> test-ask-later;
+    in property <string> test-intro;
+    in property <string> test-start;
+    in property <string> test-restart;
+    in property <string> test-section-check;
+    in property <string> test-section-features;
+    in property <string> test-works;
+    in property <string> test-broken;
+    in property <string> test-skip;
+    in property <string> test-broken-hint;
     in property <string> problem-model;
     in property <string> problem-category;
     in property <string> problem-description;
@@ -2290,6 +2304,8 @@ component Field inherits Rectangle {
     // Enter, and the field losing focus (one line only).
     callback accepted();
     callback focus-lost();
+    // Each change the person types.
+    callback edited();
     height: multi ? 120px : 40px;
     border-radius: 10px;
     background: Dots.on ? transparent : Palette.card;
@@ -2312,6 +2328,7 @@ component Field inherits Rectangle {
         wrap: root.multi ? word-wrap : no-wrap;
         vertical-alignment: root.multi ? top : center;
         accepted => { root.accepted(); }
+        edited => { root.edited(); }
         changed has-focus => { if !self.has-focus { root.focus-lost(); } }
     }
 }
@@ -2369,6 +2386,129 @@ component ReportPage inherits Rectangle {
                 VerticalLayout {
                     padding: 16px;
                     Text { text: Report.preview; color: Palette.text; font-family: DevLog.font; font-size: 12px; wrap: word-wrap; }
+                }
+            }
+        }
+    }
+}
+
+// App settings › Test my earbuds (`modeltest.rs`): one automatic check line, one feature row.
+export struct TestCheck {
+    title: string,
+    sub: string,
+}
+
+// mark: 0 none, 1 works, 2 does not work, 3 skipped.
+export struct TestRow {
+    title: string,
+    sub: string,
+    mark: int,
+    note: string,
+}
+
+export global ModelTest {
+    // A Start finished: the check and the rows show.
+    in property <bool> started;
+    // Reconnecting or sending.
+    in property <bool> busy;
+    // Reconnecting, a failed reconnect, or the Worker's answer.
+    in property <string> status;
+    in property <[TestCheck]> checks;
+    in property <[TestRow]> rows;
+    // Why Send is not ready yet; "" when it is.
+    in property <string> note;
+    in property <string> preview;
+    // Each change shows the launch prompt (MainWindow).
+    in property <int> ask;
+    callback open();
+    callback start();
+    callback mark(int, int);
+    callback set-note(int, string);
+    callback show-preview();
+    callback send();
+}
+
+component TestPage inherits Rectangle {
+    callback back();
+    init => { ModelTest.open(); }
+    ScrollView {
+        VerticalLayout {
+            padding: 28px;
+            spacing: 10px;
+            alignment: start;
+            HorizontalLayout {
+                spacing: 12px;
+                Chip { text: "‹"; width: 40px; clicked => { root.back(); } }
+                Text { text: Tr.test-title; color: Palette.text; font-size: 26px; font-weight: 700; vertical-alignment: center; horizontal-stretch: 1; }
+            }
+            Text { text: Tr.test-intro; color: Palette.text2; font-size: 13px; wrap: word-wrap; }
+            HorizontalLayout {
+                alignment: start;
+                Chip {
+                    text: ModelTest.started ? Tr.test-restart : Tr.test-start; primary: !ModelTest.started;
+                    clicked => { if !ModelTest.busy { ModelTest.start(); } }
+                }
+            }
+            if ModelTest.status != "": Text { text: ModelTest.status; color: Palette.text2; font-size: 13px; wrap: word-wrap; }
+            if ModelTest.started: VerticalLayout {
+                spacing: 10px;
+                SectionTitle { text: Tr.test-section-check; font-size: 13px; font-weight: 400; }
+                Card {
+                    live: true;
+                    VerticalLayout {
+                        padding: 16px;
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        spacing: 8px;
+                        for c in ModelTest.checks: HorizontalLayout {
+                            Text { text: c.title; color: Palette.text; font-size: 14px; horizontal-stretch: 1; }
+                            Text { text: c.sub; color: Palette.text2; font-size: 13px; }
+                        }
+                    }
+                }
+                SectionTitle { text: Tr.test-section-features; font-size: 13px; font-weight: 400; }
+                Card {
+                    live: true;
+                    VerticalLayout {
+                        padding: 16px;
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        spacing: 12px;
+                        for r[i] in ModelTest.rows: VerticalLayout {
+                            spacing: 8px;
+                            if i > 0: Divider {}
+                            HorizontalLayout {
+                                spacing: 8px;
+                                VerticalLayout {
+                                    horizontal-stretch: 1;
+                                    alignment: center;
+                                    Text { text: r.title; color: Palette.text; font-size: 14px; font-weight: 600; wrap: word-wrap; }
+                                    Text { text: r.sub; color: Palette.text2; font-size: 12px; }
+                                }
+                                Chip { text: Tr.test-works; primary: r.mark == 1; clicked => { ModelTest.mark(i, 1); } }
+                                Chip { text: Tr.test-broken; primary: r.mark == 2; clicked => { ModelTest.mark(i, 2); } }
+                                Chip { text: Tr.test-skip; primary: r.mark == 3; clicked => { ModelTest.mark(i, 3); } }
+                            }
+                            if r.mark == 2: Field {
+                                text: r.note; hint: Tr.test-broken-hint;
+                                edited => { ModelTest.set-note(i, self.text); }
+                            }
+                        }
+                    }
+                }
+                HorizontalLayout {
+                    spacing: 8px;
+                    alignment: end;
+                    Chip { text: Tr.problem-preview; clicked => { ModelTest.show-preview(); } }
+                    Chip { text: Tr.problem-send; primary: true; clicked => { if !ModelTest.busy { ModelTest.send(); } } }
+                }
+                if ModelTest.note != "": Text { text: ModelTest.note; color: Palette.text2; font-size: 13px; wrap: word-wrap; }
+                if ModelTest.preview != "": Card {
+                    live: true;
+                    VerticalLayout {
+                        padding: 16px;
+                        Text { text: ModelTest.preview; color: Palette.text; font-family: DevLog.font; font-size: 12px; wrap: word-wrap; }
+                    }
                 }
             }
         }
@@ -3012,6 +3152,7 @@ component PresetPage inherits Rectangle {
 component SettingsPage inherits Rectangle {
     callback open-report();
     callback open-theme();
+    callback open-test();
     ScrollView {
         VerticalLayout {
             padding: 28px;
@@ -3084,6 +3225,8 @@ component SettingsPage inherits Rectangle {
                 VerticalLayout {
                     padding-left: 20px;
                     padding-right: 20px;
+                    NavRow { icon: Buds.icon-earbud; title: Tr.test-title; subtitle: Tr.test-sub; clicked => { root.open-test(); } }
+                    Divider {}
                     NavRow { icon: Buds.icon-info; title: Tr.problem-title; subtitle: Tr.problem-sub; clicked => { root.open-report(); } }
                 }
             }
@@ -3230,7 +3373,7 @@ export component MainWindow inherits Window {
                 Rectangle { height: 16px; }
                 for e[i] in root.nav: NavItem {
                     entry: e;
-                    active: root.page == i || (root.page == 8 && i == root.models-from) || (root.page >= 9 && root.page <= 11 && i == 6);
+                    active: root.page == i || (root.page == 8 && i == root.models-from) || (root.page >= 9 && root.page <= 12 && i == 6);
                     clicked => { root.page = i; }
                     at(y) => { side.nav-y = y; side.placed = true; }
                 }
@@ -3246,12 +3389,14 @@ export component MainWindow inherits Window {
         if root.page == 2: PageIn { ControlsPage { } }
         if root.page == 3: PageIn { HearingPage { } }
         if root.page == 4: PageIn { DualPage { } }
-        if root.page == 6: PageIn { SettingsPage { open-report => { Report.open(); root.page = 9; } open-theme => { root.page = 10; } } }
+        if root.page == 6: PageIn { SettingsPage { open-report => { Report.open(); root.page = 9; } open-theme => { root.page = 10; } open-test => { root.page = 12; } } }
         // Themes, colors & styles and Edit preset, opened from App settings (the sidebar shows App settings).
         if root.page == 10: PageIn { ThemePage { back => { root.page = 6; } edit => { root.page = 11; } } }
         if root.page == 11: PageIn { PresetPage { back => { root.page = 10; } } }
         // Report a problem, opened from App settings (no sidebar entry; the sidebar shows App settings).
         if root.page == 9: PageIn { ReportPage { back => { root.page = 6; } } }
+        // Test my earbuds, opened from App settings or the launch prompt (no sidebar entry).
+        if root.page == 12: PageIn { TestPage { back => { root.page = 6; } } }
         if root.page == 7: PageIn { DevPage { } }
         // Scrolls: Hi-Res, 3D audio and the codec row make it taller than the window's first size (issue #9).
         if root.page == 0: PageIn { ScrollView {
@@ -3360,6 +3505,14 @@ export component MainWindow inherits Window {
     }
     }
 
+    // The launch prompt (`modeltest.rs`): once per unconfirmed model, on Overview.
+    property <int> test-ask: ModelTest.ask;
+    changed test-ask => { test-prompt.show(); }
+    test-prompt := Dialog {
+        x: (root.width - self.width) / 2; y: (root.height - 200px) / 2;
+        title: Tr.report-title; body: Tr.test-ask-body; ok: Tr.test-title; cancel: Tr.test-ask-later;
+        accepted => { root.page = 12; }
+    }
     home-ask := Dialog {
         x: (root.width - self.width) / 2; y: (root.height - 180px) / 2;
         title: Tr.codec-dialog-title; body: root.ask-body; ok: Tr.codec-dialog-accept;

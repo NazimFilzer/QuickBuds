@@ -137,8 +137,10 @@ DIZO Wireless, DIZO GoPods D, DIZO GoPods.
 
 </details>
 
-**Own other buds? Please tell us what works.** In the app, Settings › Report a problem sends your
-model, a description and the log, without a GitHub account. Or open an
+**Own other buds? Please tell us what works.** In the app, Settings › Test my earbuds (desktop: App
+settings) reconnects the buds, lets you mark each feature, and sends the result with the log. The app
+offers this test once, after the first connect to a model that is not confirmed. Settings › Report a
+problem sends a description and the log, without a GitHub account. Or open an
 [issue](https://github.com/spizganed/QuickBuds/issues); [CONTRIBUTING.md](./docs/CONTRIBUTING.md#reporting-a-model)
 says what to include. Each report lets the next release fix that model.
 

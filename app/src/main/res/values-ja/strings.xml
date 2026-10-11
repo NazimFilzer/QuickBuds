@@ -84,7 +84,6 @@
     <string name="game_sound_type_shooter">シューティングゲーム</string>
     <string name="game_sound_type_peace">Peacekeeper Elite</string>
     <string name="report_title">イヤホン対応へのご協力のお願い</string>
-    <string name="report_later">OK</string>
     <string name="row_smart_volume_title">スマート音量</string>
     <string name="row_smart_volume_sub">周囲の騒音に合わせて音量を調整</string>
     <string name="row_adaptive_volume_title">適応型音量</string>
@@ -424,5 +423,27 @@
     <string name="problem_unsupported">QuickBuds が対応するのは OnePlus、OPPO、realme のイヤホンのみです。リストからモデルを選んでください。</string>
     <string name="problem_supported_list">対応イヤホンの一覧を見る</string>
     <string name="problem_log_empty">ログが空です。イヤホンがまだ一度も接続されていません。先にイヤホンを接続してからレポートを送信してください。</string>
-    <string name="problem_notice_body">QuickBuds は OnePlus Buds 4 でのみテストされています。お使いのイヤホンで動かない機能があれば、設定 › 問題を報告 をご利用ください。送信をタップするまで何も送られません。</string>
+    <string name="test_title">イヤホンをテスト</string>
+    <string name="test_sub">各機能を試して結果を送信</string>
+    <string name="test_ask_body">QuickBuds はこのイヤホンでまだ確認されていません。短いテストで動く機能がわかります。「送信」をタップするまで何も送信されません。</string>
+    <string name="test_ask_later">今はしない</string>
+    <string name="test_intro">「開始」でイヤホンを再接続し、ログを消去します。その後 QuickBuds で各機能を試し、ここに戻って結果を記録してください。</string>
+    <string name="test_start">開始</string>
+    <string name="test_restart">もう一度開始</string>
+    <string name="test_reconnecting">再接続しています…</string>
+    <string name="test_failed">イヤホンが再接続されませんでした。電源が入っていて近くにあることを確認して、もう一度お試しください。</string>
+    <string name="test_section_check">自動チェック</string>
+    <string name="test_check_battery">バッテリー残量</string>
+    <string name="test_check_features">機能リスト</string>
+    <string name="test_check_states">機能の状態</string>
+    <string name="test_answered">応答あり</string>
+    <string name="test_no_answer">応答なし</string>
+    <string name="test_section_features">機能</string>
+    <string name="test_works">動作する</string>
+    <string name="test_broken">動作しない</string>
+    <string name="test_skip">スキップ</string>
+    <string name="test_skipped">スキップ済み</string>
+    <string name="test_not_marked">未記録</string>
+    <string name="test_broken_hint">何が起きましたか？1 行で十分です。</string>
+    <string name="test_mark_all">結果を送信するには、すべての機能を記録してください。</string>
 </resources>

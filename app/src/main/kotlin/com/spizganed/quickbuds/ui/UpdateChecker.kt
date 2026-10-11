@@ -105,9 +105,10 @@ object UpdateChecker {
 
     /**
      * Check on start: at most every 12 h, silent on any failure, and one dialog per new version,
-     * never again for the same tag. It must never nag.
+     * never again for the same tag. It must never nag. [mayShow] false (another launch prompt is up) leaves the
+     * announcement for a later check.
      */
-    fun maybeAutoCheck(activity: Activity) {
+    fun maybeAutoCheck(activity: Activity, mayShow: () -> Boolean) {
         // The last update's download (UpdateActivity), ~2.5 MB, has been installed or abandoned by now.
         java.io.File(activity.cacheDir, "quickbuds-update.apk").delete()
         val prefs = activity.getSharedPreferences(ThemeRes.PREFS_NAME, Context.MODE_PRIVATE)
@@ -121,7 +122,8 @@ object UpdateChecker {
             if (release.apkUrl == null || !isNewer(release.tag, installed)) return@Thread
             if (prefs.getString(KEY_ANNOUNCED, null) == release.tag) return@Thread
             Handler(Looper.getMainLooper()).post {
-                if (activity.isFinishing || activity.isDestroyed) return@post
+                // Another launch prompt is up: this release is announced on a later start.
+                if (activity.isFinishing || activity.isDestroyed || !mayShow()) return@post
                 prefs.edit().putString(KEY_ANNOUNCED, release.tag).apply()
                 ConfirmDialog.show(
                     activity,
