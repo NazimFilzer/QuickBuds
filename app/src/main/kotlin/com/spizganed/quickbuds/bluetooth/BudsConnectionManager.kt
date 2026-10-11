@@ -808,11 +808,12 @@ class BudsConnectionManager(private val context: Context) {
     fun requestFullStatus() { sendRaw(statusQuery(), "manual status") }
 
     /**
-     * A model picked by hand ([ModelCatalog.setManual]): `0x010D` again with the new model's id list, and every screen
-     * relays out. Without it the features stayed the old model's until the next connect.
+     * A model picked by hand ([ModelCatalog.setManual]): the connect reads again, because some depend on the model
+     * (the `0x010D` id list, smart level, noise switch types). Every screen relays out. Without it the features stayed
+     * the old model's until the next connect.
      */
     fun modelPicked() {
-        if (isConnected()) requestFullStatus()
+        if (isConnected()) runInitSequence()
         handler.post { listeners.forEach { it.onCapabilities() } }
     }
 
