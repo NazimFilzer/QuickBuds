@@ -70,6 +70,12 @@ data class Palette(
     /** Background of an expanded row. */
     val expanded get() = blend(card, text, 0.05f)
 
+    /** Material style: a card's tonal surface (M3 surface container), a little lifted and tinted by the accent. */
+    val container get() = blend(blend(card, text, if (isLight) 0f else 0.05f), accent, if (isLight) 0.05f else 0.08f)
+
+    /** Material style: a selected element's fill (M3 secondary container); its label is [text]. */
+    val tonal get() = blend(container, accent, if (isLight) 0.18f else 0.28f)
+
     fun toJson(): JSONObject = JSONObject()
         .put("id", id).put("name", name)
         .put("background", background).put("card", card).put("accent", accent)

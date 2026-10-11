@@ -72,11 +72,11 @@ class AncSegmentedView(
     }
     private val dotPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
 
-    private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = p.card }
+    private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = if (ThemeRes.material(context)) p.container else p.card }
     private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE; strokeWidth = dp(1f); color = p.outline
     }
-    private val pillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = p.accent }
+    private val pillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = if (ThemeRes.material(context)) p.tonal else p.accent }
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = dp(if (iconRes.isEmpty()) 14f else 11.5f); textAlign = Paint.Align.CENTER
         typeface = ThemeRes.medium(context)
@@ -90,6 +90,9 @@ class AncSegmentedView(
     }
 
     private val nothing = ThemeRes.nothing(context)
+
+    /** Material style: an M3 segmented button, the selected segment a tonal fill with a [Palette.text] label. */
+    private val material = ThemeRes.material(context)
 
     /** Track and outline, dots in the dot style (one-cell outline). */
     private fun track(canvas: Canvas) {
@@ -155,7 +158,7 @@ class AncSegmentedView(
         labels.forEachIndexed { i, label ->
             // The segment under the moving fill brightens as the fill arrives.
             val closeness = if (pos < 0f) 0f else (1f - kotlin.math.abs(pos - i)).coerceIn(0f, 1f)
-            val c = Palette.blend(p.textSecondary, if (nothing) p.accent else p.onAccent, closeness)
+            val c = Palette.blend(p.textSecondary, if (nothing) p.accent else if (material) p.text else p.onAccent, closeness)
             val cx = inset + segW * i + segW / 2
             val dot = dots.getOrNull(i)
             if (dot != null) {

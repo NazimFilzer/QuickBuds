@@ -388,6 +388,7 @@
     <string name="widget_style_title">Style</string>
     <string name="widget_style_classic">Classic</string>
     <string name="widget_style_nothing" translatable="false">Dot matrix</string>
+    <string name="widget_style_material" translatable="false">Material</string>
     <string name="widget_mode_anc_low">ANC Low</string>
     <string name="widget_mode_anc_medium">ANC Medium</string>
     <string name="widget_mode_anc_high">ANC High</string>

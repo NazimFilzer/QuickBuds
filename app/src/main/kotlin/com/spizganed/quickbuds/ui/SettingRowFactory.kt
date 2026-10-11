@@ -167,6 +167,28 @@ object SettingRowFactory {
                 trackTintList = null
                 switchMinWidth = 0
             }
+            // Material style: the M3 switch. A 52x32dp pill track (outlined when off) and a thumb
+            // that grows from 16dp to 24dp when on.
+            if (ThemeRes.material(context)) {
+                val p = ThemeRes.palette(context)
+                val dp = { v: Float -> ThemeRes.dp(context, v) }
+                val checkedState = intArrayOf(android.R.attr.state_checked)
+                trackDrawable = android.graphics.drawable.StateListDrawable().apply {
+                    addState(checkedState, ThemeRes.shape(context, p.accent, null, ThemeRes.FULL).apply { setSize(dp(52f), dp(32f)) })
+                    addState(intArrayOf(), ThemeRes.shape(context, p.container, p.textSecondary, ThemeRes.FULL, 2f).apply { setSize(dp(52f), dp(32f)) })
+                }
+                fun knob(color: Int, sizeDp: Float) = android.graphics.drawable.InsetDrawable(
+                    android.graphics.drawable.GradientDrawable().apply { shape = android.graphics.drawable.GradientDrawable.OVAL; setColor(color) },
+                    dp((32f - sizeDp) / 2)
+                ).let { android.graphics.drawable.LayerDrawable(arrayOf(it)).apply { setLayerSize(0, dp(32f), dp(32f)) } }
+                thumbDrawable = android.graphics.drawable.StateListDrawable().apply {
+                    addState(checkedState, knob(p.onAccent, 24f))
+                    addState(intArrayOf(), knob(p.textSecondary, 16f))
+                }
+                thumbTintList = null
+                trackTintList = null
+                switchMinWidth = dp(52f)
+            }
         }
     }
 

@@ -117,7 +117,7 @@ object ThemeRes {
 
     // The language is part of it so a language change below Android 13 rebuilds open screens too.
     // The style too, so a Classic / Nothing change rebuilds open screens.
-    private fun signature(context: Context, p: Palette) = p.id + p.tokens.contentToString() + language(context) + nothing(context)
+    private fun signature(context: Context, p: Palette) = p.id + p.tokens.contentToString() + language(context) + nothing(context) + material(context)
 
     private const val KEY_NOTHING = "styleNothing"
 
@@ -127,8 +127,21 @@ object ThemeRes {
      */
     fun nothing(context: Context) = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_NOTHING, false)
 
-    fun setNothing(context: Context, on: Boolean) {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_NOTHING, on).apply()
+    private const val KEY_MATERIAL = "styleMaterial"
+
+    /**
+     * Material style (M3): tonal cards without outlines, pill buttons, the M3 switch. App screens only;
+     * the widgets draw Classic. Never true together with [nothing].
+     */
+    fun material(context: Context) = !nothing(context) &&
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_MATERIAL, false)
+
+    /** The style picker's index: 0 Classic, 1 Dot matrix, 2 Material. */
+    fun style(context: Context) = if (nothing(context)) 1 else if (material(context)) 2 else 0
+
+    fun setStyle(context: Context, index: Int) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+            .putBoolean(KEY_NOTHING, index == 1).putBoolean(KEY_MATERIAL, index == 2).apply()
         com.spizganed.quickbuds.widget.AncWidgetProvider.refreshAll(context)
     }
 
@@ -295,7 +308,8 @@ object ThemeRes {
 
     /** A filled, unoutlined rounded button (dot style: outlined in the fill colour, since a dotted fill hid the label): [shape], dots in the dot style. */
     fun pill(context: Context, fill: Int, radiusDp: Float): Drawable =
-        if (nothing(context)) DotArt.Box(context, palette(context).card, fill, radiusDp) else shape(context, fill, null, radiusDp)
+        if (nothing(context)) DotArt.Box(context, palette(context).card, fill, radiusDp)
+        else shape(context, fill, null, if (material(context)) FULL else radiusDp)
 
     /** A group of rows or a home tile: the [card], in dots in the dot style (borders back on home). */
     fun group(context: Context): Drawable? = card(context)
@@ -308,6 +322,8 @@ object ThemeRes {
      */
     fun selectedBorder(context: Context, color: Int, radiusDp: Float = 24f): android.graphics.drawable.Drawable {
         val r = dp(context, radiusDp).toFloat()
+        // Material: a tonal state layer over the row instead of an outline.
+        if (material(context)) return GradientDrawable().apply { cornerRadius = r; setColor(Palette.withAlpha(color, 0.16f)) }
         if (!nothing(context)) return GradientDrawable().apply { cornerRadius = r; setStroke(dp(context, 2f), color) }
         return DotArt.Part(context, 0f, 0f, android.content.res.ColorStateList.valueOf(color)) { c, box, paint ->
             val e = DotArt.pitchPx(context) / 2
@@ -320,13 +336,20 @@ object ThemeRes {
     fun card(context: Context, radiusDp: Float = 24f, fill: Int? = null, solid: Boolean = false, topOnly: Boolean = false, base: Int? = null): Drawable {
         val p = palette(context)
         if (nothing(context)) return DotArt.Box(context, fill ?: p.card, p.outline, radiusDp, topOnly, solid, base)
+        // Material: a tonal surface, no outline.
+        if (material(context)) return shape(context, if (fill == null || fill == p.card) p.container else fill, null, radiusDp).apply {
+            if (topOnly) { val r = dp(context, radiusDp).toFloat(); cornerRadii = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f) }
+        }
         return shape(context, fill ?: p.card, p.outline, radiusDp).apply {
             if (topOnly) { val r = dp(context, radiusDp).toFloat(); cornerRadii = floatArrayOf(r, r, r, r, 0f, 0f, 0f, 0f) }
         }
     }
 
     /** Icon button / framed control: `card` fill, `outline` stroke, 14dp radius (SPEC section 2). */
-    fun iconButton(context: Context, radiusDp: Float = 14f): Drawable = card(context, radiusDp)
+    fun iconButton(context: Context, radiusDp: Float = 14f): Drawable = card(context, if (material(context)) FULL else radiusDp)
+
+    /** A radius above half of any control's height: a full pill or circle. */
+    const val FULL = 999f
 
     private var snapshot: android.graphics.Bitmap? = null
 
@@ -391,11 +414,13 @@ object ThemeRes {
     fun chip(context: Context, active: Boolean): Drawable {
         val p = palette(context)
         if (nothing(context)) return DotArt.Box(context, p.card, if (active) p.accent else p.outline, 10f)
+        // Material: an M3 filter chip, 8dp corners.
+        if (material(context)) return if (active) shape(context, p.accent, null, 8f) else shape(context, p.container, p.outline, 8f)
         return if (active) shape(context, p.accent, null, 10f) else shape(context, p.card, p.outline, 10f)
     }
 
     /** Bottom sheet window: rounded top corners only. */
-    fun sheet(context: Context): Drawable = card(context, 20f, topOnly = true, base = palette(context).background)
+    fun sheet(context: Context): Drawable = card(context, if (material(context)) 28f else 20f, topOnly = true, base = palette(context).background)
 
 
     /** Thumb / track tint lists for a platform Switch (SPEC section 1, derived colours). */
