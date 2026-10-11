@@ -52,14 +52,14 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
      * The provider. BATTERY and CONTROLS double as the page names ([WidgetSettings.page]).
      * [fixed]: the one page a single-page widget shows; null for the two-page widgets.
      */
-    enum class Kind(private val classic: Int, private val nothing: Int, val fixed: Kind? = null) {
-        BATTERY(R.layout.widget_pages, R.layout.widget_pages_n),
-        CONTROLS(R.layout.widget_pages, R.layout.widget_pages_n),
-        COMBINED(R.layout.widget_pages_m, R.layout.widget_pages_m_n),
-        BATTERY_ONLY(R.layout.widget_pages, R.layout.widget_pages_n, BATTERY);
+    enum class Kind(private val classic: Int, private val nothing: Int, private val material: Int, val fixed: Kind? = null) {
+        BATTERY(R.layout.widget_pages, R.layout.widget_pages_n, R.layout.widget_pages_md),
+        CONTROLS(R.layout.widget_pages, R.layout.widget_pages_n, R.layout.widget_pages_md),
+        COMBINED(R.layout.widget_pages_m, R.layout.widget_pages_m_n, R.layout.widget_pages_m_md),
+        BATTERY_ONLY(R.layout.widget_pages, R.layout.widget_pages_n, R.layout.widget_pages_md, BATTERY);
 
-        /** The layout for the chosen style ([WidgetSettings.nothingStyle]). */
-        fun layout(c: Context) = if (WidgetSettings.nothingStyle(c)) nothing else classic
+        /** The layout for the chosen style ([WidgetSettings.nothingStyle], [WidgetSettings.materialStyle]). */
+        fun layout(c: Context) = if (WidgetSettings.nothingStyle(c)) nothing else if (WidgetSettings.materialStyle(c)) material else classic
         /** The 2x2 (as opposed to the 4x2). */
         val square get() = this != COMBINED
         /** The page shown; CONTROLS is a single-page widget too (its own [fixed] would be a forward reference). */
@@ -282,7 +282,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 val inEar = statuses[slot] == 3 || statuses[slot] == 7
                 val text = if (slot == 1) context.getString(names[slot]) else wearLabel(context, statuses[slot]) ?: context.getString(names[slot])
                 // Nothing: no wear text, the glyph's shade says it ([nothingTint]) and the ring's content description reads it.
-                val noLabel = WidgetSettings.nothingStyle(context)
+                val noLabel = WidgetSettings.nothingStyle(context) || WidgetSettings.materialStyle(context)
                 v.setViewVisibility(label, if (noLabel) View.GONE else View.VISIBLE)
                 v.setContentDescription(ringId, if (slot == 1) text else context.getString(names[slot]) + ", " + text)
                 setText(context, v, label, if (inEar && !noLabel) semibold(text) else text, if (inEar) p.text else p.textSecondary)
@@ -323,7 +323,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 return minOf(h - 20f - 5f - pct, (w - 6f - 8f) / 3 - 4f).coerceIn(28f, 160f)
             }
             // Page padding 12 across, 20 down; panel padding 8; texts: percentage + label lines.
-            val texts = if (WidgetSettings.nothingStyle(context)) 20f * 1.3f + 2f else 18f * 1.3f + 12f * 1.3f + 2f
+            val texts = if (WidgetSettings.materialStyle(context)) 24f * 1.3f + 2f
+                else if (WidgetSettings.nothingStyle(context)) 20f * 1.3f + 2f else 18f * 1.3f + 12f * 1.3f + 2f
             val byHeight = h - 20f - 8f - texts - 6f
             val byWidth = (w - 12f - 6f * 2) / 3 - 8f
             return minOf(byHeight, byWidth).coerceIn(28f, 120f)
@@ -804,7 +805,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
         private class Geo(val side: Float, val vert: Float, val gap: Float, val top: Float, val outer: Float, val inner: Float, val bottom: Float, val row: Float, val pm: Float)
         private val GEO_NOTHING = Geo(3f, 7f, 4f, 3f, 3f, 1f, 4f, 3f, 5f)
         private val GEO_CLASSIC = Geo(6f, 8f, 6f, 4f, 7f, 7f, 3f, 4f, 2f)
-        private fun geo(c: Context) = if (WidgetSettings.nothingStyle(c)) GEO_NOTHING else GEO_CLASSIC
+        private val GEO_MATERIAL = Geo(5f, 8f, 4f, 3f, 3f, 1f, 3f, 3f, 3f)
+        private fun geo(c: Context) = if (WidgetSettings.nothingStyle(c)) GEO_NOTHING else if (WidgetSettings.materialStyle(c)) GEO_MATERIAL else GEO_CLASSIC
 
         /** The height of a battery text as the layout draws it ([pctPaint]), in dp. */
         private fun textDp(context: Context, paint: Paint) = paint.fontMetrics.let { it.descent - it.ascent } / context.resources.displayMetrics.density
@@ -840,7 +842,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             val g = geo(context)
             val ring = ringWidthDp(context, kind, w)
             val pct = textDp(context, pctPaint(context, Kind.BATTERY))
-            val label = if (WidgetSettings.nothingStyle(context)) 0f else textDp(context, Paint().apply {
+            val label = if (WidgetSettings.nothingStyle(context) || WidgetSettings.materialStyle(context)) 0f else textDp(context, Paint().apply {
                 typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
                 textSize = 11.5f * context.resources.displayMetrics.scaledDensity
             })
@@ -856,12 +858,13 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /**
          * A percentage as the layout draws it: dot style Doto bold 17sp on the 2x2 20sp on
-         * the 4x2; Classic sans-serif bold 16sp on the 2x2.
+         * the 4x2; Classic sans-serif bold 16sp on the 2x2; Material 21sp on the 2x2, 24sp on the 4x2.
          */
         private fun pctPaint(context: Context, kind: Kind) = Paint().apply {
             val nothing = WidgetSettings.nothingStyle(context)
             typeface = android.graphics.Typeface.create(if (nothing) com.spizganed.quickbuds.ui.ThemeRes.dotFont(context) else android.graphics.Typeface.SANS_SERIF, android.graphics.Typeface.BOLD)
-            textSize = (if (kind.square) (if (nothing) 17f else 16f) else 20f) * context.resources.displayMetrics.scaledDensity
+            val material = WidgetSettings.materialStyle(context)
+            textSize = (if (kind.square) (if (nothing) 17f else if (material) 21f else 16f) else if (material) 24f else 20f) * context.resources.displayMetrics.scaledDensity
         }
 
         /** 5x7 dot digits for the case bar's percentage ([bar]), rows top to bottom: Doto's own digits, sampled from its 5x7 grid. */
@@ -881,7 +884,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** The level as the widgets show it: "57%" (Classic), just the number (Nothing), or a dash. */
         private fun pctLabel(context: Context, level: Int) =
-            if (level !in 0..100) "—" else if (WidgetSettings.nothingStyle(context)) "$level" else "$level%"
+            if (level !in 0..100) "—" else if (WidgetSettings.nothingStyle(context) || WidgetSettings.materialStyle(context)) "$level" else "$level%"
 
         private fun openAppPI(context: Context): PendingIntent = PendingIntent.getActivity(
             context, 400, Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
