@@ -26,6 +26,10 @@ Finish each step before the next one starts.
 - **realme models:** 27 realme models besides the Air7 Pro use realme Link data (noise control,
   gestures, wind noise). Only the Air7 Pro's owner has confirmed it (5 neckbands with `oneButton`,
   5 with `bothHold`).
+- **Parked — realme Link `0x0403` extras** (dynamic bass, vocal enhance; PROTOCOL.md §9): no data
+  says which realme models have them, and a wrong write fails silently. The UI is a switch on
+  Overview. Start when a realme owner can test them, for example the Air7 Pro owner from issue #8
+  (2026-10-11).
 
 ## Decided against — do not suggest again
 
