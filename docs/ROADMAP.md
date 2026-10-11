@@ -4,6 +4,11 @@ The parked and unverified work. Finished work leaves this file. Protocol finding
 
 **The north star is parity with HeyMelody.** Our own improvements come next, other models after that.
 
+## Planned
+
+- **Material style on the desktop**, as on the phone: M3 shapes, sliders, switches and segmented
+  lists, with Material as the default style. The desktop has QuickBuds and Pixel art now.
+
 ## Parked
 
 - **realme Link `0x0403` extras** (dynamic bass, vocal enhance; PROTOCOL.md §9): no data
@@ -15,6 +20,8 @@ These work in code but no owner has confirmed them. They count as working until 
 
 - realme Link data (noise control, gestures, wind noise) on 27 realme models. Only the Air7 Pro is
   confirmed (5 neckbands with `oneButton`, 5 with `bothHold`).
+- The realme built-in EQ presets (Pure Raw, Deep Bass, Pure Voice, Pure Bass) on 27 realme models.
+  The Buds Air8 and Buds Air 5 Pro reports asked for them. T110 and T01 still need a capture.
 - Personalized ANC, the dual-connection device manager and the preferred device.
 
 ## Decided against — do not suggest again
