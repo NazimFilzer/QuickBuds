@@ -1,5 +1,6 @@
-//! App settings › Report a problem: the phone's `ProblemReport`, posted to the same Google Form with `curl`
-//! (as the updater does). Nothing goes out without Send; See the report shows the exact text first.
+//! App settings › Report a problem: the phone's `ProblemReport`, posted with `curl` (as the updater does) to the same
+//! report Worker, or to the Google Form when the Worker is unreachable. Nothing goes out without Send; See the report
+//! shows the exact text first.
 
 use crate::protocol::*;
 use crate::session::{Line, LOG};
@@ -9,6 +10,7 @@ use std::io::Write;
 use std::process::Stdio;
 use std::sync::Mutex;
 
+const WORKER: &str = "https://quickbuds-report.spizganed.workers.dev/report";
 const FORM: &str = "https://docs.google.com/forms/d/e/1FAIpQLScPNdmogyip2EDWZayNUSW3ElYz674GAC7t7BZuFNHgvxGP_Q/formResponse";
 const ENTRY_MODEL: &str = "entry.849813820";
 const ENTRY_CATEGORY: &str = "entry.494675210";
@@ -204,6 +206,7 @@ fn enc(s: &str) -> String {
     }).collect()
 }
 
+#[cfg(test)]
 fn dec(s: &str) -> String {
     let b = s.as_bytes();
     let mut out = Vec::with_capacity(b.len());
@@ -222,12 +225,21 @@ fn dec(s: &str) -> String {
     String::from_utf8_lossy(&out).into_owned()
 }
 
+/// One report; [Draft::log] is None when the person turned it off.
+struct Draft {
+    model: String,
+    categories: Vec<&'static str>,
+    description: String,
+    log: Option<String>,
+    crash: bool,
+}
+
 /// The form body. A log over [MAX_BODY] loses its oldest lines (the header stays).
-fn body(model: &str, categories: &[&str], description: &str, log: Option<&str>) -> String {
-    let mut fields = vec![(ENTRY_MODEL, model), (ENTRY_DESCRIPTION, description)];
-    fields.extend(categories.iter().map(|c| (ENTRY_CATEGORY, *c)));
+fn body(d: &Draft) -> String {
+    let mut fields = vec![(ENTRY_MODEL, d.model.as_str()), (ENTRY_DESCRIPTION, d.description.as_str())];
+    fields.extend(d.categories.iter().map(|c| (ENTRY_CATEGORY, *c)));
     let head = fields.iter().map(|(k, v)| format!("{k}={}", enc(v))).collect::<Vec<_>>().join("&");
-    let Some(log) = log else { return head };
+    let Some(log) = &d.log else { return head };
     let lines: Vec<&str> = log.lines().collect();
     let mut from = 1;
     loop {
@@ -239,30 +251,48 @@ fn body(model: &str, categories: &[&str], description: &str, log: Option<&str>) 
     }
 }
 
-/// What the person reads before Send: one block per question, the log last.
-fn preview(body: &str) -> String {
-    body.split('&').map(|f| {
-        let (k, v) = f.split_once('=').unwrap_or((f, ""));
-        let name = match k { ENTRY_MODEL => "Model", ENTRY_CATEGORY => "Category", ENTRY_DESCRIPTION => "Description", _ => "Log" };
-        format!("{name}:\n{}", dec(v))
-    }).collect::<Vec<_>>().join("\n\n")
+/// What the person reads before Send: one block per field, the log last.
+fn preview(d: &Draft) -> String {
+    let mut blocks = vec![format!("Model:\n{}", d.model)];
+    if !d.categories.is_empty() { blocks.push(format!("Category:\n{}", d.categories.join(", "))); }
+    blocks.push(format!("Description:\n{}", d.description));
+    if let Some(log) = &d.log { blocks.push(format!("Log:\n{log}")); }
+    blocks.join("\n\n")
 }
 
-/// Posts [body] through `curl`'s standard input. True when Google took it.
-fn send(body: String) -> bool {
+/// Posts [body] to [url] through `curl`'s standard input. The answer code (0: no connection) and text.
+fn post(url: &str, content_type: &str, body: &str) -> (u16, String) {
+    let header = format!("Content-Type: {content_type}");
     let child = crate::update::quiet("curl")
-        .args(["-fsS", "--max-time", "30", "-o", if cfg!(windows) { "NUL" } else { "/dev/null" },
-            "-H", "Content-Type: application/x-www-form-urlencoded; charset=UTF-8", "--data-binary", "@-", FORM])
-        .stdin(Stdio::piped()).stdout(Stdio::null()).stderr(Stdio::null()).spawn();
-    let Ok(mut child) = child else { return false };
-    if child.stdin.take().map(|mut i| i.write_all(body.as_bytes())).is_none() { return false; }
-    child.wait().is_ok_and(|s| s.success())
+        .args(["-sS", "--max-time", "30", "-w", "\n%{http_code}", "-H", header.as_str(), "--data-binary", "@-", url])
+        .stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::null()).spawn();
+    let Ok(mut child) = child else { return (0, String::new()) };
+    if child.stdin.take().map(|mut i| i.write_all(body.as_bytes())).is_none() { return (0, String::new()); }
+    let out = child.wait_with_output().map(|o| String::from_utf8_lossy(&o.stdout).into_owned()).unwrap_or_default();
+    let (text, code) = out.rsplit_once('\n').unwrap_or(("", out.as_str()));
+    (code.trim().parse().unwrap_or(0), text.to_string())
 }
 
-/// The current form as a body; None (with a note) without a description, when the model is not in the list (a crash
+/// Posts [d] to the Worker; to the Google Form only when the Worker is unreachable (no connection, or a 5xx).
+/// Returns (sent, the Worker's answer text when it refused the report).
+fn send(d: Draft) -> (bool, Option<String>) {
+    let json = serde_json::json!({
+        "app": format!("QuickBuds {} {}", env!("CARGO_PKG_VERSION"), if cfg!(windows) { "Windows" } else { "Linux" }),
+        "model": d.model, "categories": d.categories, "description": d.description, "log": d.log, "crash": d.crash,
+    });
+    let (code, text) = post(WORKER, "application/json; charset=UTF-8", &json.to_string());
+    if (1..500).contains(&code) {
+        let message = serde_json::from_str::<serde_json::Value>(&text).ok()
+            .and_then(|v| v["message"].as_str().map(String::from));
+        return (code == 200, if code == 200 { None } else { message });
+    }
+    (post(FORM, "application/x-www-form-urlencoded; charset=UTF-8", &body(&d)).0 == 200, None)
+}
+
+/// The current form; None (with a note) without a description, when the model is not in the list (a crash
 /// report sends with any model), or when the log has no RX frame (the buds never connected). A person who cannot
 /// connect at all has no log, only words to reproduce it from: Send without the log still works.
-fn current(a: &App) -> Option<String> {
+fn current(a: &App) -> Option<Draft> {
     let r = a.main.global::<Report>();
     let tr = a.main.global::<Tr>();
     let picked: Vec<&str> = (0..6).filter(|&i| r.get_picked().row_data(i).unwrap_or(false)).map(|i| CATEGORIES[i]).collect();
@@ -284,7 +314,7 @@ fn current(a: &App) -> Option<String> {
     }
     r.set_note("".into());
     let log = r.get_with_log().then(|| log_text(a));
-    Some(body(r.get_model().trim(), &picked, &description, log.as_deref()))
+    Some(Draft { model: r.get_model().trim().to_string(), categories: picked, description, log, crash })
 }
 
 fn open(a: &mut App) {
@@ -306,17 +336,17 @@ pub fn setup(main: &MainWindow) {
         p.set_row_data(i, !p.row_data(i).unwrap_or(false));
     }));
     r.on_show_preview(|| with_app(|a| {
-        if let Some(b) = current(a) {
-            a.main.global::<Report>().set_preview(preview(&b).into());
+        if let Some(d) = current(a) {
+            a.main.global::<Report>().set_preview(preview(&d).into());
         }
     }));
     r.on_send(|| with_app(|a| {
-        let Some(b) = current(a) else { return };
+        let Some(d) = current(a) else { return };
         let r = a.main.global::<Report>();
         r.set_busy(true);
         let weak = a.main.as_weak();
         std::thread::spawn(move || {
-            let ok = send(b);
+            let (ok, refused) = send(d);
             let _ = weak.upgrade_in_event_loop(move |m| {
                 let r = m.global::<Report>();
                 r.set_busy(false);
@@ -327,7 +357,7 @@ pub fn setup(main: &MainWindow) {
                     r.set_picked(VecModel::from_slice(&[false; 6]));
                     CRASH.lock().unwrap().clear();
                 } else {
-                    r.set_note("Could not send the report. Check the internet connection and try again.".into());
+                    r.set_note(refused.unwrap_or_else(|| "Could not send the report. Check the internet connection and try again.".into()).into());
                 }
             });
         });
@@ -361,10 +391,11 @@ mod tests {
     #[test]
     fn long_log_keeps_header_and_newest() {
         let log = std::iter::once("HEADER".to_string()).chain((0..5000).map(|i| format!("line {i:05} xxxxxxxxxx"))).collect::<Vec<_>>().join("\n");
-        let b = body("m", &["UI"], "d", Some(&log));
+        let d = Draft { model: "m".into(), categories: vec!["UI"], description: "d".into(), log: Some(log), crash: false };
+        let b = body(&d);
         assert!(b.len() <= MAX_BODY);
-        let p = preview(&b);
-        assert!(p.contains("Log:\nHEADER\n") && p.ends_with("line 04999 xxxxxxxxxx"));
-        assert!(p.contains("Category:\nUI"));
+        let sent = dec(b.rsplit_once('=').unwrap().1);
+        assert!(sent.starts_with("HEADER\n") && sent.ends_with("line 04999 xxxxxxxxxx"));
+        assert!(b.contains(&format!("{ENTRY_CATEGORY}=UI")));
     }
 }

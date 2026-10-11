@@ -171,16 +171,17 @@ class ReportActivity : Activity() {
         send.alpha = if (send.isEnabled) 1f else 0.4f
     }
 
-    private fun body() = ProblemReport.body(
+    private fun report() = ProblemReport.Report(
         model.text.toString().trim(),
         categories.filterValues { it.isChecked }.keys.toList(),
         description.text.toString().trim(),
-        if (withLog.isChecked) ProblemReport.log(this, intent.getStringExtra(EXTRA_CRASH)?.let { "\n\n$it" }.orEmpty()) else null
+        if (withLog.isChecked) ProblemReport.log(this, crash?.let { "\n\n$it" }.orEmpty()) else null,
+        crash != null
     )
 
     private fun preview() {
         val sheet = BottomSheetDialog(this)
-        sheet.title(getString(R.string.problem_preview)).message(ProblemReport.preview(body()))
+        sheet.title(getString(R.string.problem_preview)).message(ProblemReport.preview(report()))
         if (ready()) sheet.confirm(getString(R.string.problem_send)) { sheet.close(); submit() }
         sheet.cancel(getString(R.string.dialog_close)) { sheet.close() }
         sheet.show()
@@ -191,15 +192,16 @@ class ReportActivity : Activity() {
         sending = true
         send.setText(R.string.problem_sending)
         paintSend()
-        val body = body()
+        val r = report()
         val main = Handler(Looper.getMainLooper())
         Thread {
-            val ok = ProblemReport.send(body)
+            val (ok, refused) = ProblemReport.send(this, r)
             main.post {
                 sending = false
                 send.setText(R.string.problem_send)
                 paintSend()
-                Toast.makeText(this, if (ok) R.string.problem_sent else R.string.problem_failed, Toast.LENGTH_LONG).show()
+                val text = if (ok) getString(R.string.problem_sent) else refused ?: getString(R.string.problem_failed)
+                Toast.makeText(this, text, Toast.LENGTH_LONG).show()
                 if (ok) finish()
             }
         }.start()

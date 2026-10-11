@@ -8,15 +8,24 @@ import com.spizganed.quickbuds.bluetooth.BudsConnectionManager
 import com.spizganed.quickbuds.bluetooth.PacketLogger
 import com.spizganed.quickbuds.protocol.Capabilities
 import com.spizganed.quickbuds.protocol.ModelCatalog
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
 
 /**
- * The problem report: a Google Form (`formResponse`, no sign-in), filled by [ReportActivity].
- * The desktop app posts to the same form (desktop/src/report.rs). A changed form question gets a new id.
+ * The problem report, filled by [ReportActivity]: JSON to the report Worker (report-worker/), or the Google Form
+ * (`formResponse`, no sign-in) when the Worker is unreachable. The desktop app does the same (desktop/src/report.rs).
+ * A changed form question gets a new id.
  */
 object ProblemReport {
+
+    private const val WORKER = "https://quickbuds-report.spizganed.workers.dev/report"
+
+    /** One report. [categories] are [CATEGORIES] values; [log] is null when the person turned it off. */
+    class Report(val model: String, val categories: List<String>, val description: String, val log: String?, val crash: Boolean)
 
     private const val FORM = "https://docs.google.com/forms/d/e/1FAIpQLScPNdmogyip2EDWZayNUSW3ElYz674GAC7t7BZuFNHgvxGP_Q/formResponse"
     private const val ENTRY_MODEL = "entry.849813820"
@@ -94,14 +103,14 @@ object ProblemReport {
 
     /**
      * The form body. A log over [MAX_BODY] loses its oldest lines (the header stays): the newest part shows the
-     * problem. [categories] are [CATEGORIES] values.
+     * problem.
      */
-    fun body(model: String, categories: List<String>, description: String, log: String?): String {
+    private fun formBody(r: Report): String {
         fun enc(s: String) = URLEncoder.encode(s, "UTF-8")
-        val fields = listOf(ENTRY_MODEL to model, ENTRY_DESCRIPTION to description) + categories.map { ENTRY_CATEGORY to it }
+        val fields = listOf(ENTRY_MODEL to r.model, ENTRY_DESCRIPTION to r.description) + r.categories.map { ENTRY_CATEGORY to it }
         val head = fields.joinToString("&") { "${it.first}=${enc(it.second)}" }
-        if (log == null) return head
-        val lines = log.lines()
+        if (r.log == null) return head
+        val lines = r.log.lines()
         var from = 1
         while (true) {
             val kept = (listOf(lines[0]) + lines.drop(from)).joinToString("\n")
@@ -112,31 +121,60 @@ object ProblemReport {
         }
     }
 
-    /** [body] as the person reads it before Send: one block per question, the log last. */
-    fun preview(body: String): String {
-        val names = mapOf(ENTRY_MODEL to "Model", ENTRY_CATEGORY to "Category", ENTRY_DESCRIPTION to "Description", ENTRY_LOG to "Log")
-        return body.split('&').joinToString("\n\n") {
-            val (k, v) = it.split('=', limit = 2)
-            names.getValue(k) + ":\n" + java.net.URLDecoder.decode(v, "UTF-8")
+    /** [r] as the person reads it before Send: one block per field, the log last. */
+    fun preview(r: Report): String = listOfNotNull(
+        "Model:\n${r.model}",
+        r.categories.takeIf { it.isNotEmpty() }?.let { "Category:\n" + it.joinToString(", ") },
+        "Description:\n${r.description}",
+        r.log?.let { "Log:\n$it" }
+    ).joinToString("\n\n")
+
+    /**
+     * Posts [r] to the Worker; to the Google Form only when the Worker is unreachable (no connection, or a 5xx).
+     * Network thread only. Returns (sent, the Worker's answer text when it refused the report).
+     */
+    fun send(c: Context, r: Report): Pair<Boolean, String?> {
+        val json = JSONObject()
+            .put("app", "QuickBuds ${UpdateChecker.installed(c)} Android")
+            .put("model", r.model)
+            .put("categories", JSONArray(r.categories))
+            .put("description", r.description)
+            .put("log", r.log ?: JSONObject.NULL)
+            .put("crash", r.crash)
+        try {
+            val (code, text) = post(WORKER, "application/json; charset=UTF-8", json.toString())
+            if (code < 500) {
+                if (code != 200) PacketLogger.log("REPORT: worker answered $code")
+                val message = runCatching { JSONObject(text).getString("message") }.getOrNull()
+                return (code == 200) to message.takeIf { code != 200 }
+            }
+            PacketLogger.log("REPORT: worker answered $code, using the form")
+        } catch (e: IOException) {
+            PacketLogger.error("report worker", e)
+        }
+        return try {
+            val (code, _) = post(FORM, "application/x-www-form-urlencoded; charset=UTF-8", formBody(r))
+            if (code != 200) PacketLogger.log("REPORT: form answered $code")
+            (code == 200) to null
+        } catch (e: IOException) {
+            PacketLogger.error("report send", e)
+            false to null
         }
     }
 
-    /** Posts [body]. Network thread only. True when Google took it. */
-    fun send(body: String): Boolean {
-        val conn = URL(FORM).openConnection() as HttpURLConnection
-        return try {
+    /** The answer code and body. Throws [IOException] without a connection. */
+    private fun post(url: String, type: String, body: String): Pair<Int, String> {
+        val conn = URL(url).openConnection() as HttpURLConnection
+        try {
             conn.requestMethod = "POST"
             conn.doOutput = true
             conn.connectTimeout = 15_000
             conn.readTimeout = 15_000
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+            conn.setRequestProperty("Content-Type", type)
             conn.outputStream.use { it.write(body.toByteArray()) }
             val code = conn.responseCode
-            if (code != 200) PacketLogger.log("REPORT: form answered $code")
-            code == 200
-        } catch (e: Exception) {
-            PacketLogger.error("report send", e)
-            false
+            val text = (if (code < 400) conn.inputStream else conn.errorStream)?.bufferedReader()?.use { it.readText() }.orEmpty()
+            return code to text
         } finally {
             conn.disconnect()
         }
