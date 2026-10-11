@@ -25,8 +25,8 @@ These work in code but no owner has confirmed them. They count as working until 
   (`report-worker/`).
 - **Firmware updates:** a failed flash can brick the buds. The firmware row points to HeyMelody.
 - **Right-to-left languages:** they need a mirrored layout and a check of every custom-drawn view.
-- **Widgets:** a resizable 2x2, 3x3, 3x2, 2x3, 4x1 or 2x1 size; a lock-screen widget; a widget
-  on/off switch; a widget larger than the launcher's padding (the host clips it).
+- **Widgets:** a lock-screen widget; a widget on/off switch; a widget larger than the launcher's padding
+  (the host clips it).
 - **Removed controls:** the Quick Settings tile and the fixed-level hold.
 - **Removing the foreground-service notification:** Android 15 requires it for a `connectedDevice` service.
 - **Slide up vs slide down:** the firmware maps the direction itself, as with HeyMelody.

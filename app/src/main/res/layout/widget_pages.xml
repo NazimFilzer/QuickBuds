@@ -89,6 +89,10 @@
 </LinearLayout>
 </FrameLayout>
 </ViewFlipper>
+<LinearLayout android:id="@+id/w_dots" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="top|center_horizontal" android:layout_marginTop="2dp" android:orientation="horizontal" android:visibility="gone">
+<ImageView android:id="@+id/w_dot0" android:layout_width="4dp" android:layout_height="4dp" android:src="@drawable/ic_status_dot_filled" android:importantForAccessibility="no" />
+<ImageView android:id="@+id/w_dot1" android:layout_width="4dp" android:layout_height="4dp" android:layout_marginStart="3dp" android:src="@drawable/ic_status_dot_filled" android:importantForAccessibility="no" />
+</LinearLayout>
 </FrameLayout>
 <FrameLayout android:id="@+id/w_page2" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingTop="8dp" android:paddingBottom="8dp" android:paddingStart="6dp" android:paddingEnd="6dp">
 <include layout="@layout/widget_grid" />

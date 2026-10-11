@@ -135,22 +135,15 @@ object SettingRowFactory {
     const val TITLE_TAG = "setting_row_title"
 
     /**
-     * Material style: the noise control as its own card ([row] holds the switcher): a tonal card,
-     * 12dp padding and a "Noise control" label above the round buttons. Other styles: unchanged.
+     * Material style: the noise control as its own card ([row] holds the switcher): a tonal card, no label, the
+     * round buttons filling it (4dp at the sides, so the longest label fits). Other styles: unchanged.
      */
     fun noiseCard(row: LinearLayout) {
         val context = row.context
         if (!ThemeRes.material(context)) return
         val dp = { v: Float -> ThemeRes.dp(context, v) }
         row.background = ThemeRes.card(context, ThemeRes.LIST_OUTER)
-        row.setPadding(dp(12f), dp(12f), dp(12f), dp(12f))
-        row.addView(TextView(context).apply {
-            setText(R.string.anc_section)
-            setTextColor(ThemeRes.color(context, R.attr.appColorTextSecondary))
-            textSize = 14f
-            typeface = ThemeRes.medium(context)
-            setPadding(dp(4f), 0, 0, dp(10f))
-        }, 0)
+        row.setPadding(dp(4f), dp(12f), dp(4f), dp(12f))
     }
 
     /** Tag for the Material style's gap between row tiles ([buildDivider]). */
