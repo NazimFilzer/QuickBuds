@@ -131,6 +131,9 @@ object SettingRowFactory {
     /** Tag for the title TextView (rows whose title is not a resource, e.g. a preset name). */
     const val TITLE_TAG = "setting_row_title"
 
+    /** Tag for the Material style's gap between row tiles ([buildDivider]). */
+    const val GAP_TAG = "setting_row_gap"
+
     /** Tag for the title + subtitle column. */
     const val TEXT_TAG = "setting_row_text"
 
@@ -237,6 +240,12 @@ object SettingRowFactory {
 
     /** 1dp `outline` divider between rows inside a card (Nothing: a row of dots). Not drawn after the last row. */
     fun buildDivider(context: Context): View = View(context).apply {
+        if (ThemeRes.material(context)) {
+            // Material style: no line. A 2dp gap between the row tiles ([ThemeRes.Segments]).
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ThemeRes.dp(context, 2f))
+            tag = GAP_TAG
+            return@apply
+        }
         val outline = ThemeRes.color(context, R.attr.appColorOutline)
         if (ThemeRes.nothing(context)) {
             // Nothing style: one row of dots (DotArt), a dot tall.
@@ -251,7 +260,7 @@ object SettingRowFactory {
     /** Card (SPEC section 2): 24dp radius, `outline` stroke, rows clipped to the corners. The dot style draws the same outline in dots. */
     fun card(context: Context, radiusDp: Float = 24f): LinearLayout = LinearLayout(context).apply {
         orientation = LinearLayout.VERTICAL
-        background = ThemeRes.card(context, radiusDp)
+        background = if (ThemeRes.material(context)) ThemeRes.Segments(context) else ThemeRes.card(context, radiusDp)
         clipToOutline = true
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
@@ -283,19 +292,22 @@ object SettingRowFactory {
         card.addView(row)
     }
 
-    /** Screen title: 24sp bold (dot style: Doto, [ThemeRes.headline]), 4dp start inset. */
+    /** Screen title: 24sp bold (dot style: Doto, [ThemeRes.headline]; Material: 32sp regular, the M3 large top bar), 4dp start inset. */
     fun title(context: Context, textRes: Int): TextView = TextView(context).apply {
         setText(textRes)
         setTextColor(ThemeRes.color(context, R.attr.appColorTextPrimary))
-        textSize = 24f
-        typeface = ThemeRes.headline(context)
+        val material = ThemeRes.material(context)
+        textSize = if (material) 32f else 24f
+        typeface = if (material) android.graphics.Typeface.DEFAULT else ThemeRes.headline(context)
         setPadding(ThemeRes.dp(context, 4f), 0, 0, ThemeRes.dp(context, 4f))
     }
 
-    /** Section label: 14sp, `textSecondary`, 4dp start inset, 9dp above its card. */
+    /** Section label: 14sp, `textSecondary` (Material: accent, medium), 4dp start inset, 9dp above its card. */
     fun sectionLabel(context: Context, textRes: Int): TextView = TextView(context).apply {
         setText(textRes)
-        setTextColor(ThemeRes.color(context, R.attr.appColorTextSecondary))
+        val material = ThemeRes.material(context)
+        setTextColor(ThemeRes.color(context, if (material) R.attr.appColorAccent else R.attr.appColorTextSecondary))
+        if (material) typeface = ThemeRes.medium(context)
         textSize = 14f
         val dp = { v: Float -> ThemeRes.dp(context, v) }
         setPadding(dp(4f), dp(14f), 0, dp(8f))

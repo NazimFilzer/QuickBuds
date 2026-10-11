@@ -76,7 +76,7 @@ class AncSegmentedView(
     private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE; strokeWidth = dp(1f); color = p.outline
     }
-    private val pillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = if (ThemeRes.material(context)) p.tonal else p.accent }
+    private val pillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = p.accent }
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = dp(if (iconRes.isEmpty()) 14f else 11.5f); textAlign = Paint.Align.CENTER
         typeface = ThemeRes.medium(context)
@@ -91,8 +91,18 @@ class AncSegmentedView(
 
     private val nothing = ThemeRes.nothing(context)
 
-    /** Material style: an M3 segmented button, the selected segment a tonal fill with a [Palette.text] label. */
+    /** Material style: an M3 connected button group. Each segment is a tile; the selected one is a full accent pill. */
     private val material = ThemeRes.material(context)
+
+    /** Space between the track edge and the segments: none in the Material style (the segments are the track). */
+    private val pad get() = if (material) 0f else dp(4f)
+
+    /** Material style: segment [i]'s box, 1dp short of each neighbour (a 2dp gap). */
+    private fun segment(i: Float) {
+        val segW = width.toFloat() / labels.size
+        val gap = dp(1f)
+        box.set(segW * i + if (i > 0f) gap else 0f, 0f, segW * (i + 1) - if (i < labels.size - 1) gap else 0f, height.toFloat())
+    }
 
     /** Track and outline, dots in the dot style (one-cell outline). */
     private fun track(canvas: Canvas) {
@@ -120,6 +130,18 @@ class AncSegmentedView(
             }
             return
         }
+        if (material) {
+            // Full round outer ends, 8dp inner corners.
+            val full = h / 2; val small = dp(8f)
+            val path = android.graphics.Path()
+            for (i in labels.indices) {
+                segment(i.toFloat())
+                val l = if (i == 0) full else small; val r = if (i == labels.lastIndex) full else small
+                path.addRoundRect(box, floatArrayOf(l, l, r, r, r, r, l, l), android.graphics.Path.Direction.CW)
+            }
+            canvas.drawPath(path, trackPaint)
+            return
+        }
         val e = if (nothing) DotArt.pitchPx(context) / 2 else dp(0.5f)
         box.set(e, e, width - e, h - e)
         canvas.drawRoundRect(box, dp(22f), dp(22f), trackPaint)
@@ -130,6 +152,11 @@ class AncSegmentedView(
     /** Classic: the sliding accent fill (the dot style draws an outline in [track]). */
     private fun pill(canvas: Canvas) {
         val h = height.toFloat()
+        if (pos >= 0f && material) {
+            segment(pos)
+            canvas.drawRoundRect(box, h / 2, h / 2, pillPaint)
+            return
+        }
         if (pos >= 0f && !nothing) {
             val inset = dp(4f)
             val left = inset + (width - inset * 2) / labels.size * pos
@@ -143,7 +170,7 @@ class AncSegmentedView(
         if (nothing) DotArt.draw(context, canvas, width, height) { track(it) } else track(canvas)
         pill(canvas)
 
-        val inset = dp(4f)
+        val inset = pad
         val segW = (width - inset * 2) / labels.size
 
         // The dot icons get more room: 31 dots in 22dp would blur into a grey disc.
@@ -158,7 +185,7 @@ class AncSegmentedView(
         labels.forEachIndexed { i, label ->
             // The segment under the moving fill brightens as the fill arrives.
             val closeness = if (pos < 0f) 0f else (1f - kotlin.math.abs(pos - i)).coerceIn(0f, 1f)
-            val c = Palette.blend(p.textSecondary, if (nothing) p.accent else if (material) p.text else p.onAccent, closeness)
+            val c = Palette.blend(p.textSecondary, if (nothing) p.accent else p.onAccent, closeness)
             val cx = inset + segW * i + segW / 2
             val dot = dots.getOrNull(i)
             if (dot != null) {

@@ -315,7 +315,53 @@ object ThemeRes {
         else shape(context, fill, null, if (material(context)) FULL else radiusDp)
 
     /** A group of rows or a home tile: the [card], in dots in the dot style (borders back on home). */
-    fun group(context: Context): Drawable? = card(context)
+    fun group(context: Context): Drawable? = if (material(context)) Segments(context) else card(context)
+
+    /**
+     * Material style: the rows of a [group] as separate tonal tiles (M3 segmented list), split at the
+     * [SettingRowFactory.buildDivider] gaps. The outer corners are 24dp, the inner ones 4dp. The drawable
+     * reads the rows from the view it is the background of.
+     */
+    class Segments(context: Context) : Drawable() {
+        private val fill = palette(context).container
+        private val outer = dp(context, 24f).toFloat()
+        private val inner = dp(context, 4f).toFloat()
+        private val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = fill }
+        private val path = android.graphics.Path()
+        private val box = android.graphics.RectF()
+
+        override fun draw(canvas: android.graphics.Canvas) {
+            val group = callback as? android.view.ViewGroup ?: return
+            val tiles = mutableListOf<Pair<Int, Int>>()
+            var top = -1; var bottom = -1
+            for (i in 0 until group.childCount) {
+                val c = group.getChildAt(i)
+                if (c.visibility == View.GONE) continue
+                if (c.tag == SettingRowFactory.GAP_TAG) {
+                    if (top >= 0) tiles += top to bottom
+                    top = -1
+                } else {
+                    if (top < 0) top = c.top
+                    bottom = c.bottom
+                }
+            }
+            if (top >= 0) tiles += top to bottom
+            tiles.forEachIndexed { i, (t, b) ->
+                val rt = if (i == 0) outer else inner
+                val rb = if (i == tiles.lastIndex) outer else inner
+                box.set(bounds.left.toFloat(), t.toFloat(), bounds.right.toFloat(), b.toFloat())
+                path.reset()
+                path.addRoundRect(box, floatArrayOf(rt, rt, rt, rt, rb, rb, rb, rb), android.graphics.Path.Direction.CW)
+                canvas.drawPath(path, paint)
+            }
+        }
+
+        override fun getOutline(outline: android.graphics.Outline) = outline.setRoundRect(bounds, outer)
+        override fun setAlpha(alpha: Int) { paint.alpha = alpha }
+        override fun setColorFilter(colorFilter: android.graphics.ColorFilter?) { paint.colorFilter = colorFilter }
+        @Deprecated("Deprecated in Java")
+        override fun getOpacity() = android.graphics.PixelFormat.TRANSLUCENT
+    }
 
     /** The standard card: `card` fill, 1dp `outline` stroke. */
     /**
