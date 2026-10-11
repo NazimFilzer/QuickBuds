@@ -75,18 +75,20 @@ class ThemeActivity : Activity() {
         if (!::selection.isInitialized) selection = SelectionSlider(root, "theme")
         root.addView(SettingRowFactory.title(this, R.string.theme_title))
 
-        // --- Style: Classic, Nothing or Material, for the app and the widgets ---
+        // --- Style: Material, QuickBuds (Classic) or Pixel art (dot matrix), for the app and the widgets ---
+        // Listed in that order; ORDER maps a segment to the stored style index.
+        val order = intArrayOf(2, 0, 1)
         root.addView(SettingRowFactory.sectionLabel(this, R.string.widget_style_title))
-        root.addView(AncSegmentedView(this, listOf(getString(R.string.widget_style_classic), getString(R.string.widget_style_nothing),
-            getString(R.string.widget_style_material))).apply {
-            selected = ThemeRes.style(this@ThemeActivity)
+        root.addView(AncSegmentedView(this, listOf(getString(R.string.widget_style_material), getString(R.string.widget_style_classic),
+            getString(R.string.widget_style_nothing))).apply {
+            selected = order.indexOf(ThemeRes.style(this@ThemeActivity))
             // Its name, for accessibility and for adb tests that look the control up.
             contentDescription = getString(R.string.widget_style_title)
             onSegmentTapped = { i ->
                 if (i != selected) {
                     // The pill slides first, then the screen is rebuilt in the new style.
                     selected = i
-                    ThemeRes.setStyle(this@ThemeActivity, i)
+                    ThemeRes.setStyle(this@ThemeActivity, order[i])
                     postDelayed({ ThemeRes.recreateFaded(this@ThemeActivity) }, 260)
                 }
             }

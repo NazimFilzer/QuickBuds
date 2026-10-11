@@ -312,7 +312,6 @@
     <string name="widget_style_title">Στυλ</string>
     <string name="widget_background_title">Φόντο γραφικών στοιχείων</string>
     <string name="widget_background_sub">Ανενεργό: το γραφικό στοιχείο εμφανίζεται πάνω στην ταπετσαρία</string>
-    <string name="widget_style_classic">Κλασικό</string>
     <string name="widget_mode_anc_low">ANC Χαμηλό</string>
     <string name="widget_mode_anc_medium">ANC Μεσαίο</string>
     <string name="widget_mode_anc_high">ANC Υψηλό</string>

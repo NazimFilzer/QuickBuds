@@ -178,7 +178,7 @@ equalizer writes, the hold's noise control cycle and more (see PROTOCOL.md).
 The desktop app is built with [Slint](https://slint.dev) (used under the GPLv3) and
 [tray-icon](https://github.com/tauri-apps/tray-icon).
 
-The Dot matrix style's font is [Doto](https://github.com/oliverlalan/Doto) (SIL Open Font License 1.1,
+The Pixel art style's font is [Doto](https://github.com/oliverlalan/Doto) (SIL Open Font License 1.1,
 bundled with its license in `app/src/main/assets/Doto-OFL.txt`).
 The Material style's widget font is [Google Sans Flex](https://github.com/googlefonts/googlesans-flex) (SIL Open
 Font License 1.1, a medium and a semibold instance with Latin, Greek and Cyrillic, bundled with its license in

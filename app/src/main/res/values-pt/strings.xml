@@ -312,7 +312,6 @@
     <string name="widget_style_title">Estilo</string>
     <string name="widget_background_title">Fundo dos widgets</string>
     <string name="widget_background_sub">Desativado: o widget fica sobre o papel de parede</string>
-    <string name="widget_style_classic">Clássico</string>
     <string name="widget_mode_anc_low">ANC baixo</string>
     <string name="widget_mode_anc_medium">ANC médio</string>
     <string name="widget_mode_anc_high">ANC alto</string>

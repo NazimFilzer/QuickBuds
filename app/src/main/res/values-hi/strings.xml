@@ -314,7 +314,6 @@
     <string name="widget_style_title">स्टाइल</string>
     <string name="widget_background_title">विजेट का बैकग्राउंड</string>
     <string name="widget_background_sub">बंद: विजेट आपके वॉलपेपर पर दिखता है</string>
-    <string name="widget_style_classic">क्लासिक</string>
     <string name="widget_mode_anc_low">ANC कम</string>
     <string name="widget_mode_anc_medium">ANC मध्यम</string>
     <string name="widget_mode_anc_high">ANC अधिक</string>

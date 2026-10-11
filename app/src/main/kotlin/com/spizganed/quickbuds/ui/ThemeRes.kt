@@ -126,18 +126,18 @@ object ThemeRes {
 
     /**
      * The app's style, shared with the widgets (one switch for both). True: Dot matrix (Doto
-     * text, no cards, dot-matrix rings and mode icons). False (default): Classic.
+     * text, no cards, dot-matrix rings and mode icons). False: Classic or [material] (a new install's default).
      */
     fun nothing(context: Context) = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_NOTHING, false)
 
-    private const val KEY_MATERIAL = "styleMaterial"
+    const val KEY_MATERIAL = "styleMaterial"
 
     /**
      * Material style (M3): tonal cards without outlines, pill buttons, the M3 switch. The widgets keep
      * the Classic layouts with tonal colours. Never true together with [nothing].
      */
     fun material(context: Context) = !nothing(context) &&
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_MATERIAL, false)
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).also { PaletteStore.defaults(it) }.getBoolean(KEY_MATERIAL, false)
 
     /** The style picker's index: 0 Classic, 1 Dot matrix, 2 Material. */
     fun style(context: Context) = if (nothing(context)) 1 else if (material(context)) 2 else 0

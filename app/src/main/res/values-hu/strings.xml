@@ -312,7 +312,6 @@
     <string name="widget_style_title">Stílus</string>
     <string name="widget_background_title">Modul háttere</string>
     <string name="widget_background_sub">Ki: a modul közvetlenül a háttérképen van</string>
-    <string name="widget_style_classic">Klasszikus</string>
     <string name="widget_mode_anc_low">ANC alacsony</string>
     <string name="widget_mode_anc_medium">ANC közepes</string>
     <string name="widget_mode_anc_high">ANC magas</string>

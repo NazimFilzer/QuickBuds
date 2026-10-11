@@ -312,7 +312,6 @@
     <string name="widget_style_title">Stil</string>
     <string name="widget_background_title">Fundalul widgeturilor</string>
     <string name="widget_background_sub">Dezactivat: widgetul stă pe imaginea de fundal</string>
-    <string name="widget_style_classic">Clasic</string>
     <string name="widget_mode_anc_low">ANC scăzut</string>
     <string name="widget_mode_anc_medium">ANC mediu</string>
     <string name="widget_mode_anc_high">ANC ridicat</string>

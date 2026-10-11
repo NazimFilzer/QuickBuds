@@ -312,7 +312,6 @@
     <string name="widget_style_title">Стиль</string>
     <string name="widget_background_title">Фон віджетів</string>
     <string name="widget_background_sub">Вимк.: віджет лежить просто на шпалерах</string>
-    <string name="widget_style_classic">Класичний</string>
     <string name="widget_mode_anc_low">ANC низький</string>
     <string name="widget_mode_anc_medium">ANC середній</string>
     <string name="widget_mode_anc_high">ANC високий</string>

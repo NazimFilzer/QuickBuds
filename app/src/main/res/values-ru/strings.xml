@@ -312,7 +312,6 @@
     <string name="widget_style_title">Стиль</string>
     <string name="widget_background_title">Фон виджетов</string>
     <string name="widget_background_sub">Выкл.: виджет лежит прямо на обоях</string>
-    <string name="widget_style_classic">Классический</string>
     <string name="widget_mode_anc_low">ANC низкий</string>
     <string name="widget_mode_anc_medium">ANC средний</string>
     <string name="widget_mode_anc_high">ANC высокий</string>

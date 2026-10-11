@@ -312,7 +312,6 @@
     <string name="widget_style_title">স্টাইল</string>
     <string name="widget_background_title">উইজেটের পটভূমি</string>
     <string name="widget_background_sub">বন্ধ: উইজেটটি আপনার ওয়ালপেপারের উপর থাকে</string>
-    <string name="widget_style_classic">ক্লাসিক</string>
     <string name="widget_mode_anc_low">ANC কম</string>
     <string name="widget_mode_anc_medium">ANC মাঝারি</string>
     <string name="widget_mode_anc_high">ANC বেশি</string>

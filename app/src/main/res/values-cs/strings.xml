@@ -312,7 +312,6 @@
     <string name="widget_style_title">Styl</string>
     <string name="widget_background_title">Pozadí widgetů</string>
     <string name="widget_background_sub">Vypnuto: widget leží přímo na tapetě</string>
-    <string name="widget_style_classic">Klasický</string>
     <string name="widget_mode_anc_low">ANC nízké</string>
     <string name="widget_mode_anc_medium">ANC střední</string>
     <string name="widget_mode_anc_high">ANC vysoké</string>

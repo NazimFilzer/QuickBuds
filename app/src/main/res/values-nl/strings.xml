@@ -312,7 +312,6 @@
     <string name="widget_style_title">Stijl</string>
     <string name="widget_background_title">Widgetachtergrond</string>
     <string name="widget_background_sub">Uit: de widget staat direct op je achtergrond</string>
-    <string name="widget_style_classic">Klassiek</string>
     <string name="widget_mode_anc_low">ANC laag</string>
     <string name="widget_mode_anc_medium">ANC gemiddeld</string>
     <string name="widget_mode_anc_high">ANC hoog</string>

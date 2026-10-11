@@ -314,7 +314,6 @@
     <string name="widget_style_title">Gaya</string>
     <string name="widget_background_title">Latar widget</string>
     <string name="widget_background_sub">Nonaktif: widget berada di atas wallpaper Anda</string>
-    <string name="widget_style_classic">Klasik</string>
     <string name="widget_mode_anc_low">ANC Rendah</string>
     <string name="widget_mode_anc_medium">ANC Sedang</string>
     <string name="widget_mode_anc_high">ANC Tinggi</string>

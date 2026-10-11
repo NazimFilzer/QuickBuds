@@ -312,7 +312,6 @@
     <string name="widget_style_title">Styl</string>
     <string name="widget_background_title">Tło widżetów</string>
     <string name="widget_background_sub">Wyłączone: widżet leży bezpośrednio na tapecie</string>
-    <string name="widget_style_classic">Klasyczny</string>
     <string name="widget_mode_anc_low">ANC niski</string>
     <string name="widget_mode_anc_medium">ANC średni</string>
     <string name="widget_mode_anc_high">ANC wysoki</string>

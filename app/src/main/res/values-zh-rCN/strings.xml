@@ -314,7 +314,6 @@
     <string name="widget_style_title">样式</string>
     <string name="widget_background_title">小部件背景</string>
     <string name="widget_background_sub">关闭：小部件直接显示在壁纸上</string>
-    <string name="widget_style_classic">经典</string>
     <string name="widget_mode_anc_low">降噪 低</string>
     <string name="widget_mode_anc_medium">降噪 中</string>
     <string name="widget_mode_anc_high">降噪 高</string>

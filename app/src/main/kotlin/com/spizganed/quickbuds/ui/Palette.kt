@@ -139,11 +139,17 @@ object PaletteStore {
     /** Wallpaper colours exist on Android 12+ (the system's tonal palettes). */
     fun wallpaperSupported() = android.os.Build.VERSION.SDK_INT >= 31
 
-    /** Wallpaper colours: the built-in presets take the system's tonal palettes, accent included; custom presets stay as saved. */
+    /**
+     * Wallpaper colours: the built-in presets take the system's tonal palettes, accent included.
+     * A custom preset is the other colour source: picking one turns this off, and turning this on
+     * leaves the custom preset for Match system.
+     */
     fun wallpaper(c: Context) = wallpaperSupported() && prefs(c).getBoolean(KEY_WALLPAPER, false)
 
     fun setWallpaper(c: Context, on: Boolean) {
-        prefs(c).edit().putBoolean(KEY_WALLPAPER, on).apply()
+        val edit = prefs(c).edit().putBoolean(KEY_WALLPAPER, on)
+        if (on && activeId(c) !in builtInIds()) edit.putBoolean(KEY_AUTO, true)
+        edit.apply()
         ThemeRes.invalidate()
         com.spizganed.quickbuds.widget.AncWidgetProvider.refreshAll(c)
     }
@@ -171,7 +177,21 @@ object PaletteStore {
     /** Changes when the wallpaper's colours change, so a cached palette can tell it is stale. */
     fun wallpaperKey(c: Context): Int = if (wallpaper(c)) c.applicationContext.getColor(android.R.color.system_accent1_500) else 0
 
-    private fun prefs(c: Context) = c.getSharedPreferences(ThemeRes.PREFS_NAME, Context.MODE_PRIVATE)
+    private fun prefs(c: Context) = c.getSharedPreferences(ThemeRes.PREFS_NAME, Context.MODE_PRIVATE).also { defaults(it) }
+
+    @Volatile private var defaultsChecked = false
+
+    /**
+     * A new install starts in the Material style, with Match system and wallpaper colours on, so the
+     * app looks like the phone. An install that ever picked a preset keeps its own choices.
+     */
+    fun defaults(p: android.content.SharedPreferences) {
+        if (defaultsChecked) return
+        defaultsChecked = true
+        if (p.contains(KEY_ACTIVE) || p.contains(KEY_LEGACY) || p.contains(KEY_AUTO)) return
+        p.edit().putString(KEY_ACTIVE, OLED).putBoolean(KEY_AUTO, true).putBoolean(KEY_WALLPAPER, true)
+            .putBoolean(ThemeRes.KEY_MATERIAL, true).apply()
+    }
 
     fun builtInIds() = listOf(OLED, DARK, WHITE)
 
@@ -207,10 +227,11 @@ object PaletteStore {
 
     /**
      * Picks a preset. Under Match system a dark built-in becomes its dark half; any other pick
-     * (White, a custom preset) turns Match system off.
+     * (White, a custom preset) turns Match system off. A custom preset also turns wallpaper colours off.
      */
     fun setActive(c: Context, id: String) {
         val edit = prefs(c).edit()
+        if (id !in builtInIds()) edit.putBoolean(KEY_WALLPAPER, false)
         if (auto(c) && (id == OLED || id == DARK)) edit.putString(KEY_AUTO_DARK, id)
         else edit.putBoolean(KEY_AUTO, false).putString(KEY_ACTIVE, id)
         edit.apply()
