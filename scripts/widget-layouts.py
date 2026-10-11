@@ -34,9 +34,9 @@ def img(i, src="widget_panel"):
     return f'<ImageView android:id="@+id/{i}" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/{src}" {IMG} />'
 
 def text(i, sp, bold=False, extra=""):
-    # Dot matrix: an ImageView the renderer fills with the text drawn in Doto (launchers ignore @font/ in widget XML);
-    # its height is Doto's line height, 1.2 x the text size, and the bitmap scales to it.
-    if N:
+    # Dot matrix and Material: an ImageView the renderer fills with the text drawn in Doto or Google Sans Flex (launchers
+    # ignore @font/ in widget XML); its height is 1.2 x the text size, and the bitmap scales to it.
+    if N or S == "md":
         return (f'<ImageView android:id="@+id/{i}" android:layout_width="wrap_content" android:layout_height="{round(sp * 1.2, 2):g}dp" '
                 f'android:adjustViewBounds="true" android:scaleType="fitCenter" {extra}/>')
     bold_font = 'android:fontFamily="@font/doto" android:textStyle="bold"' if N else 'android:fontFamily="sans-serif" android:textStyle="bold"'
@@ -128,7 +128,7 @@ def quick(size):
         return f'''<FrameLayout android:id="@+id/w_q{k}" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"{m} {PRESS}>
 {img(f"w_q{k}_bg")}
 {img(f"w_q{k}_stroke", "widget_panel_stroke")}
-<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="8dp">
+<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="{4 if S == "md" else 8}dp">
 <ImageView android:id="@+id/w_q{k}_icon" {icon} android:importantForAccessibility="no" />
 {text(f"w_q{k}_label", 17 if S == "md" else 15, extra='android:layout_marginTop="4dp" ')}
 </LinearLayout>
@@ -195,11 +195,8 @@ TITLE = {"s": "2x2", "m": "4x2"}
 for S in ("c", "n", "md"):
     N = S == "n"
     sfx = {"c": "", "n": "_n", "md": "_md"}[S]
-    # Material reuses Classic's grid and disconnected layouts.
-    grid_sfx = "_n" if N else ""
-    if S != "md":
-        open(RES + f"widget_grid{sfx}.xml", "w").write(grid(26, 12.5))
-        open(RES + f"widget_disconnected{sfx}.xml", "w").write(disconnected())
+    open(RES + f"widget_grid{sfx}.xml", "w").write(grid(26, 12.5))
+    open(RES + f"widget_disconnected{sfx}.xml", "w").write(disconnected())
     for size, name in (("s", "widget_pages"), ("m", "widget_pages_m")):
         out = f'''<?xml version="1.0" encoding="utf-8"?>
 <!-- {TITLE[size]} widget. Generated as one family with the other sizes. Outer ViewFlipper
@@ -223,7 +220,7 @@ for S in ("c", "n", "md"):
 </ViewFlipper>
 </FrameLayout>
 <FrameLayout android:id="@+id/w_page2" android:layout_width="match_parent" android:layout_height="match_parent" {page_pad()}>
-<include layout="@layout/widget_grid{grid_sfx}" />
+<include layout="@layout/widget_grid{sfx}" />
 </FrameLayout>
 </ViewFlipper>
 </FrameLayout>

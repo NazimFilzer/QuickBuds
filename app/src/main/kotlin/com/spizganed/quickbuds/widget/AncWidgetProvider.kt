@@ -254,7 +254,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
         }
 
         private fun disconnected(context: Context, p: Palette, kind: Kind): RemoteViews {
-            val v = RemoteViews(context.packageName, if (WidgetSettings.nothingStyle(context)) R.layout.widget_disconnected_n else R.layout.widget_disconnected)
+            val v = RemoteViews(context.packageName, if (WidgetSettings.nothingStyle(context)) R.layout.widget_disconnected_n
+                else if (WidgetSettings.materialStyle(context)) R.layout.widget_disconnected_md else R.layout.widget_disconnected)
             v.setImageViewResource(R.id.w_bg, bgRes(context))
             v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
             paint(context, v, CONN, p, false)
@@ -332,22 +333,23 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** Percentage, always `text`: nothing in the battery display changes colour by level. */
         private fun pctText(context: Context, v: RemoteViews, id: Int, p: Palette, level: Int) {
-            setText(context, v, id, pctLabel(context, level), p.text)
+            setText(context, v, id, pctLabel(context, level), p.text, strong = true)
         }
 
         /**
-         * A widget text. Classic: a TextView. Dot matrix: an ImageView showing the text drawn in Doto, because launchers
-         * ignore `@font/` in widget XML. The layout sets the view's height (sp x 1.2, Doto's line height) and the bitmap
-         * scales to it, so this draws at one fixed size.
+         * A widget text. Classic: a TextView. Dot matrix and Material: an ImageView showing the text drawn in Doto or
+         * Google Sans Flex ([strong]: semibold), because launchers ignore `@font/` in widget XML. The layout sets the view's
+         * height (sp x 1.2) and the bitmap scales to it, so this draws at one fixed size.
          */
-        private fun setText(context: Context, v: RemoteViews, id: Int, text: CharSequence, color: Int) {
-            if (!WidgetSettings.nothingStyle(context)) {
+        private fun setText(context: Context, v: RemoteViews, id: Int, text: CharSequence, color: Int, strong: Boolean = false) {
+            val material = WidgetSettings.materialStyle(context)
+            if (!WidgetSettings.nothingStyle(context) && !material) {
                 v.setTextViewText(id, text)
                 v.setTextColor(id, color)
                 return
             }
             val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                typeface = com.spizganed.quickbuds.ui.ThemeRes.dotFont(context)
+                typeface = if (material) materialFont(context, strong) else com.spizganed.quickbuds.ui.ThemeRes.dotFont(context)
                 textSize = 32f * context.resources.displayMetrics.density
                 this.color = color
             }
@@ -359,6 +361,11 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             v.setImageViewBitmap(id, bmp)
             v.setContentDescription(id, s)
         }
+
+        /** Material's widget font, like Google's widgets: Google Sans Flex (SIL OFL, bundled in res/font), medium or semibold. */
+        private fun materialFont(context: Context, strong: Boolean): android.graphics.Typeface =
+            androidx.core.content.res.ResourcesCompat.getFont(context, if (strong) R.font.google_sans_flex_semibold else R.font.google_sans_flex_medium)
+                ?: android.graphics.Typeface.DEFAULT
 
         private fun semibold(text: String) = SpannableString(text).apply {
             setSpan(TypefaceSpan("sans-serif-medium"), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -778,7 +785,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 c.restore()
             }
             val text = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.BOLD)
+                typeface = if (WidgetSettings.materialStyle(context)) materialFont(context, true)
+                    else android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.BOLD)
                 textSize = h * 0.6f
                 textAlign = Paint.Align.CENTER
                 color = p.text
@@ -862,8 +870,9 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
          */
         private fun pctPaint(context: Context, kind: Kind) = Paint().apply {
             val nothing = WidgetSettings.nothingStyle(context)
-            typeface = android.graphics.Typeface.create(if (nothing) com.spizganed.quickbuds.ui.ThemeRes.dotFont(context) else android.graphics.Typeface.SANS_SERIF, android.graphics.Typeface.BOLD)
             val material = WidgetSettings.materialStyle(context)
+            typeface = if (material) materialFont(context, true)
+                else android.graphics.Typeface.create(if (nothing) com.spizganed.quickbuds.ui.ThemeRes.dotFont(context) else android.graphics.Typeface.SANS_SERIF, android.graphics.Typeface.BOLD)
             textSize = (if (kind.square) (if (nothing) 17f else if (material) 21f else 16f) else if (material) 24f else 20f) * context.resources.displayMetrics.scaledDensity
         }
 
