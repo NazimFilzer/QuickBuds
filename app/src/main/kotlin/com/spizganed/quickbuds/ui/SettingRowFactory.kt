@@ -177,13 +177,24 @@ object SettingRowFactory {
                     addState(checkedState, ThemeRes.shape(context, p.accent, null, ThemeRes.FULL).apply { setSize(dp(52f), dp(32f)) })
                     addState(intArrayOf(), ThemeRes.shape(context, p.container, p.textSecondary, ThemeRes.FULL, 2f).apply { setSize(dp(52f), dp(32f)) })
                 }
-                fun knob(color: Int, sizeDp: Float) = android.graphics.drawable.InsetDrawable(
-                    android.graphics.drawable.GradientDrawable().apply { shape = android.graphics.drawable.GradientDrawable.OVAL; setColor(color) },
-                    dp((32f - sizeDp) / 2)
-                ).let { android.graphics.drawable.LayerDrawable(arrayOf(it)).apply { setLayerSize(0, dp(32f), dp(32f)) } }
+                // A plain disc with no padding: Switch shifts a thumb outward by its padding (an inset
+                // drawable's knob passed the track's end). The box is half the track wide, as Switch makes
+                // itself twice the thumb's width; the disc's centre is 16dp from the track end it sits at.
+                fun knob(color: Int, sizeDp: Float, atEnd: Boolean) = object : android.graphics.drawable.Drawable() {
+                    private val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { this.color = color }
+                    override fun draw(c: android.graphics.Canvas) = c.drawCircle(
+                        if (atEnd) bounds.right - dp(16f).toFloat() else bounds.left + dp(16f).toFloat(),
+                        bounds.exactCenterY(), dp(sizeDp) / 2f, paint)
+                    override fun getIntrinsicWidth() = dp(26f)
+                    override fun getIntrinsicHeight() = dp(32f)
+                    override fun setAlpha(alpha: Int) { paint.alpha = alpha }
+                    override fun setColorFilter(cf: android.graphics.ColorFilter?) { paint.colorFilter = cf }
+                    @Deprecated("Deprecated in Java")
+                    override fun getOpacity() = android.graphics.PixelFormat.TRANSLUCENT
+                }
                 thumbDrawable = android.graphics.drawable.StateListDrawable().apply {
-                    addState(checkedState, knob(p.onAccent, 24f))
-                    addState(intArrayOf(), knob(p.textSecondary, 16f))
+                    addState(checkedState, knob(p.onAccent, 24f, atEnd = true))
+                    addState(intArrayOf(), knob(p.textSecondary, 16f, atEnd = false))
                 }
                 thumbTintList = null
                 trackTintList = null

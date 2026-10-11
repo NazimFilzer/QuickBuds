@@ -152,7 +152,8 @@ class ThemeActivity : Activity() {
 
         // --- Accent of the applied built-in preset ---
         val active = ThemeRes.palette(this)
-        if (active.builtIn) {
+        // Hidden under wallpaper colours: the wallpaper sets the accent.
+        if (active.builtIn && !PaletteStore.wallpaper(this)) {
             val accentCard = SettingRowFactory.card(this).apply {
                 (layoutParams as LinearLayout.LayoutParams).topMargin = dp(18f)
             }

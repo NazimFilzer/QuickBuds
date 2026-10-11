@@ -70,8 +70,11 @@ data class Palette(
     /** Background of an expanded row. */
     val expanded get() = blend(card, text, 0.05f)
 
-    /** Material style: a card's tonal surface (M3 surface container), a little lifted and tinted by the accent. */
-    val container get() = blend(blend(card, text, if (isLight) 0f else 0.05f), accent, if (isLight) 0.05f else 0.08f)
+    /**
+     * Material style: a card's tonal surface (M3 surface container), a little lifted and tinted by the accent.
+     * A black card (OLED Black) is lifted more, or the cards vanish into the page.
+     */
+    val container get() = blend(blend(card, text, if (isLight) 0f else if (luminance(card) < 0.005) 0.09f else 0.05f), accent, if (isLight) 0.05f else 0.08f)
 
     /** Material style: a selected element's fill (M3 secondary container); its label is [text]. */
     val tonal get() = blend(container, accent, if (isLight) 0.18f else 0.28f)
@@ -136,7 +139,7 @@ object PaletteStore {
     /** Wallpaper colours exist on Android 12+ (the system's tonal palettes). */
     fun wallpaperSupported() = android.os.Build.VERSION.SDK_INT >= 31
 
-    /** Wallpaper colours: the built-in presets take the system's tonal palettes; custom presets stay as saved. */
+    /** Wallpaper colours: the built-in presets take the system's tonal palettes, accent included; custom presets stay as saved. */
     fun wallpaper(c: Context) = wallpaperSupported() && prefs(c).getBoolean(KEY_WALLPAPER, false)
 
     fun setWallpaper(c: Context, on: Boolean) {
@@ -229,7 +232,9 @@ object PaletteStore {
         val tv = TypedValue()
         val t = if (wallpaper(c)) wallpaperTokens(c.applicationContext, id).toList()
             else ThemeRes.TOKEN_ATTRS.map { theme.resolveAttribute(it, tv, true); tv.data }
-        return Palette(id, ThemeRes.builtInName(c, id), true, t[0], t[1], accentOverride(c, id) ?: t[2], t[3], t[4], t[5])
+        // Wallpaper colours replace the user's accent too: the override would hide them on OLED Black.
+        val accent = if (wallpaper(c)) t[2] else accentOverride(c, id) ?: t[2]
+        return Palette(id, ThemeRes.builtInName(c, id), true, t[0], t[1], accent, t[3], t[4], t[5])
     }
 
     /** The user's accent for a built-in preset, or null for the style's own. */
