@@ -162,7 +162,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** The views and the flipper child to show (-1: the disconnected layout, no flippers); [update] decides whether to send the child. */
         private fun build(context: Context, state: WidgetStateStore.State, provider: Kind, id: Int): Pair<RemoteViews, Int> {
-            val p = ThemeRes.palette(context)
+            val p = WidgetSettings.palette(context)
             if (!state.connected) return disconnected(context, p, provider) to -1
 
             val page = provider.page ?: WidgetSettings.page(context, id, Kind.BATTERY)
@@ -204,7 +204,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
          * no boxes: `card` itself, so panels melt into the widget background.
          */
         private fun panelColor(c: Context, p: Palette) =
-            if (WidgetSettings.materialStyle(c)) Palette.blend(boxColor(p), p.accent, 0.10f)
+            if (WidgetSettings.systemRoles(c) && android.os.Build.VERSION.SDK_INT >= 31) WidgetSettings.systemPanel(c, p.isLight)
+            else if (WidgetSettings.materialStyle(c)) Palette.blend(boxColor(p), p.accent, 0.10f)
             else if (WidgetSettings.nothingStyle(c)) Palette.blend(boxColor(p), p.text, 0.07f) else Palette.blend(boxColor(p), p.text, 0.04f)
 
         /** Dot style: the panel's dashed grey outline, as the buttons have it. Classic draws none, so it is hidden (set both ways). */
@@ -225,7 +226,9 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             v.setImageViewResource(b.bg, panelRes(c))
             if (WidgetSettings.materialStyle(c)) {
                 // Material: a tonal fill when selected, and the stroke in the fill's own colour (no outline).
-                val fill = if (selected) Palette.blend(panelColor(c, p), p.accent, 0.30f) else panelColor(c, p)
+                val fill = if (!selected) panelColor(c, p)
+                    else if (WidgetSettings.systemRoles(c) && android.os.Build.VERSION.SDK_INT >= 31) WidgetSettings.systemSelected(c, p.isLight)
+                    else Palette.blend(panelColor(c, p), p.accent, 0.30f)
                 v.setInt(b.bg, "setColorFilter", fill)
                 v.setImageViewResource(b.stroke, R.drawable.widget_panel_stroke)
                 v.setInt(b.stroke, "setColorFilter", fill)

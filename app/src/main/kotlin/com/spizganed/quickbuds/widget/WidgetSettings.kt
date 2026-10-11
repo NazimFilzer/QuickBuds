@@ -73,6 +73,33 @@ object WidgetSettings {
     /** The Material style ([ThemeRes.material]): Classic layouts with tonal panels and a tonal selection, no outlines. */
     fun materialStyle(c: Context) = ThemeRes.material(c)
 
+    /** Material style with wallpaper colours: the widget takes the system's widget roles, as Google's widgets do. */
+    fun systemRoles(c: Context) = materialStyle(c) && com.spizganed.quickbuds.ui.PaletteStore.wallpaper(c)
+
+    /**
+     * The widget's palette. With [systemRoles]: the wallpaper's secondary tones for the box, its primary
+     * tones for text and accent (dark: box tone 20, text 90; light mirrored). Else the app's palette.
+     */
+    fun palette(c: Context): com.spizganed.quickbuds.ui.Palette {
+        val app = ThemeRes.palette(c)
+        if (!systemRoles(c) || android.os.Build.VERSION.SDK_INT < 31) return app
+        fun s(res: Int) = c.getColor(res)
+        return if (app.isLight) app.copy(
+            background = s(android.R.color.system_accent2_50), card = s(android.R.color.system_accent2_50),
+            accent = s(android.R.color.system_accent1_600), text = s(android.R.color.system_accent1_900),
+            textSecondary = s(android.R.color.system_accent2_700), outline = s(android.R.color.system_accent2_200))
+        else app.copy(
+            background = s(android.R.color.system_accent2_800), card = s(android.R.color.system_accent2_800),
+            accent = s(android.R.color.system_accent1_200), text = s(android.R.color.system_accent1_100),
+            textSecondary = s(android.R.color.system_accent2_200), outline = s(android.R.color.system_accent2_600))
+    }
+
+    /** [systemRoles]: a panel inside the box (tone 30 dark, 90 light) and a selected button (primary container). */
+    @android.annotation.TargetApi(31)
+    fun systemPanel(c: Context, light: Boolean) = c.getColor(if (light) android.R.color.system_accent2_100 else android.R.color.system_accent2_700)
+    @android.annotation.TargetApi(31)
+    fun systemSelected(c: Context, light: Boolean) = c.getColor(if (light) android.R.color.system_accent1_100 else android.R.color.system_accent1_700)
+
     /** The page widget [id] shows, BATTERY or CONTROLS; [default] is its provider's own. */
     fun page(c: Context, id: Int, default: QuickBudsWidget.Kind): QuickBudsWidget.Kind =
         prefs(c).getString(KEY_PAGE + id, null)?.let { runCatching { QuickBudsWidget.Kind.valueOf(it) }.getOrNull() } ?: default

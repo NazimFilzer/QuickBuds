@@ -71,10 +71,10 @@ data class Palette(
     val expanded get() = blend(card, text, 0.05f)
 
     /**
-     * Material style: a card's tonal surface (M3 surface container), a little lifted and tinted by the accent.
-     * A black card (OLED Black) is lifted more, or the cards vanish into the page.
+     * Material style: a card's tonal surface (M3 surface container), the card tinted by the accent.
+     * A black card (OLED Black) is also lifted toward the text, or the cards vanish into the page.
      */
-    val container get() = blend(blend(card, text, if (isLight) 0f else if (luminance(card) < 0.005) 0.09f else 0.05f), accent, if (isLight) 0.05f else 0.08f)
+    val container get() = blend(blend(card, text, if (!isLight && luminance(card) < 0.005) 0.09f else 0f), accent, if (isLight) 0.05f else 0.08f)
 
     /** Material style: a selected element's fill (M3 secondary container); its label is [text]. */
     val tonal get() = blend(container, accent, if (isLight) 0.18f else 0.28f)
