@@ -259,9 +259,9 @@ fn send(body: String) -> bool {
     child.wait().is_ok_and(|s| s.success())
 }
 
-/// The current form as a body; None (with a note) without a description, or when the model is not in the list (a crash
-/// report sends with any model). A person who cannot connect at all has no log, only words to reproduce it from.
-/// A log without one RX frame gets a warning note: the buds never connected.
+/// The current form as a body; None (with a note) without a description, when the model is not in the list (a crash
+/// report sends with any model), or when the log has no RX frame (the buds never connected). A person who cannot
+/// connect at all has no log, only words to reproduce it from: Send without the log still works.
 fn current(a: &App) -> Option<String> {
     let r = a.main.global::<Report>();
     let tr = a.main.global::<Tr>();
@@ -278,7 +278,11 @@ fn current(a: &App) -> Option<String> {
         return None;
     }
     let no_frames = !crash && !LOG.lock().unwrap().iter().any(|l| l.dir == "RX");
-    r.set_note(if r.get_with_log() && no_frames { tr.get_problem_log_empty() } else { "".into() });
+    if r.get_with_log() && no_frames {
+        r.set_note(tr.get_problem_log_empty());
+        return None;
+    }
+    r.set_note("".into());
     let log = r.get_with_log().then(|| log_text(a));
     Some(body(r.get_model().trim(), &picked, &description, log.as_deref()))
 }

@@ -25,8 +25,8 @@ import com.spizganed.quickbuds.protocol.ModelCatalog
  * Settings › Report a problem ([ProblemReport]): buds model (filled in, with the model list as suggestions),
  * categories, a description and the log. See the report shows exactly what Send posts. Nothing goes out
  * without Send. From the crash dialog, [EXTRA_CRASH] fills it in: category Other, and the crash report after the log.
- * Send needs a model from the list, except for a crash report. A log without one RX frame gets a warning: the buds
- * never connected.
+ * Send needs a model from the list, except for a crash report. A log without one RX frame blocks Send: the buds
+ * never connected. Send without the log still works.
  */
 class ReportActivity : Activity() {
 
@@ -159,9 +159,9 @@ class ReportActivity : Activity() {
     /** A model from the list; a crash report sends with any model. */
     private fun known() = crash != null || model.text.toString().trim().lowercase() in models
 
-    /** Send needs a known model and a description. */
+    /** Send needs a known model, a log with frames (when included), and a description. */
     // A description is required: a person who cannot connect at all has no log, only words to reproduce it from.
-    private fun ready() = !sending && known() && description.text.isNotBlank()
+    private fun ready() = !sending && known() && !(noFrames && withLog.isChecked) && description.text.isNotBlank()
 
     private fun paintSend() {
         if (!::logEmpty.isInitialized) return
