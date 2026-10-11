@@ -783,7 +783,16 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 color = p.text
             }
             val fm = text.fontMetrics
-            c.drawText(pctLabel(context, level), w / 2f, h / 2f - (fm.ascent + fm.descent) / 2, text)
+            val y = h / 2f - (fm.ascent + fm.descent) / 2
+            // Two passes, so each part of the label reads on what is under it: on-accent over the fill, text over the rest.
+            val fillW = if (level in 1..100) w * level / 100f else 0f
+            c.save(); c.clipRect(fillW, 0f, w.toFloat(), h.toFloat())
+            c.drawText(pctLabel(context, level), w / 2f, y, text)
+            c.restore()
+            c.save(); c.clipRect(0f, 0f, fillW, h.toFloat())
+            text.color = p.onAccent
+            c.drawText(pctLabel(context, level), w / 2f, y, text)
+            c.restore()
             return bmp
         }
 
