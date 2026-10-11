@@ -3,7 +3,7 @@
 # libayatana-appindicator inside, so it needs no distro packages. scripts/desktop-dist.sh calls it.
 # Run it in the system that built the binary: linuxdeploy copies that system's libraries.
 # Usage: scripts/desktop-appimage.sh <staged folder> <output file>
-# Needs: curl, file, pkg-config, libxkbcommon-x11-0 and the -dev packages of desktop-dist.sh.
+# Needs: curl, file, pkg-config, libxkbcommon-x11-0, dpkg-dev (the GTK plugin) and the -dev packages of desktop-dist.sh.
 # No FUSE: the tools run extracted.
 set -euo pipefail
 pkg=$(realpath "$1")

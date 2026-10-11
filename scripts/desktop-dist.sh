@@ -81,7 +81,7 @@ podman run --rm --userns=keep-id -v "$root:/repo" -w /repo --user root docker.io
     set -e
     export DEBIAN_FRONTEND=noninteractive
     apt-get update -qq && apt-get install -y -qq curl ca-certificates file pkg-config libgtk-3-dev \
-      libayatana-appindicator3-dev libxkbcommon-x11-0 >/dev/null
+      libayatana-appindicator3-dev libxkbcommon-x11-0 dpkg-dev >/dev/null
     scripts/desktop-appimage.sh "desktop/dist/'"$(basename "$pkg")"'" "desktop/dist/'"$appimage"'"
     chown -R '"$(id -u):$(id -g)"' desktop/dist desktop/target/appimage-tools'
 fi
