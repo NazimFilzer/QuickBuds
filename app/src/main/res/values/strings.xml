@@ -352,6 +352,8 @@
     <string name="theme_builtin">Built-in</string>
     <string name="theme_auto">Match system</string>
     <string name="theme_auto_sub">%1$s in light mode, %2$s in dark mode</string>
+    <string name="theme_wallpaper">Wallpaper colors</string>
+    <string name="theme_wallpaper_sub">Built-in themes take their colors from your wallpaper</string>
     <string name="theme_oled_black">OLED Black</string>
     <string name="theme_classic_dark">Classic Dark</string>
     <string name="theme_white">White</string>
@@ -389,8 +391,11 @@
 
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">Style</string>
+    <string name="widget_background_title">Widget background</string>
+    <string name="widget_background_sub">Off: the widget sits on your wallpaper</string>
     <string name="widget_style_classic">Classic</string>
     <string name="widget_style_nothing" translatable="false">Dot matrix</string>
+    <string name="widget_style_material" translatable="false">Material</string>
     <string name="widget_mode_anc_low">ANC Low</string>
     <string name="widget_mode_anc_medium">ANC Medium</string>
     <string name="widget_mode_anc_high">ANC High</string>
@@ -487,6 +492,7 @@
     <string name="dual_preferred_sub">When it is in range, the earbuds connect to it first.</string>
     <string name="widget_pages_name">QuickBuds battery and controls</string>
     <string name="widget_controls_name">QuickBuds controls</string>
+    <string name="widget_settings_title">Widget settings</string>
     <string name="widget_setup_title">Widget buttons</string>
     <string name="widget_setup_hint">Pick up to 4 buttons. The widget shows them in this order.</string>
     <string name="problem_title">Report a problem</string>

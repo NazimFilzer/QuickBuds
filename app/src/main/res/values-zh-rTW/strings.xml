@@ -274,6 +274,8 @@
     <string name="theme_builtin">內建</string>
     <string name="theme_auto">跟隨系統</string>
     <string name="theme_auto_sub">淺色模式用%1$s，深色模式用%2$s</string>
+    <string name="theme_wallpaper">桌布顏色</string>
+    <string name="theme_wallpaper_sub">內建主題使用桌布的顏色</string>
     <string name="theme_oled_black">OLED 純黑</string>
     <string name="theme_classic_dark">經典深色</string>
     <string name="theme_white">白色</string>
@@ -310,6 +312,8 @@
 
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">樣式</string>
+    <string name="widget_background_title">小工具背景</string>
+    <string name="widget_background_sub">關閉：小工具直接顯示在桌布上</string>
     <string name="widget_style_classic">經典</string>
     <string name="widget_mode_anc_low">降噪 低</string>
     <string name="widget_mode_anc_medium">降噪 中</string>
@@ -403,6 +407,7 @@
     <string name="dual_preferred_sub">在範圍內時，耳機會優先連線此裝置。</string>
     <string name="widget_pages_name">QuickBuds 電量和控制</string>
     <string name="widget_controls_name">QuickBuds 控制</string>
+    <string name="widget_settings_title">小工具設定</string>
     <string name="widget_setup_title">小工具按鈕</string>
     <string name="widget_setup_hint">最多選擇 4 個按鈕。小工具依此順序顯示。</string>
     <string name="problem_title">回報問題</string>

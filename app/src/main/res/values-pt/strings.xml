@@ -274,6 +274,8 @@
     <string name="theme_builtin">Integrados</string>
     <string name="theme_auto">Seguir o sistema</string>
     <string name="theme_auto_sub">%1$s no modo claro, %2$s no modo escuro</string>
+    <string name="theme_wallpaper">Cores do papel de parede</string>
+    <string name="theme_wallpaper_sub">Os temas integrados usam as cores do seu papel de parede</string>
     <string name="theme_oled_black">Preto OLED</string>
     <string name="theme_classic_dark">Escuro clássico</string>
     <string name="theme_white">Branco</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">Recentes</string>
     <string name="preset_hex">Cor hex</string>
     <string name="widget_style_title">Estilo</string>
+    <string name="widget_background_title">Fundo dos widgets</string>
+    <string name="widget_background_sub">Desativado: o widget fica sobre o papel de parede</string>
     <string name="widget_style_classic">Clássico</string>
     <string name="widget_mode_anc_low">ANC baixo</string>
     <string name="widget_mode_anc_medium">ANC médio</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">Quando estiver ao alcance, os fones se conectam a ele primeiro.</string>
     <string name="widget_pages_name">QuickBuds bateria e controlos</string>
     <string name="widget_controls_name">QuickBuds controlos</string>
+    <string name="widget_settings_title">Configurações do widget</string>
     <string name="widget_setup_title">Botões do widget</string>
     <string name="widget_setup_hint">Escolha até 4 botões. O widget mostra-os por esta ordem.</string>
     <string name="problem_title">Comunicar um problema</string>

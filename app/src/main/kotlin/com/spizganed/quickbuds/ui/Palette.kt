@@ -70,6 +70,15 @@ data class Palette(
     /** Background of an expanded row. */
     val expanded get() = blend(card, text, 0.05f)
 
+    /**
+     * Material style: a card's tonal surface (M3 surface container), the card tinted by the accent.
+     * A black card (OLED Black) is also lifted toward the text, or the cards vanish into the page.
+     */
+    val container get() = blend(blend(card, text, if (!isLight && luminance(card) < 0.005) 0.09f else 0f), accent, if (isLight) 0.05f else 0.08f)
+
+    /** Material style: a selected element's fill (M3 secondary container); its label is [text]. */
+    val tonal get() = blend(container, accent, if (isLight) 0.18f else 0.28f)
+
     fun toJson(): JSONObject = JSONObject()
         .put("id", id).put("name", name)
         .put("background", background).put("card", card).put("accent", accent)
@@ -125,6 +134,42 @@ object PaletteStore {
     private const val KEY_AUTO_DARK = "paletteAutoDark"
     /** The pre-preset theme index (0 OLED, 1 Dark, 2 Light), migrated once. */
     private const val KEY_LEGACY = "theme"
+    private const val KEY_WALLPAPER = "paletteWallpaper"
+
+    /** Wallpaper colours exist on Android 12+ (the system's tonal palettes). */
+    fun wallpaperSupported() = android.os.Build.VERSION.SDK_INT >= 31
+
+    /** Wallpaper colours: the built-in presets take the system's tonal palettes, accent included; custom presets stay as saved. */
+    fun wallpaper(c: Context) = wallpaperSupported() && prefs(c).getBoolean(KEY_WALLPAPER, false)
+
+    fun setWallpaper(c: Context, on: Boolean) {
+        prefs(c).edit().putBoolean(KEY_WALLPAPER, on).apply()
+        ThemeRes.invalidate()
+        com.spizganed.quickbuds.widget.AncWidgetProvider.refreshAll(c)
+    }
+
+    /**
+     * A built-in preset's six tokens from the wallpaper (M3 tonal roles). Each keeps its own base:
+     * OLED Black stays true black, Classic Dark dark, White light.
+     */
+    @android.annotation.TargetApi(31)
+    private fun wallpaperTokens(c: Context, id: String): IntArray {
+        fun s(res: Int) = c.getColor(res)
+        return when (id) {
+            WHITE -> intArrayOf(
+                s(android.R.color.system_neutral2_50), s(android.R.color.system_neutral1_10), s(android.R.color.system_accent1_600),
+                s(android.R.color.system_neutral1_900), s(android.R.color.system_neutral2_700), s(android.R.color.system_neutral2_200))
+            DARK -> intArrayOf(
+                s(android.R.color.system_neutral1_900), s(android.R.color.system_neutral1_800), s(android.R.color.system_accent1_200),
+                s(android.R.color.system_neutral1_50), s(android.R.color.system_neutral2_200), s(android.R.color.system_neutral2_700))
+            else -> intArrayOf(
+                Color.BLACK, Color.BLACK, s(android.R.color.system_accent1_200),
+                s(android.R.color.system_neutral1_50), s(android.R.color.system_neutral2_200), s(android.R.color.system_neutral2_800))
+        }
+    }
+
+    /** Changes when the wallpaper's colours change, so a cached palette can tell it is stale. */
+    fun wallpaperKey(c: Context): Int = if (wallpaper(c)) c.applicationContext.getColor(android.R.color.system_accent1_500) else 0
 
     private fun prefs(c: Context) = c.getSharedPreferences(ThemeRes.PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -185,8 +230,11 @@ object PaletteStore {
         // Resolved attribute by attribute: obtainStyledAttributes() needs a sorted id array.
         val theme = c.resources.newTheme().apply { applyStyle(ThemeRes.styleFor(id), true) }
         val tv = TypedValue()
-        val t = ThemeRes.TOKEN_ATTRS.map { theme.resolveAttribute(it, tv, true); tv.data }
-        return Palette(id, ThemeRes.builtInName(c, id), true, t[0], t[1], accentOverride(c, id) ?: t[2], t[3], t[4], t[5])
+        val t = if (wallpaper(c)) wallpaperTokens(c.applicationContext, id).toList()
+            else ThemeRes.TOKEN_ATTRS.map { theme.resolveAttribute(it, tv, true); tv.data }
+        // Wallpaper colours replace the user's accent too: the override would hide them on OLED Black.
+        val accent = if (wallpaper(c)) t[2] else accentOverride(c, id) ?: t[2]
+        return Palette(id, ThemeRes.builtInName(c, id), true, t[0], t[1], accent, t[3], t[4], t[5])
     }
 
     /** The user's accent for a built-in preset, or null for the style's own. */

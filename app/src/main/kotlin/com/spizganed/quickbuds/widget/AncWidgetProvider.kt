@@ -52,14 +52,14 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
      * The provider. BATTERY and CONTROLS double as the page names ([WidgetSettings.page]).
      * [fixed]: the one page a single-page widget shows; null for the two-page widgets.
      */
-    enum class Kind(private val classic: Int, private val nothing: Int, val fixed: Kind? = null) {
-        BATTERY(R.layout.widget_pages, R.layout.widget_pages_n),
-        CONTROLS(R.layout.widget_pages, R.layout.widget_pages_n),
-        COMBINED(R.layout.widget_pages_m, R.layout.widget_pages_m_n),
-        BATTERY_ONLY(R.layout.widget_pages, R.layout.widget_pages_n, BATTERY);
+    enum class Kind(private val classic: Int, private val nothing: Int, private val material: Int, val fixed: Kind? = null) {
+        BATTERY(R.layout.widget_pages, R.layout.widget_pages_n, R.layout.widget_pages_md),
+        CONTROLS(R.layout.widget_pages, R.layout.widget_pages_n, R.layout.widget_pages_md),
+        COMBINED(R.layout.widget_pages_m, R.layout.widget_pages_m_n, R.layout.widget_pages_m_md),
+        BATTERY_ONLY(R.layout.widget_pages, R.layout.widget_pages_n, R.layout.widget_pages_md, BATTERY);
 
-        /** The layout for the chosen style ([WidgetSettings.nothingStyle]). */
-        fun layout(c: Context) = if (WidgetSettings.nothingStyle(c)) nothing else classic
+        /** The layout for the chosen style ([WidgetSettings.nothingStyle], [WidgetSettings.materialStyle]). */
+        fun layout(c: Context) = if (WidgetSettings.nothingStyle(c)) nothing else if (WidgetSettings.materialStyle(c)) material else classic
         /** The 2x2 (as opposed to the 4x2). */
         val square get() = this != COMBINED
         /** The page shown; CONTROLS is a single-page widget too (its own [fixed] would be a forward reference). */
@@ -83,6 +83,12 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
     private class Btn(val root: Int, val bg: Int, val stroke: Int, val icon: Int, val label: Int)
 
     companion object {
+
+        /** The kind of widget [id], from its provider; null for an unknown id. */
+        fun kindOf(c: Context, id: Int): Kind? {
+            val cls = AppWidgetManager.getInstance(c).getAppWidgetInfo(id)?.provider?.className ?: return null
+            return providers.firstOrNull { it.first.name == cls }?.second
+        }
 
         private val providers = listOf(
             BatteryWidgetProvider::class.java to Kind.BATTERY,
@@ -162,8 +168,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** The views and the flipper child to show (-1: the disconnected layout, no flippers); [update] decides whether to send the child. */
         private fun build(context: Context, state: WidgetStateStore.State, provider: Kind, id: Int): Pair<RemoteViews, Int> {
-            val p = ThemeRes.palette(context)
-            if (!state.connected) return disconnected(context, p, provider) to -1
+            val p = WidgetSettings.palette(context)
+            if (!state.connected) return disconnected(context, p, provider, id) to -1
 
             val page = provider.page ?: WidgetSettings.page(context, id, Kind.BATTERY)
             val list = page == Kind.CONTROLS && WidgetSettings.listOpen(context, id)
@@ -172,8 +178,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             // a flipper's child animates. The flip side: every state set here must be set both ways
             // (visibility, click), or the previous update's sticks.
             val child = if (list) 2 else if (page == Kind.BATTERY) 0 else 1
-            v.setImageViewResource(R.id.w_bg, bgRes(context))
-            v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
+            boxBg(context, v, p, id)
             // Every tap on a two-page widget carries the other page, so a second tap swaps.
             val other = if (page == Kind.BATTERY) Kind.CONTROLS else Kind.BATTERY
             val swap = if (!list && provider.page == null) other else null
@@ -192,6 +197,20 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             if (WidgetSettings.nothingStyle(c)) R.drawable.widget_bg_n else R.drawable.widget_bg
 
         /** A panel or button inside the box, its corners parallel to the box's in the Nothing style. */
+        /** Widget [id]'s box; Material without [WidgetSettings.background]: none, the content on the wallpaper. */
+        private fun boxBg(c: Context, v: RemoteViews, p: Palette, id: Int) {
+            if (!WidgetSettings.background(c, id)) return v.setImageViewResource(R.id.w_bg, android.R.color.transparent)
+            v.setImageViewResource(R.id.w_bg, bgRes(c))
+            v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
+        }
+
+        /** A battery panel or the case row's panel. Material draws none (one background). */
+        private fun panelBg(c: Context, v: RemoteViews, id: Int, p: Palette) {
+            if (WidgetSettings.materialStyle(c)) return v.setImageViewResource(id, android.R.color.transparent)
+            v.setImageViewResource(id, panelRes(c))
+            v.setInt(id, "setColorFilter", panelColor(c, p))
+        }
+
         private fun panelRes(c: Context) =
             if (WidgetSettings.nothingStyle(c)) R.drawable.widget_panel_n else R.drawable.widget_panel
 
@@ -204,7 +223,9 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
          * no boxes: `card` itself, so panels melt into the widget background.
          */
         private fun panelColor(c: Context, p: Palette) =
-            if (WidgetSettings.nothingStyle(c)) Palette.blend(boxColor(p), p.text, 0.07f) else Palette.blend(boxColor(p), p.text, 0.04f)
+            // Material: one background, as Google's widgets have; panels melt into the box and only a selection is filled.
+            if (WidgetSettings.materialStyle(c)) boxColor(p)
+            else if (WidgetSettings.nothingStyle(c)) Palette.blend(boxColor(p), p.text, 0.07f) else Palette.blend(boxColor(p), p.text, 0.04f)
 
         /** Dot style: the panel's dashed grey outline, as the buttons have it. Classic draws none, so it is hidden (set both ways). */
         private fun panelOutline(c: Context, v: RemoteViews, id: Int, p: Palette) {
@@ -222,6 +243,15 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
         private fun paint(c: Context, v: RemoteViews, b: Btn, p: Palette, selected: Boolean) {
             val n = WidgetSettings.nothingStyle(c)
             v.setImageViewResource(b.bg, panelRes(c))
+            if (WidgetSettings.materialStyle(c)) {
+                // Material: only a selected button is filled (tonal); no outline, no box otherwise.
+                v.setImageViewResource(b.stroke, android.R.color.transparent)
+                if (!selected) return v.setImageViewResource(b.bg, android.R.color.transparent)
+                v.setInt(b.bg, "setColorFilter",
+                    if (WidgetSettings.systemRoles(c) && android.os.Build.VERSION.SDK_INT >= 31) WidgetSettings.systemSelected(c, p.isLight)
+                    else Palette.blend(panelColor(c, p), p.accent, 0.35f))
+                return
+            }
             v.setInt(b.bg, "setColorFilter", if (selected && !n) p.accent else panelColor(c, p))
             v.setImageViewResource(b.stroke, if (n) (if (selected) R.drawable.widget_panel_select_n else R.drawable.widget_panel_dots_n)
                 else R.drawable.widget_panel_stroke)
@@ -230,7 +260,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** Paints [b] with [icon] and [text]: selected on-accent (Classic fill) or accent (Nothing outline), else secondary. */
         private fun content(context: Context, v: RemoteViews, b: Btn, p: Palette, selected: Boolean, icon: Int, text: CharSequence?, iconDp: Float, pitch: Float = DOT_DP) {
-            val fg = if (!selected) p.textSecondary else if (WidgetSettings.nothingStyle(context)) p.accent else p.onAccent
+            val fg = if (!selected) p.textSecondary else if (WidgetSettings.nothingStyle(context)) p.accent
+                else if (WidgetSettings.materialStyle(context)) p.text else p.onAccent
             icon(context, v, b.icon, icon, iconDp, pitch)
             v.setInt(b.icon, "setColorFilter", fg)
             if (text == null) v.setViewVisibility(b.label, View.GONE)
@@ -240,12 +271,14 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             }
         }
 
-        private fun disconnected(context: Context, p: Palette, kind: Kind): RemoteViews {
-            val v = RemoteViews(context.packageName, if (WidgetSettings.nothingStyle(context)) R.layout.widget_disconnected_n else R.layout.widget_disconnected)
-            v.setImageViewResource(R.id.w_bg, bgRes(context))
-            v.setInt(R.id.w_bg, "setColorFilter", boxColor(p))
-            paint(context, v, CONN, p, false)
-            content(context, v, CONN, p, false, R.drawable.ic_status_dot_empty, context.getString(R.string.conn_action_connect), 10f, 10f / 5)
+        private fun disconnected(context: Context, p: Palette, kind: Kind, id: Int): RemoteViews {
+            val v = RemoteViews(context.packageName, if (WidgetSettings.nothingStyle(context)) R.layout.widget_disconnected_n
+                else if (WidgetSettings.materialStyle(context)) R.layout.widget_disconnected_md else R.layout.widget_disconnected)
+            boxBg(context, v, p, id)
+            // Material: the chip is the widget's only control, so it keeps its fill (with or without the box).
+            val chip = WidgetSettings.materialStyle(context)
+            paint(context, v, CONN, p, chip)
+            content(context, v, CONN, p, chip, R.drawable.ic_status_dot_empty, context.getString(R.string.conn_action_connect), 10f, 10f / 5)
             v.setContentDescription(CONN.root, context.getString(R.string.conn_off) + ". " + context.getString(R.string.conn_action_connect))
             v.setOnClickPendingIntent(CONN.root, connectPI(context))
             return v
@@ -261,22 +294,20 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             val slots = if (caseBar) listOf(0, 2) else listOf(0, 1, 2)
             for (slot in slots) {
                 val (bgId, ringId, pct, label, strokeId) = PANELS[slot].toList()
-                v.setImageViewResource(bgId, panelRes(context))
-                v.setInt(bgId, "setColorFilter", panelColor(context, p))
+                panelBg(context, v, bgId, p)
                 panelOutline(context, v, strokeId, p)
                 v.setImageViewBitmap(ringId, ring(context, p, levels[slot], slot, statuses[slot], ringDp))
                 pctText(context, v, pct, p, levels[slot])
                 val inEar = statuses[slot] == 3 || statuses[slot] == 7
                 val text = if (slot == 1) context.getString(names[slot]) else wearLabel(context, statuses[slot]) ?: context.getString(names[slot])
                 // Nothing: no wear text, the glyph's shade says it ([nothingTint]) and the ring's content description reads it.
-                val noLabel = WidgetSettings.nothingStyle(context)
+                val noLabel = WidgetSettings.nothingStyle(context) || WidgetSettings.materialStyle(context)
                 v.setViewVisibility(label, if (noLabel) View.GONE else View.VISIBLE)
                 v.setContentDescription(ringId, if (slot == 1) text else context.getString(names[slot]) + ", " + text)
                 setText(context, v, label, if (inEar && !noLabel) semibold(text) else text, if (inEar) p.text else p.textSecondary)
             }
             if (caseBar) {
-                v.setImageViewResource(R.id.w_bar_bg, panelRes(context))
-                v.setInt(R.id.w_bar_bg, "setColorFilter", panelColor(context, p))
+                panelBg(context, v, R.id.w_bar_bg, p)
                 panelOutline(context, v, R.id.w_bar_stroke, p)
                 // The case icon takes all the height the rings leave ([caseRowDp]). Nothing: at the rings' dot pitch,
                 // so the big icon keeps the app's case details (lid cut, LED).
@@ -310,7 +341,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 return minOf(h - 20f - 5f - pct, (w - 6f - 8f) / 3 - 4f).coerceIn(28f, 160f)
             }
             // Page padding 12 across, 20 down; panel padding 8; texts: percentage + label lines.
-            val texts = if (WidgetSettings.nothingStyle(context)) 20f * 1.3f + 2f else 18f * 1.3f + 12f * 1.3f + 2f
+            val texts = if (WidgetSettings.materialStyle(context)) 24f * 1.3f + 2f
+                else if (WidgetSettings.nothingStyle(context)) 20f * 1.3f + 2f else 18f * 1.3f + 12f * 1.3f + 2f
             val byHeight = h - 20f - 8f - texts - 6f
             val byWidth = (w - 12f - 6f * 2) / 3 - 8f
             return minOf(byHeight, byWidth).coerceIn(28f, 120f)
@@ -318,22 +350,23 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** Percentage, always `text`: nothing in the battery display changes colour by level. */
         private fun pctText(context: Context, v: RemoteViews, id: Int, p: Palette, level: Int) {
-            setText(context, v, id, pctLabel(context, level), p.text)
+            setText(context, v, id, pctLabel(context, level), p.text, strong = true)
         }
 
         /**
-         * A widget text. Classic: a TextView. Dot matrix: an ImageView showing the text drawn in Doto, because launchers
-         * ignore `@font/` in widget XML. The layout sets the view's height (sp x 1.2, Doto's line height) and the bitmap
-         * scales to it, so this draws at one fixed size.
+         * A widget text. Classic: a TextView. Dot matrix and Material: an ImageView showing the text drawn in Doto or
+         * Google Sans Flex ([strong]: semibold), because launchers ignore `@font/` in widget XML. The layout sets the view's
+         * height (sp x 1.2) and the bitmap scales to it, so this draws at one fixed size.
          */
-        private fun setText(context: Context, v: RemoteViews, id: Int, text: CharSequence, color: Int) {
-            if (!WidgetSettings.nothingStyle(context)) {
+        private fun setText(context: Context, v: RemoteViews, id: Int, text: CharSequence, color: Int, strong: Boolean = false) {
+            val material = WidgetSettings.materialStyle(context)
+            if (!WidgetSettings.nothingStyle(context) && !material) {
                 v.setTextViewText(id, text)
                 v.setTextColor(id, color)
                 return
             }
             val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                typeface = com.spizganed.quickbuds.ui.ThemeRes.dotFont(context)
+                typeface = if (material) materialFont(context, strong) else com.spizganed.quickbuds.ui.ThemeRes.dotFont(context)
                 textSize = 32f * context.resources.displayMetrics.density
                 this.color = color
             }
@@ -345,6 +378,11 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             v.setImageViewBitmap(id, bmp)
             v.setContentDescription(id, s)
         }
+
+        /** Material's widget font, like Google's widgets: Google Sans Flex (SIL OFL, bundled in res/font), medium or semibold. */
+        private fun materialFont(context: Context, strong: Boolean): android.graphics.Typeface =
+            androidx.core.content.res.ResourcesCompat.getFont(context, if (strong) R.font.google_sans_flex_semibold else R.font.google_sans_flex_medium)
+                ?: android.graphics.Typeface.DEFAULT
 
         private fun semibold(text: String) = SpannableString(text).apply {
             setSpan(TypefaceSpan("sans-serif-medium"), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -764,13 +802,23 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
                 c.restore()
             }
             val text = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.BOLD)
+                typeface = if (WidgetSettings.materialStyle(context)) materialFont(context, true)
+                    else android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.BOLD)
                 textSize = h * 0.6f
                 textAlign = Paint.Align.CENTER
                 color = p.text
             }
             val fm = text.fontMetrics
-            c.drawText(pctLabel(context, level), w / 2f, h / 2f - (fm.ascent + fm.descent) / 2, text)
+            val y = h / 2f - (fm.ascent + fm.descent) / 2
+            // Two passes, so each part of the label reads on what is under it: on-accent over the fill, text over the rest.
+            val fillW = if (level in 1..100) w * level / 100f else 0f
+            c.save(); c.clipRect(fillW, 0f, w.toFloat(), h.toFloat())
+            c.drawText(pctLabel(context, level), w / 2f, y, text)
+            c.restore()
+            c.save(); c.clipRect(0f, 0f, fillW, h.toFloat())
+            text.color = p.onAccent
+            c.drawText(pctLabel(context, level), w / 2f, y, text)
+            c.restore()
             return bmp
         }
 
@@ -782,7 +830,8 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
         private class Geo(val side: Float, val vert: Float, val gap: Float, val top: Float, val outer: Float, val inner: Float, val bottom: Float, val row: Float, val pm: Float)
         private val GEO_NOTHING = Geo(3f, 7f, 4f, 3f, 3f, 1f, 4f, 3f, 5f)
         private val GEO_CLASSIC = Geo(6f, 8f, 6f, 4f, 7f, 7f, 3f, 4f, 2f)
-        private fun geo(c: Context) = if (WidgetSettings.nothingStyle(c)) GEO_NOTHING else GEO_CLASSIC
+        private val GEO_MATERIAL = Geo(5f, 8f, 4f, 3f, 3f, 1f, 3f, 3f, 3f)
+        private fun geo(c: Context) = if (WidgetSettings.nothingStyle(c)) GEO_NOTHING else if (WidgetSettings.materialStyle(c)) GEO_MATERIAL else GEO_CLASSIC
 
         /** The height of a battery text as the layout draws it ([pctPaint]), in dp. */
         private fun textDp(context: Context, paint: Paint) = paint.fontMetrics.let { it.descent - it.ascent } / context.resources.displayMetrics.density
@@ -818,7 +867,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             val g = geo(context)
             val ring = ringWidthDp(context, kind, w)
             val pct = textDp(context, pctPaint(context, Kind.BATTERY))
-            val label = if (WidgetSettings.nothingStyle(context)) 0f else textDp(context, Paint().apply {
+            val label = if (WidgetSettings.nothingStyle(context) || WidgetSettings.materialStyle(context)) 0f else textDp(context, Paint().apply {
                 typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
                 textSize = 11.5f * context.resources.displayMetrics.scaledDensity
             })
@@ -834,12 +883,14 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /**
          * A percentage as the layout draws it: dot style Doto bold 17sp on the 2x2 20sp on
-         * the 4x2; Classic sans-serif bold 16sp on the 2x2.
+         * the 4x2; Classic sans-serif bold 16sp on the 2x2; Material 21sp on the 2x2, 24sp on the 4x2.
          */
         private fun pctPaint(context: Context, kind: Kind) = Paint().apply {
             val nothing = WidgetSettings.nothingStyle(context)
-            typeface = android.graphics.Typeface.create(if (nothing) com.spizganed.quickbuds.ui.ThemeRes.dotFont(context) else android.graphics.Typeface.SANS_SERIF, android.graphics.Typeface.BOLD)
-            textSize = (if (kind.square) (if (nothing) 17f else 16f) else 20f) * context.resources.displayMetrics.scaledDensity
+            val material = WidgetSettings.materialStyle(context)
+            typeface = if (material) materialFont(context, true)
+                else android.graphics.Typeface.create(if (nothing) com.spizganed.quickbuds.ui.ThemeRes.dotFont(context) else android.graphics.Typeface.SANS_SERIF, android.graphics.Typeface.BOLD)
+            textSize = (if (kind.square) (if (nothing) 17f else if (material) 21f else 16f) else if (material) 24f else 20f) * context.resources.displayMetrics.scaledDensity
         }
 
         /** 5x7 dot digits for the case bar's percentage ([bar]), rows top to bottom: Doto's own digits, sampled from its 5x7 grid. */
@@ -859,7 +910,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
 
         /** The level as the widgets show it: "57%" (Classic), just the number (Nothing), or a dash. */
         private fun pctLabel(context: Context, level: Int) =
-            if (level !in 0..100) "—" else if (WidgetSettings.nothingStyle(context)) "$level" else "$level%"
+            if (level !in 0..100) "—" else if (WidgetSettings.nothingStyle(context) || WidgetSettings.materialStyle(context)) "$level" else "$level%"
 
         private fun openAppPI(context: Context): PendingIntent = PendingIntent.getActivity(
             context, 400, Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),

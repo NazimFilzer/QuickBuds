@@ -274,6 +274,8 @@
     <string name="theme_builtin">Integriert</string>
     <string name="theme_auto">Wie System</string>
     <string name="theme_auto_sub">%1$s im hellen Modus, %2$s im dunklen Modus</string>
+    <string name="theme_wallpaper">Hintergrundfarben</string>
+    <string name="theme_wallpaper_sub">Integrierte Designs übernehmen die Farben deines Hintergrunds</string>
     <string name="theme_oled_black">OLED-Schwarz</string>
     <string name="theme_classic_dark">Klassisch dunkel</string>
     <string name="theme_white">Weiß</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">Zuletzt</string>
     <string name="preset_hex">Hex-Farbe</string>
     <string name="widget_style_title">Stil</string>
+    <string name="widget_background_title">Widget-Hintergrund</string>
+    <string name="widget_background_sub">Aus: Das Widget liegt direkt auf deinem Hintergrund</string>
     <string name="widget_style_classic">Klassisch</string>
     <string name="widget_mode_anc_low">ANC niedrig</string>
     <string name="widget_mode_anc_medium">ANC mittel</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">Wenn es in Reichweite ist, verbinden sich die Ohrhörer zuerst damit.</string>
     <string name="widget_pages_name">QuickBuds Akku und Steuerung</string>
     <string name="widget_controls_name">QuickBuds Steuerung</string>
+    <string name="widget_settings_title">Widget-Einstellungen</string>
     <string name="widget_setup_title">Widget-Tasten</string>
     <string name="widget_setup_hint">Wähle bis zu 4 Tasten. Das Widget zeigt sie in dieser Reihenfolge.</string>
     <string name="problem_title">Problem melden</string>

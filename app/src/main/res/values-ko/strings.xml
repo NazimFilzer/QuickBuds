@@ -274,6 +274,8 @@
     <string name="theme_builtin">기본 제공</string>
     <string name="theme_auto">시스템 설정 따르기</string>
     <string name="theme_auto_sub">라이트 모드에서는 %1$s, 다크 모드에서는 %2$s</string>
+    <string name="theme_wallpaper">배경화면 색상</string>
+    <string name="theme_wallpaper_sub">기본 테마가 배경화면의 색상을 사용합니다</string>
     <string name="theme_oled_black">OLED 블랙</string>
     <string name="theme_classic_dark">클래식 다크</string>
     <string name="theme_white">화이트</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">최근</string>
     <string name="preset_hex">16진수 색상</string>
     <string name="widget_style_title">스타일</string>
+    <string name="widget_background_title">위젯 배경</string>
+    <string name="widget_background_sub">끄기: 위젯이 배경화면 위에 바로 표시됩니다</string>
     <string name="widget_style_classic">클래식</string>
     <string name="widget_mode_anc_low">ANC 낮음</string>
     <string name="widget_mode_anc_medium">ANC 보통</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">범위 안에 있으면 이어버드가 이 기기에 먼저 연결됩니다.</string>
     <string name="widget_pages_name">QuickBuds 배터리 및 컨트롤</string>
     <string name="widget_controls_name">QuickBuds 컨트롤</string>
+    <string name="widget_settings_title">위젯 설정</string>
     <string name="widget_setup_title">위젯 버튼</string>
     <string name="widget_setup_hint">버튼을 최대 4개 고르세요. 위젯에 이 순서로 표시됩니다.</string>
     <string name="problem_title">문제 신고</string>

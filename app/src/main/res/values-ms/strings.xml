@@ -274,6 +274,8 @@
     <string name="theme_builtin">Terbina dalam</string>
     <string name="theme_auto">Ikut sistem</string>
     <string name="theme_auto_sub">%1$s dalam mod cerah, %2$s dalam mod gelap</string>
+    <string name="theme_wallpaper">Warna kertas dinding</string>
+    <string name="theme_wallpaper_sub">Tema terbina dalam mengambil warna daripada kertas dinding anda</string>
     <string name="theme_oled_black">Hitam OLED</string>
     <string name="theme_classic_dark">Gelap Klasik</string>
     <string name="theme_white">Putih</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">Terkini</string>
     <string name="preset_hex">Warna hex</string>
     <string name="widget_style_title">Gaya</string>
+    <string name="widget_background_title">Latar widget</string>
+    <string name="widget_background_sub">Mati: widget berada di atas kertas dinding anda</string>
     <string name="widget_style_classic">Klasik</string>
     <string name="widget_mode_anc_low">ANC Rendah</string>
     <string name="widget_mode_anc_medium">ANC Sederhana</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">Apabila dalam julat, fon telinga menyambung kepadanya dahulu.</string>
     <string name="widget_pages_name">Bateri dan kawalan QuickBuds</string>
     <string name="widget_controls_name">Kawalan QuickBuds</string>
+    <string name="widget_settings_title">Tetapan widget</string>
     <string name="widget_setup_title">Butang widget</string>
     <string name="widget_setup_hint">Pilih hingga 4 butang. Widget menunjukkannya dalam susunan ini.</string>
     <string name="problem_title">Laporkan masalah</string>

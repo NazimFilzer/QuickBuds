@@ -274,6 +274,8 @@
     <string name="theme_builtin">বিল্ট-ইন</string>
     <string name="theme_auto">সিস্টেম অনুযায়ী</string>
     <string name="theme_auto_sub">লাইট মোডে %1$s, ডার্ক মোডে %2$s</string>
+    <string name="theme_wallpaper">ওয়ালপেপারের রং</string>
+    <string name="theme_wallpaper_sub">বিল্ট-ইন থিম আপনার ওয়ালপেপার থেকে রং নেয়</string>
     <string name="theme_oled_black">OLED কালো</string>
     <string name="theme_classic_dark">ক্লাসিক ডার্ক</string>
     <string name="theme_white">সাদা</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">সাম্প্রতিক</string>
     <string name="preset_hex">হেক্স রং</string>
     <string name="widget_style_title">স্টাইল</string>
+    <string name="widget_background_title">উইজেটের পটভূমি</string>
+    <string name="widget_background_sub">বন্ধ: উইজেটটি আপনার ওয়ালপেপারের উপর থাকে</string>
     <string name="widget_style_classic">ক্লাসিক</string>
     <string name="widget_mode_anc_low">ANC কম</string>
     <string name="widget_mode_anc_medium">ANC মাঝারি</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">কাছাকাছি থাকলে ইয়ারবাড আগে এটির সাথে সংযুক্ত হয়।</string>
     <string name="widget_pages_name">QuickBuds ব্যাটারি ও নিয়ন্ত্রণ</string>
     <string name="widget_controls_name">QuickBuds নিয়ন্ত্রণ</string>
+    <string name="widget_settings_title">উইজেট সেটিংস</string>
     <string name="widget_setup_title">উইজেটের বোতাম</string>
     <string name="widget_setup_hint">সর্বোচ্চ ৪টি বোতাম বেছে নিন। উইজেট এগুলো এই ক্রমে দেখায়।</string>
     <string name="problem_title">সমস্যা জানান</string>

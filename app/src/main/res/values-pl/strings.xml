@@ -274,6 +274,8 @@
     <string name="theme_builtin">Wbudowane</string>
     <string name="theme_auto">Jak w systemie</string>
     <string name="theme_auto_sub">%1$s w trybie jasnym, %2$s w trybie ciemnym</string>
+    <string name="theme_wallpaper">Kolory tapety</string>
+    <string name="theme_wallpaper_sub">Wbudowane motywy biorą kolory z tapety</string>
     <string name="theme_oled_black">Czerń OLED</string>
     <string name="theme_classic_dark">Klasyczny ciemny</string>
     <string name="theme_white">Biały</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">Ostatnie</string>
     <string name="preset_hex">Kolor hex</string>
     <string name="widget_style_title">Styl</string>
+    <string name="widget_background_title">Tło widżetów</string>
+    <string name="widget_background_sub">Wyłączone: widżet leży bezpośrednio na tapecie</string>
     <string name="widget_style_classic">Klasyczny</string>
     <string name="widget_mode_anc_low">ANC niski</string>
     <string name="widget_mode_anc_medium">ANC średni</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">Gdy jest w zasięgu, słuchawki łączą się z nim najpierw.</string>
     <string name="widget_pages_name">QuickBuds bateria i sterowanie</string>
     <string name="widget_controls_name">QuickBuds sterowanie</string>
+    <string name="widget_settings_title">Ustawienia widżetu</string>
     <string name="widget_setup_title">Przyciski widżetu</string>
     <string name="widget_setup_hint">Wybierz do 4 przycisków. Widżet pokazuje je w tej kolejności.</string>
     <string name="problem_title">Zgłoś problem</string>

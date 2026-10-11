@@ -274,6 +274,8 @@
     <string name="theme_builtin">Ingebouwd</string>
     <string name="theme_auto">Systeem volgen</string>
     <string name="theme_auto_sub">%1$s in lichte modus, %2$s in donkere modus</string>
+    <string name="theme_wallpaper">Achtergrondkleuren</string>
+    <string name="theme_wallpaper_sub">Ingebouwde thema\'s nemen de kleuren van je achtergrond over</string>
     <string name="theme_oled_black">OLED-zwart</string>
     <string name="theme_classic_dark">Klassiek donker</string>
     <string name="theme_white">Wit</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">Recent</string>
     <string name="preset_hex">Hex-kleur</string>
     <string name="widget_style_title">Stijl</string>
+    <string name="widget_background_title">Widgetachtergrond</string>
+    <string name="widget_background_sub">Uit: de widget staat direct op je achtergrond</string>
     <string name="widget_style_classic">Klassiek</string>
     <string name="widget_mode_anc_low">ANC laag</string>
     <string name="widget_mode_anc_medium">ANC gemiddeld</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">Als het binnen bereik is, verbinden de oordopjes er eerst mee.</string>
     <string name="widget_pages_name">QuickBuds batterij en bediening</string>
     <string name="widget_controls_name">QuickBuds bediening</string>
+    <string name="widget_settings_title">Widgetinstellingen</string>
     <string name="widget_setup_title">Widgetknoppen</string>
     <string name="widget_setup_hint">Kies maximaal 4 knoppen. De widget toont ze in deze volgorde.</string>
     <string name="problem_title">Probleem melden</string>

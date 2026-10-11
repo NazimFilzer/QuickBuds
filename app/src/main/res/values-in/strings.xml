@@ -274,6 +274,8 @@
     <string name="theme_builtin">Bawaan</string>
     <string name="theme_auto">Ikuti sistem</string>
     <string name="theme_auto_sub">%1$s di mode terang, %2$s di mode gelap</string>
+    <string name="theme_wallpaper">Warna wallpaper</string>
+    <string name="theme_wallpaper_sub">Tema bawaan mengambil warna dari wallpaper Anda</string>
     <string name="theme_oled_black">Hitam OLED</string>
     <string name="theme_classic_dark">Gelap klasik</string>
     <string name="theme_white">Putih</string>
@@ -310,6 +312,8 @@
 
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">Gaya</string>
+    <string name="widget_background_title">Latar widget</string>
+    <string name="widget_background_sub">Nonaktif: widget berada di atas wallpaper Anda</string>
     <string name="widget_style_classic">Klasik</string>
     <string name="widget_mode_anc_low">ANC Rendah</string>
     <string name="widget_mode_anc_medium">ANC Sedang</string>
@@ -403,6 +407,7 @@
     <string name="dual_preferred_sub">Saat dalam jangkauan, earbud terhubung ke perangkat ini lebih dulu.</string>
     <string name="widget_pages_name">QuickBuds baterai dan kontrol</string>
     <string name="widget_controls_name">QuickBuds kontrol</string>
+    <string name="widget_settings_title">Setelan widget</string>
     <string name="widget_setup_title">Tombol widget</string>
     <string name="widget_setup_hint">Pilih hingga 4 tombol. Widget menampilkannya dalam urutan ini.</string>
     <string name="problem_title">Laporkan masalah</string>

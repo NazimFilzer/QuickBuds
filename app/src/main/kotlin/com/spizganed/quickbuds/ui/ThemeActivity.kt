@@ -16,7 +16,7 @@ import android.widget.TextView
 import com.spizganed.quickbuds.R
 
 /**
- * Theme & colors: the style (Classic / Nothing), the three built-in presets as preview tiles, then the
+ * Theme & colors: the style (Classic / Nothing / Material), the three built-in presets as preview tiles, then the
  * custom presets (at most 3) as rows, then "New preset". Tapping a tile or a row applies that
  * preset at once; the pencil opens [PresetEditActivity].
  */
@@ -75,17 +75,18 @@ class ThemeActivity : Activity() {
         if (!::selection.isInitialized) selection = SelectionSlider(root, "theme")
         root.addView(SettingRowFactory.title(this, R.string.theme_title))
 
-        // --- Style: Classic or Nothing, for the app and the widgets ---
+        // --- Style: Classic, Nothing or Material, for the app and the widgets ---
         root.addView(SettingRowFactory.sectionLabel(this, R.string.widget_style_title))
-        root.addView(AncSegmentedView(this, listOf(getString(R.string.widget_style_classic), getString(R.string.widget_style_nothing))).apply {
-            selected = if (ThemeRes.nothing(this@ThemeActivity)) 1 else 0
+        root.addView(AncSegmentedView(this, listOf(getString(R.string.widget_style_classic), getString(R.string.widget_style_nothing),
+            getString(R.string.widget_style_material))).apply {
+            selected = ThemeRes.style(this@ThemeActivity)
             // Its name, for accessibility and for adb tests that look the control up.
             contentDescription = getString(R.string.widget_style_title)
             onSegmentTapped = { i ->
                 if (i != selected) {
                     // The pill slides first, then the screen is rebuilt in the new style.
                     selected = i
-                    ThemeRes.setNothing(this@ThemeActivity, i == 1)
+                    ThemeRes.setStyle(this@ThemeActivity, i)
                     postDelayed({ ThemeRes.recreateFaded(this@ThemeActivity) }, 260)
                 }
             }
@@ -139,11 +140,20 @@ class ThemeActivity : Activity() {
         root.addView(SettingRowFactory.card(this).apply {
             (layoutParams as LinearLayout.LayoutParams).topMargin = dp(18f)
             addView(autoRow)
+            // Wallpaper colours (Android 12+): the built-in presets from the system's tonal palettes.
+            if (PaletteStore.wallpaperSupported()) {
+                val wallSwitch = SettingRowFactory.buildSwitch(this@ThemeActivity, PaletteStore.wallpaper(this@ThemeActivity))
+                wallSwitch.setOnCheckedChangeListener { v, on -> PaletteStore.setWallpaper(this@ThemeActivity, on); v.postDelayed({ ThemeRes.recreateFaded(this@ThemeActivity) }, 260) }
+                val wallRow = SettingRowFactory.build(this@ThemeActivity, 0, R.string.theme_wallpaper, 0, wallSwitch) { wallSwitch.performClick() }
+                SettingRowFactory.subtitle(this@ThemeActivity, wallRow).setText(R.string.theme_wallpaper_sub)
+                SettingRowFactory.addRow(this, wallRow)
+            }
         })
 
         // --- Accent of the applied built-in preset ---
         val active = ThemeRes.palette(this)
-        if (active.builtIn) {
+        // Hidden under wallpaper colours: the wallpaper sets the accent.
+        if (active.builtIn && !PaletteStore.wallpaper(this)) {
             val accentCard = SettingRowFactory.card(this).apply {
                 (layoutParams as LinearLayout.LayoutParams).topMargin = dp(18f)
             }

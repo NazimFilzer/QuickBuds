@@ -274,6 +274,8 @@
     <string name="theme_builtin">ในตัว</string>
     <string name="theme_auto">ตามระบบ</string>
     <string name="theme_auto_sub">%1$s ในโหมดสว่าง %2$s ในโหมดมืด</string>
+    <string name="theme_wallpaper">สีจากวอลเปเปอร์</string>
+    <string name="theme_wallpaper_sub">ธีมในตัวใช้สีจากวอลเปเปอร์ของคุณ</string>
     <string name="theme_oled_black">ดำ OLED</string>
     <string name="theme_classic_dark">มืดคลาสสิก</string>
     <string name="theme_white">ขาว</string>
@@ -310,6 +312,8 @@
 
     <!-- Widgets and widget settings -->
     <string name="widget_style_title">สไตล์</string>
+    <string name="widget_background_title">พื้นหลังวิดเจ็ต</string>
+    <string name="widget_background_sub">ปิด: วิดเจ็ตวางอยู่บนวอลเปเปอร์โดยตรง</string>
     <string name="widget_style_classic">คลาสสิก</string>
     <string name="widget_mode_anc_low">ANC ต่ำ</string>
     <string name="widget_mode_anc_medium">ANC กลาง</string>
@@ -403,6 +407,7 @@
     <string name="dual_preferred_sub">เมื่ออยู่ในระยะ หูฟังจะเชื่อมต่อกับอุปกรณ์นี้ก่อน</string>
     <string name="widget_pages_name">QuickBuds แบตเตอรี่และการควบคุม</string>
     <string name="widget_controls_name">QuickBuds การควบคุม</string>
+    <string name="widget_settings_title">การตั้งค่าวิดเจ็ต</string>
     <string name="widget_setup_title">ปุ่มวิดเจ็ต</string>
     <string name="widget_setup_hint">เลือกได้สูงสุด 4 ปุ่ม วิดเจ็ตจะแสดงตามลำดับนี้</string>
     <string name="problem_title">รายงานปัญหา</string>

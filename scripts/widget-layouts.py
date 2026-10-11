@@ -2,7 +2,7 @@
 # Generates the two widget page layouts (2x2 widget_pages, 4x2 widget_pages_m) as one
 # family. Edit here, run `python3 scripts/widget-layouts.py` from the repo root, commit the XML with it.
 # Also the level picker grids (widget_grid) and widget_disconnected.
-# Classic and Nothing share one structure (2026-09-28); they differ in fonts, spacing (GEO) and, at runtime, boxes.
+# Classic, Nothing and Material share one structure; they differ in fonts, spacing (GEO), text sizes and, at runtime, boxes.
 import os
 RES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "app", "src", "main", "res", "layout") + os.sep
 IMG = 'android:scaleType="fitXY" android:importantForAccessibility="no"'
@@ -11,15 +11,21 @@ PRESS = 'android:stateListAnimator="@animator/widget_press"'
 # Style: False = Classic (boxed panels), True = Nothing (tighter inset, no boxes, Ndot digits; widget_*_n layouts).
 # The boxes themselves are painted at runtime (QuickBudsWidget.paint / panelColor).
 N = False
+# The layout family: "c" Classic, "n" Nothing (N), "md" Material (Classic fonts, Nothing's spacing, no wear text, bigger numbers).
+S = "c"
 # The 2x2 battery page's spacing in dp, per style; QuickBudsWidget.Geo mirrors it, keep them equal. side / vert: page
 # padding (4dp more above and below, 2026-09-28: fill the gaps a little, not at the sides); gap between boxes;
 # ring panel paddings top, outer (widget side), inner (the other ring's side), bottom; row: the case row's padding.
 # Nothing: no boxes, rings 6dp from the sides and apart. Classic: boxed panels, each ring centred in its box.
 # pm: the percentage's top margin. Classic is tighter above and below, so its case row gets room next to the wear text
 # (2026-09-28: make the case row bigger on Classic too).
-GEO = {True: dict(side=3, vert=7, gap=4, top=3, outer=3, inner=1, bottom=4, row=3, pm=5),
-       False: dict(side=6, vert=8, gap=6, top=4, outer=7, inner=7, bottom=3, row=4, pm=2)}
-def g(k): return GEO[N][k]
+# Material: one background (no boxes), so the rings grow toward the edges as on Nothing.
+GEO = {"n": dict(side=3, vert=7, gap=4, top=3, outer=3, inner=1, bottom=4, row=3, pm=5),
+       "c": dict(side=6, vert=8, gap=6, top=4, outer=7, inner=7, bottom=3, row=4, pm=2),
+       "md": dict(side=5, vert=8, gap=4, top=3, outer=3, inner=1, bottom=3, row=3, pm=3)}
+# The percentages' size: 2x2, 4x2.
+PCT = {"n": (17, 20), "c": (16, 18), "md": (21, 24)}
+def g(k): return GEO[S][k]
 def pad(): return f"{g('side')}dp"
 def gap(): return f"{g('gap')}dp"
 def page_pad(): return f'android:paddingTop="{g("vert")}dp" android:paddingBottom="{g("vert")}dp" android:paddingStart="{pad()}" android:paddingEnd="{pad()}"'
@@ -28,9 +34,9 @@ def img(i, src="widget_panel"):
     return f'<ImageView android:id="@+id/{i}" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/{src}" {IMG} />'
 
 def text(i, sp, bold=False, extra=""):
-    # Dot matrix: an ImageView the renderer fills with the text drawn in Doto (launchers ignore @font/ in widget XML);
-    # its height is Doto's line height, 1.2 x the text size, and the bitmap scales to it.
-    if N:
+    # Dot matrix and Material: an ImageView the renderer fills with the text drawn in Doto or Google Sans Flex (launchers
+    # ignore @font/ in widget XML); its height is 1.2 x the text size, and the bitmap scales to it.
+    if N or S == "md":
         return (f'<ImageView android:id="@+id/{i}" android:layout_width="wrap_content" android:layout_height="{round(sp * 1.2, 2):g}dp" '
                 f'android:adjustViewBounds="true" android:scaleType="fitCenter" {extra}/>')
     bold_font = 'android:fontFamily="@font/doto" android:textStyle="bold"' if N else 'android:fontFamily="sans-serif" android:textStyle="bold"'
@@ -92,7 +98,7 @@ def battery(size):
     # panels in a row.
     if size == "m":
         # Nothing: no wear text, so the percentages grow into the room (2026-09-28).
-        pct = 20 if N else 18
+        pct = PCT[S][1]
         panels = "\n".join([panel("left", True, pct, 12, False), panel("case", False, pct, 12, False), panel("right", False, pct, 12, False, True)])
         return f'''<FrameLayout android:id="@+id/w_page0" android:layout_width="match_parent" android:layout_height="match_parent">
 <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" {page_pad()}>
@@ -101,8 +107,8 @@ def battery(size):
 </FrameLayout>'''
     # 2x2: the rings at the top, the case row takes the rest (case_bar). QuickBudsWidget.caseRowDp
     # counts every padding and text here (pct 17 / 16sp, Classic's wear label 11.5sp).
-    panels = "\n".join([panel("left", True, 17 if N else 16, 11.5), panel("right", False, 17 if N else 16, 11.5)])
-    bottom = case_bar(17 if N else 16)
+    panels = "\n".join([panel("left", True, PCT[S][0], 11.5), panel("right", False, PCT[S][0], 11.5)])
+    bottom = case_bar(PCT[S][0])
     row_h = 'android:layout_height="wrap_content"'
     return f'''<LinearLayout android:id="@+id/w_page0" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" {page_pad()}>
 <LinearLayout android:layout_width="match_parent" {row_h} android:orientation="horizontal">
@@ -116,15 +122,15 @@ def quick(size):
     a 2x2 grid on the square sizes, one row on the 4x2."""
     # Nothing: the dot icon fills the free height. Classic: a vector at a fixed size.
     icon = ('android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:scaleType="centerInside"' if N
-            else 'android:layout_width="30dp" android:layout_height="30dp" android:scaleType="fitCenter"')
+            else f'android:layout_width="{36 if S == "md" else 30}dp" android:layout_height="{36 if S == "md" else 30}dp" android:scaleType="fitCenter"')
     def btn(k, first, row_first):
         m = '' if first else f' android:layout_marginStart="{gap()}"'
         return f'''<FrameLayout android:id="@+id/w_q{k}" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"{m} {PRESS}>
 {img(f"w_q{k}_bg")}
 {img(f"w_q{k}_stroke", "widget_panel_stroke")}
-<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="8dp">
+<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center" android:padding="{4 if S == "md" else 8}dp">
 <ImageView android:id="@+id/w_q{k}_icon" {icon} android:importantForAccessibility="no" />
-{text(f"w_q{k}_label", 15, extra='android:layout_marginTop="4dp" ')}
+{text(f"w_q{k}_label", 17 if S == "md" else 15, extra='android:layout_marginTop="4dp" ')}
 </LinearLayout>
 </FrameLayout>'''
     row = lambda ks, top: f'''<LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal"{'' if top else f' android:layout_marginTop="{gap()}"'}>
@@ -186,8 +192,9 @@ def disconnected():
 '''
 
 TITLE = {"s": "2x2", "m": "4x2"}
-for N in (False, True):
-    sfx = "_n" if N else ""
+for S in ("c", "n", "md"):
+    N = S == "n"
+    sfx = {"c": "", "n": "_n", "md": "_md"}[S]
     open(RES + f"widget_grid{sfx}.xml", "w").write(grid(26, 12.5))
     open(RES + f"widget_disconnected{sfx}.xml", "w").write(disconnected())
     for size, name in (("s", "widget_pages"), ("m", "widget_pages_m")):

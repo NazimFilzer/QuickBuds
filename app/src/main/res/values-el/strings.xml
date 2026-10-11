@@ -274,6 +274,8 @@
     <string name="theme_builtin">Ενσωματωμένα</string>
     <string name="theme_auto">Όπως το σύστημα</string>
     <string name="theme_auto_sub">%1$s σε φωτεινή λειτουργία, %2$s σε σκοτεινή</string>
+    <string name="theme_wallpaper">Χρώματα ταπετσαρίας</string>
+    <string name="theme_wallpaper_sub">Τα ενσωματωμένα θέματα παίρνουν τα χρώματα της ταπετσαρίας σας</string>
     <string name="theme_oled_black">OLED Μαύρο</string>
     <string name="theme_classic_dark">Κλασικό Σκούρο</string>
     <string name="theme_white">Λευκό</string>
@@ -308,6 +310,8 @@
     <string name="preset_recent">Πρόσφατα</string>
     <string name="preset_hex">Χρώμα hex</string>
     <string name="widget_style_title">Στυλ</string>
+    <string name="widget_background_title">Φόντο γραφικών στοιχείων</string>
+    <string name="widget_background_sub">Ανενεργό: το γραφικό στοιχείο εμφανίζεται πάνω στην ταπετσαρία</string>
     <string name="widget_style_classic">Κλασικό</string>
     <string name="widget_mode_anc_low">ANC Χαμηλό</string>
     <string name="widget_mode_anc_medium">ANC Μεσαίο</string>
@@ -401,6 +405,7 @@
     <string name="dual_preferred_sub">Όταν είναι εντός εμβέλειας, τα ακουστικά συνδέονται πρώτα σε αυτήν.</string>
     <string name="widget_pages_name">QuickBuds μπαταρία και χειριστήρια</string>
     <string name="widget_controls_name">QuickBuds χειριστήρια</string>
+    <string name="widget_settings_title">Ρυθμίσεις γραφικού στοιχείου</string>
     <string name="widget_setup_title">Κουμπιά widget</string>
     <string name="widget_setup_hint">Επιλέξτε έως 4 κουμπιά. Το widget τα δείχνει με αυτή τη σειρά.</string>
     <string name="problem_title">Αναφορά προβλήματος</string>
