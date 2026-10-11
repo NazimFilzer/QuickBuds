@@ -318,7 +318,8 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
         deviceNameText = findViewById<TextView>(R.id.deviceNameText)
         findViewById<ImageButton>(R.id.btnModel).apply {
             background = ThemeRes.ripple(this@MainActivity, ThemeRes.iconButton(this@MainActivity))
-            setImageDrawable(ThemeRes.tint(this@MainActivity, R.drawable.ic_model_list, ThemeRes.color(this@MainActivity, R.attr.appColorAccent)))
+            setImageDrawable(ThemeRes.tint(this@MainActivity, R.drawable.ic_model_list, ThemeRes.color(this@MainActivity,
+                if (ThemeRes.material(this@MainActivity)) R.attr.appColorTextSecondary else R.attr.appColorAccent)))
             setOnClickListener { startActivity(Intent(this@MainActivity, ModelActivity::class.java)) }
         }
         showModelName()
@@ -640,10 +641,13 @@ class MainActivity : Activity(), BudsConnectionManager.Listener {
         batteryCard.background = ThemeRes.group(this)
         featureList.background = ThemeRes.group(this)
         featureList.clipToOutline = true
+        SettingRowFactory.noiseCard(ancRow)
         connText.typeface = ThemeRes.medium(this)
         deviceNameText.typeface = ThemeRes.medium(this)
-        btnDevTools.setImageDrawable(ThemeRes.tint(this, R.drawable.ic_dev_tools, ThemeRes.color(this, R.attr.appColorAccent)))
-        btnSettings.setImageDrawable(ThemeRes.tint(this, R.drawable.ic_settings_cog, ThemeRes.color(this, R.attr.appColorAccent)))
+        // Material: header icons in on-surface-variant, as Google's icon buttons.
+        val headerIcon = ThemeRes.color(this, if (ThemeRes.material(this)) R.attr.appColorTextSecondary else R.attr.appColorAccent)
+        btnDevTools.setImageDrawable(ThemeRes.tint(this, R.drawable.ic_dev_tools, headerIcon))
+        btnSettings.setImageDrawable(ThemeRes.tint(this, R.drawable.ic_settings_cog, headerIcon))
     }
 
     // ==================== Battery block ====================

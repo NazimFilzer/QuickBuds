@@ -319,13 +319,13 @@ object ThemeRes {
 
     /**
      * Material style: the rows of a [group] as separate tonal tiles (M3 segmented list), split at the
-     * [SettingRowFactory.buildDivider] gaps. The outer corners are 24dp, the inner ones 4dp. The drawable
+     * [SettingRowFactory.buildDivider] gaps. The outer corners are 16dp, the inner ones 4dp (M3 expressive list). The drawable
      * reads the rows from the view it is the background of.
      */
     class Segments(context: Context) : Drawable() {
         private val fill = palette(context).container
-        private val outer = dp(context, 24f).toFloat()
-        private val inner = dp(context, 4f).toFloat()
+        private val outer = dp(context, LIST_OUTER).toFloat()
+        private val inner = dp(context, LIST_INNER).toFloat()
         private val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = fill }
         private val path = android.graphics.Path()
         private val box = android.graphics.RectF()
@@ -374,15 +374,35 @@ object ThemeRes {
      */
     fun selectedBorder(context: Context, color: Int, radiusDp: Float = 24f): android.graphics.drawable.Drawable {
         val r = dp(context, radiusDp).toFloat()
-        // Material: a tonal pill over a row (the M3 active indicator), inside any tile corner.
-        // A tile (a theme swatch, a gesture button) keeps the outline: a pill over it is a blob.
-        if (material(context)) return object : GradientDrawable() {
-            override fun onBoundsChange(b: android.graphics.Rect) {
-                super.onBoundsChange(b)
-                val row = b.width() > b.height() * 3
-                cornerRadius = if (row) b.height() / 2f else r
-                if (row) { setColor(Palette.withAlpha(color, 0.16f)); setStroke(0, 0) }
-                else { setColor(0); setStroke(dp(context, 2f), color) }
+        // Material: a selected list item is a tinted tile with 16dp corners (M3 expressive list). In a split
+        // list the tile's own 4dp corners are masked in the screen colour, so the item reads as one 16dp shape.
+        // A tile that is not a row (a theme swatch) keeps the outline.
+        if (material(context)) {
+            val list = radiusDp == SettingRowFactory.SPLIT_RADIUS
+            return object : Drawable() {
+                private val tint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { this.color = Palette.withAlpha(color, 0.24f) }
+                private val mask = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { this.color = palette(context).background }
+                private val line = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+                    style = android.graphics.Paint.Style.STROKE; strokeWidth = dp(context, 2f).toFloat(); this.color = color
+                }
+                private val rr = dp(context, LIST_OUTER).toFloat()
+                override fun draw(canvas: android.graphics.Canvas) {
+                    val b = android.graphics.RectF(bounds)
+                    if (b.width() <= b.height() * 3) { b.inset(line.strokeWidth / 2, line.strokeWidth / 2); canvas.drawRoundRect(b, r, r, line); return }
+                    if (list) {
+                        val corners = android.graphics.Path().apply {
+                            addRect(b, android.graphics.Path.Direction.CW)
+                            addRoundRect(b, rr, rr, android.graphics.Path.Direction.CCW)
+                            fillType = android.graphics.Path.FillType.EVEN_ODD
+                        }
+                        canvas.drawPath(corners, mask)
+                    }
+                    canvas.drawRoundRect(b, rr, rr, tint)
+                }
+                override fun setAlpha(alpha: Int) {}
+                override fun setColorFilter(colorFilter: android.graphics.ColorFilter?) {}
+                @Deprecated("Deprecated in Java")
+                override fun getOpacity() = android.graphics.PixelFormat.TRANSLUCENT
             }
         }
         if (!nothing(context)) return GradientDrawable().apply { cornerRadius = r; setStroke(dp(context, 2f), color) }
@@ -408,6 +428,10 @@ object ThemeRes {
 
     /** Icon button / framed control: `card` fill, `outline` stroke, 14dp radius (SPEC section 2). */
     fun iconButton(context: Context, radiusDp: Float = 14f): Drawable = card(context, if (material(context)) FULL else radiusDp)
+
+    /** Material style: a list's outer and inner corners, and a selected list item's corners (M3 expressive list). */
+    const val LIST_OUTER = 16f
+    const val LIST_INNER = 4f
 
     /** A radius above half of any control's height: a full pill or circle. */
     const val FULL = 999f

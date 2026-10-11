@@ -67,6 +67,7 @@ class HomeLayoutActivity : Activity() {
         findViewById<FrameLayout>(R.id.ancSlot).addView(AncSegmentedView(
             this, MainActivity.ANC_SEGMENTS.map { getString(it.second) }, MainActivity.ANC_SEGMENTS.map { it.third }
         ).apply { isEnabled = false })
+        SettingRowFactory.noiseCard(findViewById(R.id.ancRow))
 
         // Hint above the tiles.
         findViewById<LinearLayout>(R.id.tiles).addView(TextView(this).apply {

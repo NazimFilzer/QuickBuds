@@ -150,7 +150,7 @@ class GestureActivity : Activity() {
         return Button(this).apply {
             setText(labelRes)
             layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                .apply { marginStart = dp(4f); marginEnd = dp(4f) }
+                .apply { val m = dp(if (ThemeRes.material(this@GestureActivity)) 2f else 4f); marginStart = m; marginEnd = m }
             minWidth = 0
             minHeight = dp(42f)
             textSize = 13f
@@ -281,9 +281,9 @@ class GestureActivity : Activity() {
     private fun paintSideButton(button: Button, active: Boolean) {
         // The chosen side is an outline, like every other selection.
         val accent = ThemeRes.color(this, R.attr.appColorAccent)
-        // Material: pills, the chosen side filled, as the Style picker.
+        // Material: 12dp tiles, the chosen side filled, as the Style picker.
         if (ThemeRes.material(this)) {
-            button.background = if (active) ThemeRes.pill(this, accent, ThemeRes.FULL) else ThemeRes.card(this, ThemeRes.FULL)
+            button.background = if (active) ThemeRes.shape(this, accent, null, 12f) else ThemeRes.card(this, 12f)
             button.foreground = null
             button.setTextColor(if (active) ThemeRes.onFill(this) else ThemeRes.color(this, R.attr.appColorTextPrimary))
             return

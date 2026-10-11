@@ -61,7 +61,8 @@ class BudsStatusView(context: Context) : View(context) {
     )
 
     private val trackPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.STROKE; strokeWidth = dp(6f); color = p.outline
+        // Material: the M3 progress track (secondary container).
+        style = Paint.Style.STROKE; strokeWidth = dp(6f); color = if (ThemeRes.material(context)) p.tonal else p.outline
     }
     private val arcPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE; strokeWidth = dp(6f); strokeCap = Paint.Cap.ROUND; color = p.accent
@@ -144,7 +145,7 @@ class BudsStatusView(context: Context) : View(context) {
                 val bw = dp(s.boxW) * scale
                 val bh = dp(s.boxH) * scale
                 val (iw, ih) = if (s.iconRatio < bw / bh) bh * s.iconRatio to bh else bw to bw / s.iconRatio
-                s.icon.setTint(if (connected) wearTint(p, i == 1, s.status) else p.disabled)
+                s.icon.setTint(if (connected) wearTint(p, i == 1, s.status, ThemeRes.material(context)) else p.disabled)
                 s.icon.setBounds((cx - iw / 2).toInt(), (cy - ih / 2).toInt(), (cx + iw / 2).toInt(), (cy + ih / 2).toInt())
                 s.icon.draw(canvas)
             }
@@ -168,8 +169,12 @@ class BudsStatusView(context: Context) : View(context) {
     }
 
     companion object {
-        /** Glyph colour by wear (WIDGETS.md 1); the case is always `text`. Shared with the widgets. */
-        fun wearTint(p: Palette, isCase: Boolean, status: Int): Int = when {
+        /**
+         * Glyph colour by wear (WIDGETS.md 1); the case is always `text`. Shared with the widgets.
+         * Material style: a bud in the ear takes the accent (M3 primary), so the three states read by colour.
+         */
+        fun wearTint(p: Palette, isCase: Boolean, status: Int, material: Boolean = false): Int = when {
+            material && !isCase && (status == 3 || status == 7) -> p.accent
             isCase || status == 3 || status == 7 -> p.text
             status == 4 || status == 0 -> Palette.withAlpha(p.textSecondary, 0.45f)
             else -> p.textSecondary

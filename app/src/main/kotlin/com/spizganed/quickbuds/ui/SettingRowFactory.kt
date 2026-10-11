@@ -53,7 +53,8 @@ object SettingRowFactory {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            minimumHeight = dp(minHeightDp)
+            // Material: the M3 list item heights (56dp two-line rows).
+            minimumHeight = dp(if (ThemeRes.material(context)) minOf(minHeightDp, 56f) else minHeightDp)
             setPadding(dp(16f), dp(8f), dp(16f), dp(8f))
             if (onClick != null) {
                 background = ThemeRes.ripple(context)
@@ -69,7 +70,9 @@ object SettingRowFactory {
         if (iconRes != 0) row.addView(ImageView(context).apply {
             layoutParams = LinearLayout.LayoutParams(dp(24f), dp(24f)).apply { marginEnd = dp(14f) }
             scaleType = ImageView.ScaleType.FIT_CENTER
-            setImageDrawable(ThemeRes.tint(context, iconRes, ThemeRes.color(context, R.attr.appColorAccent)))
+            // Material: on-surface-variant (secondary text), as Google's lists.
+            setImageDrawable(ThemeRes.tint(context, iconRes, ThemeRes.color(context,
+                if (ThemeRes.material(context)) R.attr.appColorTextSecondary else R.attr.appColorAccent)))
             contentDescription = ""
             tag = ICON_TAG
         })
@@ -130,6 +133,25 @@ object SettingRowFactory {
 
     /** Tag for the title TextView (rows whose title is not a resource, e.g. a preset name). */
     const val TITLE_TAG = "setting_row_title"
+
+    /**
+     * Material style: the noise control as its own card ([row] holds the switcher): a tonal card,
+     * 12dp padding and a "Noise control" label above the round buttons. Other styles: unchanged.
+     */
+    fun noiseCard(row: LinearLayout) {
+        val context = row.context
+        if (!ThemeRes.material(context)) return
+        val dp = { v: Float -> ThemeRes.dp(context, v) }
+        row.background = ThemeRes.card(context, ThemeRes.LIST_OUTER)
+        row.setPadding(dp(12f), dp(12f), dp(12f), dp(12f))
+        row.addView(TextView(context).apply {
+            setText(R.string.anc_section)
+            setTextColor(ThemeRes.color(context, R.attr.appColorTextSecondary))
+            textSize = 14f
+            typeface = ThemeRes.medium(context)
+            setPadding(dp(4f), 0, 0, dp(10f))
+        }, 0)
+    }
 
     /** Tag for the Material style's gap between row tiles ([buildDivider]). */
     const val GAP_TAG = "setting_row_gap"
@@ -280,7 +302,7 @@ object SettingRowFactory {
         if (ThemeRes.material(context)) addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
             val g = v as LinearLayout
             val shown = (0 until g.childCount).map { g.getChildAt(it) }.filter { it.visibility != View.GONE }
-            val outer = ThemeRes.dp(context, 24f).toFloat(); val inner = ThemeRes.dp(context, 4f).toFloat()
+            val outer = ThemeRes.dp(context, ThemeRes.LIST_OUTER).toFloat(); val inner = ThemeRes.dp(context, ThemeRes.LIST_INNER).toFloat()
             shown.forEachIndexed { i, c ->
                 val t = if (i == 0) outer else inner; val b = if (i == shown.lastIndex) outer else inner
                 (c.background as? android.graphics.drawable.GradientDrawable)?.cornerRadii = floatArrayOf(t, t, t, t, b, b, b, b)
@@ -304,12 +326,12 @@ object SettingRowFactory {
         card.addView(row)
     }
 
-    /** Screen title: 24sp bold (dot style: Doto, [ThemeRes.headline]; Material: 32sp regular, the M3 large top bar), 4dp start inset. */
+    /** Screen title: 24sp bold (dot style: Doto, [ThemeRes.headline]; Material: 28sp regular, the M3 large top bar), 4dp start inset. */
     fun title(context: Context, textRes: Int): TextView = TextView(context).apply {
         setText(textRes)
         setTextColor(ThemeRes.color(context, R.attr.appColorTextPrimary))
         val material = ThemeRes.material(context)
-        textSize = if (material) 32f else 24f
+        textSize = if (material) 28f else 24f
         typeface = if (material) android.graphics.Typeface.DEFAULT else ThemeRes.headline(context)
         setPadding(ThemeRes.dp(context, 4f), 0, 0, ThemeRes.dp(context, 4f))
     }

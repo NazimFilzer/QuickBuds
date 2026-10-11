@@ -86,22 +86,48 @@ class AncSegmentedView(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         // Nothing: taller, for the bigger unscaled dot icons.
+        if (material) { setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), dp(if (icons.isEmpty()) 44f else 72f).toInt()); return }
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), dp(if (icons.isEmpty()) 48f else if (dots.isNotEmpty()) 72f else 62f).toInt())
     }
 
     private val nothing = ThemeRes.nothing(context)
 
-    /** Material style: an M3 connected button group. Each segment is a tile; the selected one is a full accent pill. */
+    /**
+     * Material style. With icons: round 52dp toggle buttons with the label under each (the noise control).
+     * Text only: equal 12dp tiles with a 4dp gap (a choice group). The selected one fills with the accent;
+     * every option keeps one shape. The fill fades between options instead of sliding.
+     */
     private val material = ThemeRes.material(context)
 
-    /** Space between the track edge and the segments: none in the Material style (the segments are the track). */
-    private val pad get() = if (material) 0f else dp(4f)
-
-    /** Material style: segment [i]'s box, 1dp short of each neighbour (a 2dp gap). */
-    private fun segment(i: Float) {
-        val segW = width.toFloat() / labels.size
-        val gap = dp(1f)
-        box.set(segW * i + if (i > 0f) gap else 0f, 0f, segW * (i + 1) - if (i < labels.size - 1) gap else 0f, height.toFloat())
+    private fun drawMaterial(canvas: Canvas) {
+        val n = labels.size
+        val gap = dp(4f)
+        val segW = (width - gap * (n - 1)) / n
+        val idle = Palette.blend(p.container, p.text, 0.08f)
+        textPaint.getTextBounds("H", 0, 1, capBounds)
+        for (i in 0 until n) {
+            val on = if (pos < 0f) 0f else (1f - kotlin.math.abs(pos - i)).coerceIn(0f, 1f)
+            val left = i * (segW + gap)
+            val cx = left + segW / 2
+            trackPaint.color = Palette.blend(if (icons.isEmpty()) p.container else idle, p.accent, on)
+            if (icons.isEmpty()) {
+                box.set(left, 0f, left + segW, height.toFloat())
+                canvas.drawRoundRect(box, dp(12f), dp(12f), trackPaint)
+                textPaint.color = Palette.blend(p.textSecondary, p.onAccent, on)
+                canvas.drawText(labels[i], cx, height / 2f + capBounds.height() / 2f, textPaint)
+                continue
+            }
+            val r = dp(26f)
+            canvas.drawCircle(cx, r, r, trackPaint)
+            icons.getOrNull(i)?.run {
+                setTint(Palette.blend(p.textSecondary, p.onAccent, on))
+                val s = dp(12f).toInt()
+                setBounds((cx - s).toInt(), (r - s).toInt(), (cx + s).toInt(), (r + s).toInt())
+                draw(canvas)
+            }
+            textPaint.color = Palette.blend(p.textSecondary, p.text, on)
+            canvas.drawText(labels[i], cx, r * 2 + dp(6f) + capBounds.height(), textPaint)
+        }
     }
 
     /** Track and outline, dots in the dot style (one-cell outline). */
@@ -130,23 +156,6 @@ class AncSegmentedView(
             }
             return
         }
-        if (material) {
-            // Full round outer ends, 8dp inner corners.
-            val full = h / 2; val small = dp(8f)
-            val path = android.graphics.Path()
-            for (i in labels.indices) {
-                // The tile under the pill fades out, or its small corners show behind the round pill.
-                val under = if (pos < 0f) 0f else (1f - kotlin.math.abs(pos - i)).coerceIn(0f, 1f)
-                segment(i.toFloat())
-                val l = if (i == 0) full else small; val r = if (i == labels.lastIndex) full else small
-                path.reset()
-                path.addRoundRect(box, floatArrayOf(l, l, r, r, r, r, l, l), android.graphics.Path.Direction.CW)
-                trackPaint.alpha = (255 * (1f - under)).toInt()
-                canvas.drawPath(path, trackPaint)
-            }
-            trackPaint.alpha = 255
-            return
-        }
         val e = if (nothing) DotArt.pitchPx(context) / 2 else dp(0.5f)
         box.set(e, e, width - e, h - e)
         canvas.drawRoundRect(box, dp(22f), dp(22f), trackPaint)
@@ -157,11 +166,6 @@ class AncSegmentedView(
     /** Classic: the sliding accent fill (the dot style draws an outline in [track]). */
     private fun pill(canvas: Canvas) {
         val h = height.toFloat()
-        if (pos >= 0f && material) {
-            segment(pos)
-            canvas.drawRoundRect(box, h / 2, h / 2, pillPaint)
-            return
-        }
         if (pos >= 0f && !nothing) {
             val inset = dp(4f)
             val left = inset + (width - inset * 2) / labels.size * pos
@@ -171,11 +175,12 @@ class AncSegmentedView(
     }
 
     override fun onDraw(canvas: Canvas) {
+        if (material) { drawMaterial(canvas); return }
         val h = height.toFloat()
         if (nothing) DotArt.draw(context, canvas, width, height) { track(it) } else track(canvas)
         pill(canvas)
 
-        val inset = pad
+        val inset = dp(4f)
         val segW = (width - inset * 2) / labels.size
 
         // The dot icons get more room: 31 dots in 22dp would blur into a grey disc.

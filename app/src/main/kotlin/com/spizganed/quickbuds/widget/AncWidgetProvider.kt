@@ -481,7 +481,7 @@ open class QuickBudsWidget(private val kind: Kind) : AppWidgetProvider() {
             val px = ThemeRes.dp(context, sizeDp).coerceAtLeast(1)
             if (WidgetSettings.nothingStyle(context)) return dotRing(context, p, level, slot, nothingTint(p, slot == 1, status), px)
             val bmp = Bitmap.createBitmap(px, px, Bitmap.Config.ARGB_8888)
-            drawRing(context, Canvas(bmp), px.toFloat(), p, level, slot, BudsStatusView.wearTint(p, slot == 1, status))
+            drawRing(context, Canvas(bmp), px.toFloat(), p, level, slot, BudsStatusView.wearTint(p, slot == 1, status, com.spizganed.quickbuds.ui.ThemeRes.material(context)))
             return bmp
         }
 
