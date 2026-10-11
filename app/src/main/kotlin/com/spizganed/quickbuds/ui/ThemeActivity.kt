@@ -214,10 +214,8 @@ class ThemeActivity : Activity() {
 
         // --- Custom · N of 3 ---
         val custom = PaletteStore.custom(this)
-        root.addView(TextView(this).apply {
+        root.addView(SettingRowFactory.sectionLabel(this, R.string.theme_custom).apply {
             text = getString(R.string.theme_custom, custom.size, PaletteStore.MAX_CUSTOM)
-            setTextColor(p.textSecondary)
-            textSize = 14f
             setPadding(dp(4f), dp(18f), 0, dp(9f))
         })
         val card = SettingRowFactory.splitList(this)

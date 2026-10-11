@@ -276,12 +276,24 @@ object SettingRowFactory {
         layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
         )
+        // Material: one segmented list, as [ThemeRes.Segments]. Corners follow the visible cards.
+        if (ThemeRes.material(context)) addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            val g = v as LinearLayout
+            val shown = (0 until g.childCount).map { g.getChildAt(it) }.filter { it.visibility != View.GONE }
+            val outer = ThemeRes.dp(context, 24f).toFloat(); val inner = ThemeRes.dp(context, 4f).toFloat()
+            shown.forEachIndexed { i, c ->
+                val t = if (i == 0) outer else inner; val b = if (i == shown.lastIndex) outer else inner
+                (c.background as? android.graphics.drawable.GradientDrawable)?.cornerRadii = floatArrayOf(t, t, t, t, b, b, b, b)
+            }
+        }
     }
 
-    /** Adds [row] to [list] as a card of its own, 8dp under the one before. */
+    /** Adds [row] to [list] as a card of its own, 8dp under the one before (Material: 2dp, a segmented list). */
     fun addSplit(list: LinearLayout, row: View) {
+        val material = ThemeRes.material(list.context)
         val c = card(list.context, SPLIT_RADIUS)
-        (c.layoutParams as LinearLayout.LayoutParams).topMargin = if (list.childCount > 0) ThemeRes.dp(list.context, 8f) else 0
+        if (material) c.background = ThemeRes.card(list.context, SPLIT_RADIUS)
+        (c.layoutParams as LinearLayout.LayoutParams).topMargin = if (list.childCount > 0) ThemeRes.dp(list.context, if (material) 2f else 8f) else 0
         c.addView(row)
         list.addView(c)
     }

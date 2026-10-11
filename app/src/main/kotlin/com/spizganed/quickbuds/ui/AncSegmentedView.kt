@@ -135,11 +135,16 @@ class AncSegmentedView(
             val full = h / 2; val small = dp(8f)
             val path = android.graphics.Path()
             for (i in labels.indices) {
+                // The tile under the pill fades out, or its small corners show behind the round pill.
+                val under = if (pos < 0f) 0f else (1f - kotlin.math.abs(pos - i)).coerceIn(0f, 1f)
                 segment(i.toFloat())
                 val l = if (i == 0) full else small; val r = if (i == labels.lastIndex) full else small
+                path.reset()
                 path.addRoundRect(box, floatArrayOf(l, l, r, r, r, r, l, l), android.graphics.Path.Direction.CW)
+                trackPaint.alpha = (255 * (1f - under)).toInt()
+                canvas.drawPath(path, trackPaint)
             }
-            canvas.drawPath(path, trackPaint)
+            trackPaint.alpha = 255
             return
         }
         val e = if (nothing) DotArt.pitchPx(context) / 2 else dp(0.5f)

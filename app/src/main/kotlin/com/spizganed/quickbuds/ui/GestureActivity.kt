@@ -281,6 +281,13 @@ class GestureActivity : Activity() {
     private fun paintSideButton(button: Button, active: Boolean) {
         // The chosen side is an outline, like every other selection.
         val accent = ThemeRes.color(this, R.attr.appColorAccent)
+        // Material: pills, the chosen side filled, as the Style picker.
+        if (ThemeRes.material(this)) {
+            button.background = if (active) ThemeRes.pill(this, accent, ThemeRes.FULL) else ThemeRes.card(this, ThemeRes.FULL)
+            button.foreground = null
+            button.setTextColor(if (active) ThemeRes.onFill(this) else ThemeRes.color(this, R.attr.appColorTextPrimary))
+            return
+        }
         button.background = ThemeRes.chip(this, false)
         button.foreground = if (active) ThemeRes.selectedBorder(this, accent, 10f) else null
         button.setTextColor(if (active) accent else ThemeRes.color(this, R.attr.appColorTextPrimary))

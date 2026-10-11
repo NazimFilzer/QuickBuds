@@ -346,7 +346,10 @@ object ThemeRes {
                 }
             }
             if (top >= 0) tiles += top to bottom
-            tiles.forEachIndexed { i, (t, b) ->
+            tiles.forEachIndexed { i, (t0, b0) ->
+                // The first and last tiles reach the edges, over the group's own padding.
+                val t = if (i == 0) bounds.top else t0
+                val b = if (i == tiles.lastIndex) bounds.bottom else b0
                 val rt = if (i == 0) outer else inner
                 val rb = if (i == tiles.lastIndex) outer else inner
                 box.set(bounds.left.toFloat(), t.toFloat(), bounds.right.toFloat(), b.toFloat())
@@ -371,8 +374,17 @@ object ThemeRes {
      */
     fun selectedBorder(context: Context, color: Int, radiusDp: Float = 24f): android.graphics.drawable.Drawable {
         val r = dp(context, radiusDp).toFloat()
-        // Material: a tonal state layer over the row instead of an outline.
-        if (material(context)) return GradientDrawable().apply { cornerRadius = r; setColor(Palette.withAlpha(color, 0.16f)) }
+        // Material: a tonal pill over a row (the M3 active indicator), inside any tile corner.
+        // A tile (a theme swatch, a gesture button) keeps the outline: a pill over it is a blob.
+        if (material(context)) return object : GradientDrawable() {
+            override fun onBoundsChange(b: android.graphics.Rect) {
+                super.onBoundsChange(b)
+                val row = b.width() > b.height() * 3
+                cornerRadius = if (row) b.height() / 2f else r
+                if (row) { setColor(Palette.withAlpha(color, 0.16f)); setStroke(0, 0) }
+                else { setColor(0); setStroke(dp(context, 2f), color) }
+            }
+        }
         if (!nothing(context)) return GradientDrawable().apply { cornerRadius = r; setStroke(dp(context, 2f), color) }
         return DotArt.Part(context, 0f, 0f, android.content.res.ColorStateList.valueOf(color)) { c, box, paint ->
             val e = DotArt.pitchPx(context) / 2
