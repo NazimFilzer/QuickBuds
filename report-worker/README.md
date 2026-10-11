@@ -1,7 +1,7 @@
 # Report Worker
 
 The problem report's backend: a Cloudflare Worker on the free plan, with a D1 database. The apps post
-each report to `/report`. The Worker stores only reports with a known model and, when a log is on,
+each report to `/report`. The Worker stores only reports with a known model, a description and, when a log is on,
 frames from the buds. One sender can post 5 reports an hour.
 
 ## Deploy (once)

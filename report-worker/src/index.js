@@ -38,7 +38,7 @@ async function report(req, env) {
     return answer(422, "QuickBuds supports OnePlus, OPPO and realme earbuds only. Pick your model from the list.");
   if (!crash && log !== null && !RX_FRAME.test(log))
     return answer(422, "The log is empty. Connect your earbuds first, then send the report.");
-  if (!description && categories.length === 0) return answer(422, "Add a description or a category.");
+  if (!crash && !description) return answer(422, "Describe the problem: what you did and what happened.");
 
   const sender = await hash(env.SALT + (req.headers.get("CF-Connecting-IP") ?? ""));
   const since = new Date(Date.now() - 3600_000).toISOString();
