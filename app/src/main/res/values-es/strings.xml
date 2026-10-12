@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Empezó a sonar audio. Páusalo e inténtalo de nuevo.</string>
     <string name="golden_stopped_wear">Se quitó un auricular. Ponte ambos e inténtalo de nuevo.</string>
     <string name="golden_scan_failed">El escaneo de oídos no terminó. Inténtalo de nuevo.</string>
+    <string name="golden_refused">Los auriculares no iniciaron la prueba. Inténtalo de nuevo.</string>
     <string name="golden_again">Reintentar</string>
     <string name="golden_boost">Realce</string>
     <string name="pnc_title">Cancelación de ruido personalizada</string>

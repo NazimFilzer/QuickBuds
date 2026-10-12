@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Начал играть звук. Приостановите его и попробуйте снова.</string>
     <string name="golden_stopped_wear">Наушник вынут. Вставьте оба и попробуйте снова.</string>
     <string name="golden_scan_failed">Сканирование ушей не завершилось. Попробуйте снова.</string>
+    <string name="golden_refused">Наушники не запустили тест. Попробуйте снова.</string>
     <string name="golden_again">Повторить</string>
     <string name="golden_boost">Усиление</string>
     <string name="pnc_title">Персональное шумоподавление</string>

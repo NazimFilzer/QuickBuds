@@ -65,7 +65,7 @@ const STRINGS: &[&str] = &[
     "row_golden_title", "row_golden_sub", "golden_profiles", "golden_none", "golden_test_row", "golden_test_sub",
     "golden_test_title", "golden_prepare", "golden_start", "golden_scanning", "golden_scan_hint", "golden_left",
     "golden_right", "golden_step", "golden_next", "golden_finish", "golden_loud", "golden_creating", "golden_saved",
-    "golden_saved_msg", "golden_stopped", "golden_stopped_music", "golden_stopped_wear", "golden_scan_failed",
+    "golden_saved_msg", "golden_stopped", "golden_stopped_music", "golden_stopped_wear", "golden_scan_failed", "golden_refused",
     "golden_again", "golden_boost", "eq_delete_confirm",
     "gesture_title", "gesture_section_not_in_call", "gesture_section_on_call", "gesture_write_note", "gesture_single",
     "gesture_double", "gesture_triple", "gesture_slide", "gesture_hold", "gesture_extra_long", "gesture_on_call_double_tap",

@@ -91,6 +91,8 @@ class BudsConnectionManager(private val context: Context) {
 
         /** Golden Sound test status (`0x0204` subType `0x08`): kind 2 hearing test / 4 ear scan. */
         fun onGoldenStatus(kind: Int, status: Int) {}
+        /** A Golden Sound start or tone (`0x040D` / `0x040E`) acked with a non-zero status. */
+        fun onGoldenRefused(status: Int) {}
         /** Ear scan result (`0x0204` subType `0x0E`). */
         fun onEarScan(uid: Int, data: ByteArray) {}
         /** `0x8116`: the enhance type of a hearing result (0 low, 1 middle, 2 high). */
@@ -1552,6 +1554,12 @@ class BudsConnectionManager(private val context: Context) {
         if (cmd == 0x8133 && payload.size >= 3 && payload[0].toInt() == 0) {
             log("TAP LEVEL: ${payload[1]} default ${payload[2]}")
             handler.post { listeners.forEach { it.onTapLevel(payload[1].toInt(), payload[2].toInt()) } }
+            return
+        }
+        if ((cmd == 0x840D || cmd == 0x840E) && payload.isNotEmpty() && payload[0].toInt() != 0) {
+            val status = payload[0].toInt() and 0xFF
+            log("GOLDEN REFUSED: cmd=0x${"%04X".format(cmd)} status=$status")
+            handler.post { listeners.forEach { it.onGoldenRefused(status) } }
             return
         }
         if (cmd == 0x8412 && payload.isNotEmpty()) {

@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Es wurde Audio abgespielt. Pausiere es und versuche es erneut.</string>
     <string name="golden_stopped_wear">Ein Earbud wurde herausgenommen. Setze beide ein und versuche es erneut.</string>
     <string name="golden_scan_failed">Der Ohrscan wurde nicht abgeschlossen. Versuche es erneut.</string>
+    <string name="golden_refused">Die Ohrhörer haben den Test nicht gestartet. Versuche es erneut.</string>
     <string name="golden_again">Erneut versuchen</string>
     <string name="golden_boost">Verstärkung</string>
     <string name="pnc_title">Personalisierte Geräuschunterdrückung</string>

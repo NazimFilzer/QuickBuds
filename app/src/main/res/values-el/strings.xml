@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Άρχισε να παίζει ήχος. Κάντε παύση και δοκιμάστε ξανά.</string>
     <string name="golden_stopped_wear">Βγήκε ένα ακουστικό. Φορέστε και τα δύο και δοκιμάστε ξανά.</string>
     <string name="golden_scan_failed">Η σάρωση των αυτιών δεν ολοκληρώθηκε. Δοκιμάστε ξανά.</string>
+    <string name="golden_refused">Τα ακουστικά δεν ξεκίνησαν τη δοκιμή. Δοκιμάστε ξανά.</string>
     <string name="golden_again">Δοκιμή ξανά</string>
     <string name="golden_boost">Ενίσχυση</string>
     <string name="pnc_title">Εξατομικευμένη ακύρωση θορύβου</string>

@@ -373,6 +373,7 @@
     <string name="golden_stopped_music">Âm thanh bắt đầu phát. Hãy tạm dừng rồi thử lại.</string>
     <string name="golden_stopped_wear">Một tai nghe đã bị tháo. Đeo cả hai rồi thử lại.</string>
     <string name="golden_scan_failed">Quét tai chưa hoàn tất. Hãy thử lại.</string>
+    <string name="golden_refused">Tai nghe không bắt đầu bài kiểm tra. Hãy thử lại.</string>
     <string name="golden_again">Thử lại</string>
     <string name="golden_boost">Mức tăng cường</string>
     <string name="pnc_title">Chống ồn cá nhân hóa</string>

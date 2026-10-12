@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">অডিও চলতে শুরু করেছে। থামিয়ে আবার চেষ্টা করুন।</string>
     <string name="golden_stopped_wear">একটি ইয়ারবাড খুলে গেছে। দুটিই পরে আবার চেষ্টা করুন।</string>
     <string name="golden_scan_failed">কানের স্ক্যান শেষ হয়নি। আবার চেষ্টা করুন।</string>
+    <string name="golden_refused">ইয়ারবাড পরীক্ষা শুরু করেনি। আবার চেষ্টা করুন।</string>
     <string name="golden_again">আবার চেষ্টা করুন</string>
     <string name="golden_boost">বুস্ট</string>
     <string name="pnc_title">ব্যক্তিগত নয়েজ ক্যান্সেলেশন</string>

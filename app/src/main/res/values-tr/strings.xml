@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Ses çalmaya başladı. Duraklatın ve tekrar deneyin.</string>
     <string name="golden_stopped_wear">Bir kulaklık çıkarıldı. İkisini de takıp tekrar deneyin.</string>
     <string name="golden_scan_failed">Kulak taraması tamamlanmadı. Tekrar deneyin.</string>
+    <string name="golden_refused">Kulaklıklar testi başlatmadı. Tekrar deneyin.</string>
     <string name="golden_again">Tekrar dene</string>
     <string name="golden_boost">Güçlendirme</string>
     <string name="pnc_title">Kişiselleştirilmiş gürültü engelleme</string>

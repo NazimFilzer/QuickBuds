@@ -459,6 +459,7 @@
     <string name="golden_stopped_music">Audio started playing. Pause it and try again.</string>
     <string name="golden_stopped_wear">An earbud came out. Put both in and try again.</string>
     <string name="golden_scan_failed">The ear scan did not finish. Try again.</string>
+    <string name="golden_refused">The earbuds did not start the test. Try again.</string>
     <string name="golden_again">Try again</string>
     <string name="golden_boost">Boost</string>
     <string name="pnc_title">Personalized noise cancellation</string>

@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Começou a tocar áudio. Pause-o e tente novamente.</string>
     <string name="golden_stopped_wear">Um auricular foi retirado. Coloque os dois e tente novamente.</string>
     <string name="golden_scan_failed">A análise dos ouvidos não terminou. Tente novamente.</string>
+    <string name="golden_refused">Os fones não iniciaram o teste. Tente novamente.</string>
     <string name="golden_again">Tentar novamente</string>
     <string name="golden_boost">Reforço</string>
     <string name="pnc_title">Cancelamento de ruído personalizado</string>

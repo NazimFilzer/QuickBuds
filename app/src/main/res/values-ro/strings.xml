@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">A început redarea audio. Pune-o pe pauză și încearcă din nou.</string>
     <string name="golden_stopped_wear">O cască a fost scoasă. Pune-le pe amândouă și încearcă din nou.</string>
     <string name="golden_scan_failed">Scanarea urechilor nu s-a încheiat. Încearcă din nou.</string>
+    <string name="golden_refused">Căștile nu au pornit testul. Încearcă din nou.</string>
     <string name="golden_again">Încearcă din nou</string>
     <string name="golden_boost">Amplificare</string>
     <string name="pnc_title">Anularea personalizată a zgomotului</string>

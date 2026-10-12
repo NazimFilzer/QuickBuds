@@ -570,6 +570,8 @@ pub type Curves = (u32, Vec<f32>, Vec<f32>);
 pub enum HearingEv {
     /// Push `08`: kind 2 test / 4 scan, status (1/3 audio playing, 5 a bud out, 7/10/255 failed).
     Status(u8, u8),
+    /// `0x840D` / `0x840E`: the buds refused a start or a tone (non-zero status).
+    Refused(u8),
     /// Push `0E`: the ear scan finished.
     EarScan(u32, Vec<u8>),
     /// `0x8116`: a result's enhance type, and its hearing filters.
@@ -756,6 +758,7 @@ pub fn decode(p: &[u8]) -> Option<Event> {
         0x8133 if sub == Some(0) && pl.len() >= 3 => Event::TapLevel(pl[1], pl[2]),
         0x811A if sub == Some(0) && pl.len() >= 2 => Event::PncStored(pl[1] != 0),
         0x8412 if !pl.is_empty() => Event::PncAck(pl[0]),
+        0x840D | 0x840E if pl.first().is_some_and(|&s| s != 0) => Event::Hearing(HearingEv::Refused(pl[0])),
         0x8134 if sub == Some(0) && pl.len() >= 2 => Event::HeadMotion(pl[1]),
         0x812A if sub == Some(0) && pl.len() >= 2 => Event::SpatialType(pl[1]),
         EVT_SPATIAL_TYPE if !pl.is_empty() => Event::SpatialType(pl[0]),
@@ -828,6 +831,7 @@ pub fn describe(e: &Event) -> String {
         Event::Devices(v) => format!("Devices: {}", v.iter().map(|d| format!("{} {}", d.name, if d.connected { "on" } else { "off" })).collect::<Vec<_>>().join(", ")),
         Event::Hearing(h) => match h {
             HearingEv::Status(k, st) => format!("Hearing {} status {st}", if *k == 4 { "scan" } else { "test" }),
+            HearingEv::Refused(st) => format!("Hearing test: FAILED (status {st})"),
             HearingEv::EarScan(u, d) => format!("Ear scan {u:08X}, {} bytes", d.len()),
             HearingEv::Filter(u, t, c) => format!("Hearing filter {u:08X} type {t}{}", c.as_ref().map_or(String::new(), |c| format!(", {} floats", c.1.len() * 2))),
             HearingEv::ScanCurves(u, c) => format!("Ear scan filter {u:08X} {} Hz, {} floats", c.0, c.1.len() * 2),
@@ -1178,6 +1182,8 @@ mod tests {
         assert!(matches!(decode(&build_packet(EVT_PUSH, 1, &[0x0B, 2])), Some(Event::PncResult(2))));
         assert!(matches!(decode(&build_packet(0x811A, 1, &[0, 1])), Some(Event::PncStored(true))));
         assert!(matches!(decode(&build_packet(0x8412, 1, &[15])), Some(Event::PncAck(15))));
+        assert!(matches!(decode(&build_packet(0x840E, 1, &[3])), Some(Event::Hearing(HearingEv::Refused(3)))));
+        assert!(!matches!(decode(&build_packet(0x840D, 1, &[0])), Some(Event::Hearing(_))));
     }
 
     #[test]

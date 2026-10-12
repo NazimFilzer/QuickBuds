@@ -261,6 +261,9 @@ fn event(a: &App, e: HearingEv) {
                 _ => {}
             }
         }
+        HearingEv::Refused(_) => {
+            if matches!(st(|s| s.step), Step::Scan | Step::Test) { stop(a, "golden_refused"); }
+        }
         // The scan is done: stop it and start the hearing test.
         HearingEv::EarScan(uid, data) => {
             if st(|s| s.step != Step::Scan || s.uid != uid) { return; }

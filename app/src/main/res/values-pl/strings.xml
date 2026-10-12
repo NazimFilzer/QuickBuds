@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Zaczął grać dźwięk. Wstrzymaj go i spróbuj ponownie.</string>
     <string name="golden_stopped_wear">Słuchawka została wyjęta. Włóż obie i spróbuj ponownie.</string>
     <string name="golden_scan_failed">Skanowanie uszu nie zostało ukończone. Spróbuj ponownie.</string>
+    <string name="golden_refused">Słuchawki nie rozpoczęły testu. Spróbuj ponownie.</string>
     <string name="golden_again">Spróbuj ponownie</string>
     <string name="golden_boost">Wzmocnienie</string>
     <string name="pnc_title">Spersonalizowana redukcja szumów</string>

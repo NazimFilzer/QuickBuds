@@ -232,6 +232,7 @@ class GoldenSoundActivity : Activity(), BudsConnectionManager.Listener {
     }
 
     override fun onGoldenStatus(kind: Int, status: Int) { testSheet?.status(kind, status) }
+    override fun onGoldenRefused(status: Int) { testSheet?.refused() }
     override fun onEarScan(uid: Int, data: ByteArray) { testSheet?.earScan(uid, data) }
     override fun onGoldenFilter(uid: Int, enhanceType: Int) { testSheet?.filter(uid, enhanceType) }
 

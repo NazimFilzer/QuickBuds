@@ -166,6 +166,11 @@ class GoldenTestSheet(
         }
     }
 
+    /** The buds acked a start or a tone with a non-zero status. */
+    fun refused() {
+        if (state == State.SCAN || state == State.TEST) stop(R.string.golden_refused)
+    }
+
     private fun stop(reason: Int) {
         abort()
         panel.visibility = View.GONE

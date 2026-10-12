@@ -373,6 +373,7 @@
     <string name="golden_stopped_music">Audio mulai diputar. Jeda lalu coba lagi.</string>
     <string name="golden_stopped_wear">Satu earbud terlepas. Pasang keduanya lalu coba lagi.</string>
     <string name="golden_scan_failed">Pemindaian telinga tidak selesai. Coba lagi.</string>
+    <string name="golden_refused">Earbud tidak memulai tes. Coba lagi.</string>
     <string name="golden_again">Coba lagi</string>
     <string name="golden_boost">Penguatan</string>
     <string name="pnc_title">Peredam bising personal</string>

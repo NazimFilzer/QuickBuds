@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Audio mula dimainkan. Jedakan dan cuba lagi.</string>
     <string name="golden_stopped_wear">Satu fon telinga tertanggal. Pakai kedua-duanya dan cuba lagi.</string>
     <string name="golden_scan_failed">Imbasan telinga tidak selesai. Cuba lagi.</string>
+    <string name="golden_refused">Fon telinga tidak memulakan ujian. Cuba lagi.</string>
     <string name="golden_again">Cuba lagi</string>
     <string name="golden_boost">Peningkatan</string>
     <string name="pnc_title">Pembatalan bunyi bising diperibadikan</string>

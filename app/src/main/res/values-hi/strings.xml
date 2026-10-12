@@ -373,6 +373,7 @@
     <string name="golden_stopped_music">ऑडियो चलने लगा। उसे रोकें और फिर से कोशिश करें।</string>
     <string name="golden_stopped_wear">एक ईयरबड निकल गया। दोनों लगाएं और फिर से कोशिश करें।</string>
     <string name="golden_scan_failed">कान का स्कैन पूरा नहीं हुआ। फिर से कोशिश करें।</string>
+    <string name="golden_refused">ईयरबड ने टेस्ट शुरू नहीं किया। फिर से कोशिश करें।</string>
     <string name="golden_again">फिर से कोशिश करें</string>
     <string name="golden_boost">बूस्ट</string>
     <string name="pnc_title">पर्सनलाइज़्ड नॉइज़ कैंसलेशन</string>

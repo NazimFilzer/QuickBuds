@@ -371,6 +371,7 @@
     <string name="golden_stopped_music">Hang kezdett szólni. Állítsd le, és próbáld újra.</string>
     <string name="golden_stopped_wear">Kivettél egy fülhallgatót. Tedd be mindkettőt, és próbáld újra.</string>
     <string name="golden_scan_failed">A fülszkennelés nem fejeződött be. Próbáld újra.</string>
+    <string name="golden_refused">A fülhallgató nem indította el a tesztet. Próbáld újra.</string>
     <string name="golden_again">Újra</string>
     <string name="golden_boost">Kiemelés</string>
     <string name="pnc_title">Személyre szabott zajszűrés</string>
