@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS reports (
   categories TEXT NOT NULL,  -- comma-separated, the form's words
   description TEXT NOT NULL,
   crash INTEGER NOT NULL,    -- 1: sent from the crash dialog
-  log TEXT                   -- null when the person turned the log off
+  log TEXT,                  -- null when the person turned the log off
+  status TEXT NOT NULL DEFAULT 'new',  -- new, working, done, unsupported, no_log, no_description, needs_btsnoop
+  note TEXT                  -- the developer's one-line reason for the status
 );
 CREATE INDEX IF NOT EXISTS reports_sender_at ON reports (sender, at);

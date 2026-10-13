@@ -28,6 +28,22 @@ npx wrangler deploy
 
 The key is the only access control. Keep the link private.
 
+## Mark a report
+
+Each report has a `status`. The page shows only `new` and `working` reports.
+
+- `new`: not read yet.
+- `working`: a fix is in progress.
+- `done`: fixed, or answered.
+- `unsupported`: the buds are not a supported model.
+- `no_log`: the log is missing or shows nothing.
+- `no_description`: the description is empty or unclear.
+- `needs_btsnoop`: only a btsnoop capture can show the cause.
+
+```bash
+npx wrangler d1 execute quickbuds-reports --remote --command "UPDATE reports SET status = 'done', note = 'fixed in 4.13.0' WHERE id = 7"
+```
+
 ## Delete old reports
 
 ```bash

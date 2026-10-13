@@ -57,19 +57,19 @@ async function report(req, env) {
 
 /**
  * The developer's page: the newest reports first, as plain text, or as JSON with format=json.
- * after=<id> shows only newer reports; limit=<n> (default 20, at most 100).
+ * Only "new" and "working" reports show. after=<id> shows only newer reports; limit=<n> (default 20, at most 100).
  */
 async function list(url, env) {
   if (!env.READ_KEY || url.searchParams.get("key") !== env.READ_KEY) return new Response("Not found", { status: 404 });
   const after = Number(url.searchParams.get("after") ?? 0) || 0;
   const limit = Math.min(Number(url.searchParams.get("limit") ?? 20) || 20, 100);
   const { results } = await env.DB.prepare(
-    "SELECT id, at, app, model, categories, description, crash, log FROM reports WHERE id > ? ORDER BY id DESC LIMIT ?",
+    "SELECT id, at, app, model, categories, description, crash, log, status, note FROM reports WHERE id > ? AND status IN ('new', 'working') ORDER BY id DESC LIMIT ?",
   ).bind(after, limit).all();
 
   if (url.searchParams.get("format") === "json") return Response.json(results);
   const text = results.length === 0 ? "No reports.\n" : results.map((r) => [
-    `#${r.id}  ${r.at}  ${r.app}${r.crash ? "  CRASH" : ""}`,
+    `#${r.id}  ${r.at}  ${r.app}${r.crash ? "  CRASH" : ""}  [${r.status}${r.note ? `: ${r.note}` : ""}]`,
     `Model: ${r.model}`,
     `Categories: ${r.categories || "-"}`,
     `Description:\n${r.description || "-"}`,
