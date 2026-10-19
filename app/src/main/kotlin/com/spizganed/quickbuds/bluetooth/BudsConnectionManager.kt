@@ -423,7 +423,17 @@ class BudsConnectionManager(private val context: Context) {
         sendRaw(OpoProtocol.anc(bit), "ANC $mode")
     }
 
-    fun setGameMode(on: Boolean) = sendRaw(OpoProtocol.setFeature(Capabilities.gameModeId(context), on), "GameMode")
+    /** Writes, then reads the state back: models that do not push `GAME EVT` still show the real state. */
+    fun setGameMode(on: Boolean) {
+        Thread {
+            try {
+                sendRawBlocking(OpoProtocol.setFeature(Capabilities.gameModeId(context), on), "GameMode")
+                sendRawBlocking(statusQuery(), "verify features")
+            } catch (e: Exception) {
+                log("GAME MODE write failed: ${e.message}")
+            }
+        }.start()
+    }
 
     /** `0x28` on buds with game sound, `0x06` elsewhere, both ways (`[VENDOR]`, PROTOCOL.md §9). */
 

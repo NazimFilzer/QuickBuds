@@ -6,29 +6,26 @@ The parked and unverified work. Finished work leaves this file. Protocol finding
 
 ## Planned
 
+- **Own protocol facts and model data, then a dual licence.** Re-derive the `[OSS]` facts and rebuild
+  `models.json` with our own keys from the vendor apps and our captures, in two steps: a fact list first,
+  then the file written from it alone. Add the commercial-on-request licence after that. The desktop app
+  needs Slint's commercial licence first.
 - **Material style on the desktop**, as on the phone: M3 shapes, sliders, switches and segmented
   lists, with Material as the default style. The desktop has QuickBuds and Pixel art now.
   The desktop style is one on/off value (`Dots.on` in `ui/app.slint`). Change it to a style choice first.
   Colours come from the system accent. The first pass covers the main window only.
-- **Glass style as the fourth style, on every platform.** Source: the fork
+- **Fixes from the 4.12.0 reports** (the rest wait for a retest or for realme Link data):
+  - Crash on startup (RMX3890, Android 15): `KeepAliveReceiver` starts `BudsService` from the background and
+    ColorOS refuses `startForeground`. The service stops itself now. Test on a device.
+  - realme Buds T310 game mode (report #16): the buds ack the write but push no `GAME EVT`. The app reads
+    the state back now. Retest on a T310.
+  - realme Buds T500 Pro (report #21): the buds do not answer the `0x040E` tones of the hearing test.
+    Needs the realme Link command.
+  - realme Buds Air8 (report #20): no known command for announcement and tap sounds. The buds list
+    `0x0131` and `0x0132`; nothing reads them yet.
+- **Glass style as a fourth style, on every platform.** Parked. Source: the fork
   [ayush04-op/QuickBuds-Glass](https://github.com/ayush04-op/QuickBuds-Glass) (GPL-3.0). Keep its credit.
-  - Android screens: take `LiquidGlassHelper.kt` and its small hooks in `ThemeRes`, `SettingRowFactory`,
-    `BottomSheetDialog` and `MainActivity`. Make glass one style choice, not a separate mode. Check it with
-    Material colours, wallpaper colours and OLED Black. Check the blur API level (Android 12 or newer?) and
-    hide or fall back on older phones. Add the style name in all 26 locales.
-  - Widgets: the fork has none. Draw a translucent tinted panel with a bright edge, the same way the
-    Material widgets draw their one background. A launcher blurs nothing behind a widget.
-  - Desktop: Slint has no blur behind a window. Draw a translucent tinted card with a highlight edge.
-    Build it together with the desktop Material work, on the same style choice.
-- **Fixes from the 4.12.0 reports:**
-  - Crash on startup (RMX3890, Android 15): `BudsService.startForeground` is refused in the background.
-    The service now stops itself. Find what starts it in the background, and test on a device.
-  - realme Buds T310: game mode does nothing (report #16). Compare the command with HeyMelody's.
-  - realme Buds T500 Pro: the sound profile plays no melody and cannot be adjusted (report #21).
-  - realme Buds T100: high-quality audio, 3D audio, dual connection and wear detection fail (report #7).
-    The model list may show features the buds do not have.
-  - realme Buds Air8: a question about turning off the audio announcements and tap sounds (report #20).
-    Check whether HeyMelody has a command for it. Reply to the reporter either way.
+  Build it after the desktop Material style, on the same style choice.
 
 ## Parked
 
