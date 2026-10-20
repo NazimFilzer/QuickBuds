@@ -28,3 +28,6 @@ desktop/dist/
 # Screenshots are taken by hand; the script and its output stay local
 scripts/readme-screenshots.sh
 docs/screenshots/
+
+# Tool state
+.claude/
