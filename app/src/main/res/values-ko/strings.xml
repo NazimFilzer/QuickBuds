@@ -454,4 +454,6 @@
     <string name="test_not_marked">표시 안 됨</string>
     <string name="test_broken_hint">무슨 일이 있었나요? 한 줄이면 충분합니다.</string>
     <string name="test_mark_all">결과를 보내려면 모든 기능을 표시하세요.</string>
+    <string name="dual_status_waiting">이어버드의 듀얼 연결 확인을 기다리는 중입니다.</string>
+    <string name="dual_change_unconfirmed">이어버드에서 변경 사항을 확인하지 못했습니다. 다시 연결한 후 시도하세요.</string>
 </resources>

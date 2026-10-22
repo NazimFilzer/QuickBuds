@@ -454,4 +454,6 @@
     <string name="test_not_marked">未記録</string>
     <string name="test_broken_hint">何が起きましたか？1 行で十分です。</string>
     <string name="test_mark_all">結果を送信するには、すべての機能を記録してください。</string>
+    <string name="dual_status_waiting">イヤホンによるデュアル接続の確認を待っています。</string>
+    <string name="dual_change_unconfirmed">イヤホンが変更を確認しませんでした。再接続してもう一度お試しください。</string>
 </resources>

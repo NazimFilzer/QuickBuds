@@ -122,5 +122,6 @@ fun main() {
         }
     )
     tests.forEach { (name, test) -> test(); println("PASS: $name") }
-    println("${tests.size} RFCOMM regression checks passed")
+    val otherChecks = runConfirmedToggleTests()
+    println("${tests.size + otherChecks} transport and confirmation regression checks passed")
 }

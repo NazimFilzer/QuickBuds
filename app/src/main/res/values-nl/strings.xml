@@ -454,4 +454,6 @@
     <string name="test_not_marked">Niet gemarkeerd</string>
     <string name="test_broken_hint">Wat gebeurde er? Eén regel is genoeg.</string>
     <string name="test_mark_all">Markeer elke functie om het resultaat te versturen.</string>
+    <string name="dual_status_waiting">Wachten tot de oordopjes de dubbele verbinding bevestigen.</string>
+    <string name="dual_change_unconfirmed">De oordopjes hebben de wijziging niet bevestigd. Maak opnieuw verbinding en probeer het nogmaals.</string>
 </resources>

@@ -454,4 +454,6 @@
     <string name="test_not_marked">Neoznačeno</string>
     <string name="test_broken_hint">Co se stalo? Stačí jeden řádek.</string>
     <string name="test_mark_all">Označte každou funkci, abyste mohli odeslat výsledek.</string>
+    <string name="dual_status_waiting">Čekání na potvrzení duálního připojení ze sluchátek.</string>
+    <string name="dual_change_unconfirmed">Sluchátka nepotvrdila změnu. Připojte je znovu a opakujte akci.</string>
 </resources>

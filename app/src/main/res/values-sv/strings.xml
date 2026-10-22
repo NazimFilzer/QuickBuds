@@ -454,4 +454,6 @@
     <string name="test_not_marked">Inte markerad</string>
     <string name="test_broken_hint">Vad hände? En rad räcker.</string>
     <string name="test_mark_all">Markera varje funktion för att skicka resultatet.</string>
+    <string name="dual_status_waiting">Väntar på att hörlurarna ska bekräfta dubbel anslutning.</string>
+    <string name="dual_change_unconfirmed">Hörlurarna bekräftade inte ändringen. Anslut igen och försök på nytt.</string>
 </resources>

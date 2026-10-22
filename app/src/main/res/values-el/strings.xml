@@ -454,4 +454,6 @@
     <string name="test_not_marked">Χωρίς σήμανση</string>
     <string name="test_broken_hint">Τι συνέβη; Αρκεί μία γραμμή.</string>
     <string name="test_mark_all">Σημειώστε κάθε λειτουργία για να στείλετε το αποτέλεσμα.</string>
+    <string name="dual_status_waiting">Αναμονή επιβεβαίωσης διπλής σύνδεσης από τα ακουστικά.</string>
+    <string name="dual_change_unconfirmed">Τα ακουστικά δεν επιβεβαίωσαν την αλλαγή. Συνδεθείτε ξανά και δοκιμάστε πάλι.</string>
 </resources>

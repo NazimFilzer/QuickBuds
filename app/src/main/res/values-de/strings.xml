@@ -454,4 +454,6 @@
     <string name="test_not_marked">Nicht markiert</string>
     <string name="test_broken_hint">Was ist passiert? Eine Zeile reicht.</string>
     <string name="test_mark_all">Markiere jede Funktion, um das Ergebnis zu senden.</string>
+    <string name="dual_status_waiting">Warten auf die Bestätigung der Dual-Verbindung durch die Ohrhörer.</string>
+    <string name="dual_change_unconfirmed">Die Ohrhörer haben die Änderung nicht bestätigt. Erneut verbinden und nochmals versuchen.</string>
 </resources>

@@ -454,4 +454,6 @@
     <string name="test_not_marked">Não marcada</string>
     <string name="test_broken_hint">O que aconteceu? Uma linha chega.</string>
     <string name="test_mark_all">Marque cada função para enviar o resultado.</string>
+    <string name="dual_status_waiting">Aguardando os fones confirmarem a conexão dupla.</string>
+    <string name="dual_change_unconfirmed">Os fones não confirmaram a alteração. Reconecte e tente novamente.</string>
 </resources>

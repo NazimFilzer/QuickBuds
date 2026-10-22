@@ -2,7 +2,7 @@
 
 **Experimental Nord Buds 4 Pro fork:** this branch adds Android RFCOMM connection fallbacks and
 diagnostics. Hardware support is **not yet confirmed**.
-[Download the test APK](https://github.com/NazimFilzer/QuickBuds/releases/tag/nord-buds-4-pro-test-2)
+[Download the test APK](https://github.com/NazimFilzer/QuickBuds/releases/tag/nord-buds-4-pro-test-3)
 and read [installation and testing](docs/nord-buds-4-pro.md).
 Release links below refer to the upstream project; build this fork's debug APK to test these changes.
 
@@ -167,6 +167,11 @@ Everything to build and release QuickBuds is in this repository, except the sign
 project stops, anyone can fork it and publish their own signed build.
 
 ## Credits
+
+This fork's Nord Buds 4 Pro BLE transport references the service UUIDs, notification behaviour and
+write mode documented by [Sarfraz-droid/OnePlusBudsManager](https://github.com/Sarfraz-droid/OnePlusBudsManager)
+and [AasheeshLikePanner/cracked-oneplus-buds](https://github.com/AasheeshLikePanner/cracked-oneplus-buds).
+Their Swift source is not copied; the existing QuickBuds protocol frames and parsers are reused.
 
 The earbud protocol was never publicly documented. QuickBuds stands on the people who worked it out
 first; PROTOCOL.md marks every fact taken from them `[OSS]`.

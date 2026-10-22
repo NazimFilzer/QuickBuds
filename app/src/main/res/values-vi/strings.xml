@@ -456,4 +456,6 @@
     <string name="test_not_marked">Chưa đánh dấu</string>
     <string name="test_broken_hint">Đã xảy ra chuyện gì? Một dòng là đủ.</string>
     <string name="test_mark_all">Đánh dấu mọi tính năng để gửi kết quả.</string>
+    <string name="dual_status_waiting">Đang chờ tai nghe xác nhận kết nối kép.</string>
+    <string name="dual_change_unconfirmed">Tai nghe chưa xác nhận thay đổi. Hãy kết nối lại rồi thử lại.</string>
 </resources>

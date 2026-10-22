@@ -456,4 +456,6 @@
     <string name="test_not_marked">चिह्नित नहीं</string>
     <string name="test_broken_hint">क्या हुआ? एक पंक्ति काफ़ी है।</string>
     <string name="test_mark_all">नतीजा भेजने के लिए हर फ़ीचर चिह्नित करें।</string>
+    <string name="dual_status_waiting">डुअल कनेक्शन की पुष्टि के लिए ईयरबड्स का इंतज़ार है।</string>
+    <string name="dual_change_unconfirmed">ईयरबड्स ने बदलाव की पुष्टि नहीं की। दोबारा कनेक्ट करके कोशिश करें।</string>
 </resources>

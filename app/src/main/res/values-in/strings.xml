@@ -456,4 +456,6 @@
     <string name="test_not_marked">Belum ditandai</string>
     <string name="test_broken_hint">Apa yang terjadi? Satu baris sudah cukup.</string>
     <string name="test_mark_all">Tandai setiap fitur untuk mengirim hasilnya.</string>
+    <string name="dual_status_waiting">Menunggu earbud mengonfirmasi koneksi ganda.</string>
+    <string name="dual_change_unconfirmed">Earbud tidak mengonfirmasi perubahan. Sambungkan kembali dan coba lagi.</string>
 </resources>

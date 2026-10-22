@@ -542,4 +542,6 @@
     <string name="test_not_marked">Not marked</string>
     <string name="test_broken_hint">What happened? One line is enough.</string>
     <string name="test_mark_all">Mark every feature to send the result.</string>
+    <string name="dual_status_waiting">Waiting for the earbuds to confirm dual connection.</string>
+    <string name="dual_change_unconfirmed">The earbuds did not confirm the change. Reconnect and try again.</string>
 </resources>

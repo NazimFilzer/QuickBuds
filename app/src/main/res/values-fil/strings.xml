@@ -454,4 +454,6 @@
     <string name="test_not_marked">Hindi namarkahan</string>
     <string name="test_broken_hint">Ano ang nangyari? Sapat na ang isang linya.</string>
     <string name="test_mark_all">Markahan ang bawat feature para maipadala ang resulta.</string>
+    <string name="dual_status_waiting">Hinihintay ang kumpirmasyon ng earbuds sa dual connection.</string>
+    <string name="dual_change_unconfirmed">Hindi kinumpirma ng earbuds ang pagbabago. Kumonekta muli at subukan ulit.</string>
 </resources>

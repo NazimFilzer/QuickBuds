@@ -454,4 +454,6 @@
     <string name="test_not_marked">İşaretlenmedi</string>
     <string name="test_broken_hint">Ne oldu? Bir satır yeterli.</string>
     <string name="test_mark_all">Sonucu göndermek için her özelliği işaretleyin.</string>
+    <string name="dual_status_waiting">Kulaklıkların çift bağlantıyı onaylaması bekleniyor.</string>
+    <string name="dual_change_unconfirmed">Kulaklıklar değişikliği onaylamadı. Yeniden bağlanıp tekrar deneyin.</string>
 </resources>

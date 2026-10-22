@@ -456,4 +456,6 @@
     <string name="test_not_marked">未標記</string>
     <string name="test_broken_hint">發生了什麼事？一行就夠了。</string>
     <string name="test_mark_all">標記所有功能後即可傳送結果。</string>
+    <string name="dual_status_waiting">正在等待耳機確認雙裝置連線。</string>
+    <string name="dual_change_unconfirmed">耳機未確認變更。請重新連線後再試。</string>
 </resources>

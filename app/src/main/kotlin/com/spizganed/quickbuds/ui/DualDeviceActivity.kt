@@ -32,6 +32,7 @@ class DualDeviceActivity : Activity(), BudsConnectionManager.Listener {
     private var bound = false
     private var syncing = false
     private lateinit var dualSwitch: Switch
+    private var dualSubtitle: TextView? = null
     private lateinit var deviceCard: LinearLayout
     private var preferredText: TextView? = null
     private var preferred: String? = null
@@ -49,6 +50,7 @@ class DualDeviceActivity : Activity(), BudsConnectionManager.Listener {
             manager = (service as BudsService.LocalBinder).getService().manager
             manager?.addListener(this@DualDeviceActivity)
             manager?.featureStates?.let { onFeatureStates(it) }
+            renderDualState()
             manager?.devices?.let { onDevices(it) }
             manager?.refreshDevices()
             manager?.requestFullStatus()
@@ -58,6 +60,7 @@ class DualDeviceActivity : Activity(), BudsConnectionManager.Listener {
 
         override fun onServiceDisconnected(name: ComponentName?) {
             manager = null
+            renderDualState()
         }
     }
 
@@ -71,16 +74,18 @@ class DualDeviceActivity : Activity(), BudsConnectionManager.Listener {
         root.addView(SettingRowFactory.title(this, R.string.dual_title))
 
         dualSwitch = SettingRowFactory.buildSwitch(this, false)
+        dualSwitch.isEnabled = false
         dualSwitch.setOnCheckedChangeListener { _, on ->
-            if (!syncing) manager?.setDualDevice(on)
+            if (!syncing) { manager?.setDualDevice(on); renderDualState() }
         }
         root.addView(cardView().apply {
-            addView(
-                SettingRowFactory.build(
-                    this@DualDeviceActivity, 0, R.string.dual_title, R.string.dual_switch_sub, dualSwitch
-                ) { dualSwitch.performClick() }
-            )
+            val row = SettingRowFactory.build(
+                this@DualDeviceActivity, 0, R.string.dual_title, R.string.dual_switch_sub, dualSwitch
+            ) { if (dualSwitch.isEnabled) dualSwitch.performClick() }
+            dualSubtitle = SettingRowFactory.subtitle(this@DualDeviceActivity, row)
+            addView(row)
         })
+        renderDualState()
 
         if (has("setPriorityDevice")) {
             val row = SettingRowFactory.build(this, 0, R.string.dual_preferred, 0, SettingRowFactory.buildChevron(this)) {
@@ -211,13 +216,21 @@ class DualDeviceActivity : Activity(), BudsConnectionManager.Listener {
     }
 
     override fun onFeatureStates(states: Map<Int, Int>) {
-        val v = states[OpoProtocol.FEATURE_DUAL_DEVICE] ?: return
+        renderDualState()
+    }
+
+    private fun renderDualState() {
+        val state = manager?.dualState?.snapshot()
         syncing = true
-        dualSwitch.isChecked = v == 1
+        dualSwitch.isChecked = state?.displayed ?: false
+        dualSwitch.isEnabled = manager?.isConnected() == true && state?.confirmed != null && !state.pending
+        dualSubtitle?.setText(if (state?.confirmed == null || state.pending)
+            R.string.dual_status_waiting else R.string.dual_switch_sub)
         syncing = false
     }
 
-    override fun onConnected(connected: Boolean) {}
+    override fun onDualStateChanged() = renderDualState()
+    override fun onConnected(connected: Boolean) = renderDualState()
     override fun onBattery(
         left: Int?, case: Int?, right: Int?,
         chargingLeft: Boolean, chargingCase: Boolean, chargingRight: Boolean

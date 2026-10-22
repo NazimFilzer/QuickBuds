@@ -10,6 +10,10 @@ output="$(mktemp -d)"
 trap 'rm -rf "$output"' EXIT
 "$compiler" \
     "$root/app/src/main/kotlin/com/spizganed/quickbuds/bluetooth/RfcommConnector.kt" \
+    "$root/app/src/main/kotlin/com/spizganed/quickbuds/bluetooth/ConfirmedToggle.kt" \
+    "$root/app/src/main/kotlin/com/spizganed/quickbuds/protocol/OppoPacketFramer.kt" \
+    "$root/app/src/main/kotlin/com/spizganed/quickbuds/protocol/BlePacketSizing.kt" \
     "$root/tests/RfcommConnectorTest.kt" \
+    "$root/tests/ConfirmedToggleTest.kt" \
     -include-runtime -d "$output/rfcomm-tests.jar"
 java -jar "$output/rfcomm-tests.jar"

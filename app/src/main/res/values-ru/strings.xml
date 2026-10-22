@@ -454,4 +454,6 @@
     <string name="test_not_marked">Не отмечено</string>
     <string name="test_broken_hint">Что произошло? Хватит одной строки.</string>
     <string name="test_mark_all">Отметьте каждую функцию, чтобы отправить результат.</string>
+    <string name="dual_status_waiting">Ожидание подтверждения двойного подключения от наушников.</string>
+    <string name="dual_change_unconfirmed">Наушники не подтвердили изменение. Подключитесь заново и повторите попытку.</string>
 </resources>

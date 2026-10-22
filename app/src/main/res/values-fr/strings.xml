@@ -454,4 +454,6 @@
     <string name="test_not_marked">Non notée</string>
     <string name="test_broken_hint">Que s\'est-il passé ? Une ligne suffit.</string>
     <string name="test_mark_all">Notez chaque fonction pour envoyer le résultat.</string>
+    <string name="dual_status_waiting">En attente de la confirmation de la double connexion par les écouteurs.</string>
+    <string name="dual_change_unconfirmed">Les écouteurs n’ont pas confirmé la modification. Reconnectez-les et réessayez.</string>
 </resources>

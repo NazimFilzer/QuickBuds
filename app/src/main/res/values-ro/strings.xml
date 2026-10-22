@@ -454,4 +454,6 @@
     <string name="test_not_marked">Nemarcată</string>
     <string name="test_broken_hint">Ce s-a întâmplat? Un rând este suficient.</string>
     <string name="test_mark_all">Marchează fiecare funcție ca să trimiți rezultatul.</string>
+    <string name="dual_status_waiting">Se așteaptă confirmarea conexiunii duble de la căști.</string>
+    <string name="dual_change_unconfirmed">Căștile nu au confirmat modificarea. Reconectează și încearcă din nou.</string>
 </resources>

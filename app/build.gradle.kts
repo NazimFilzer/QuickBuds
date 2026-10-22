@@ -45,7 +45,7 @@ android {
         getByName("debug") {
             // Install the experimental transport build beside the official, differently signed app.
             applicationIdSuffix = ".nordtest"
-            versionNameSuffix = "-nord-test2"
+            versionNameSuffix = "-nord-test3"
         }
         getByName("release") {
             signingConfig = signingConfigs.findByName("release")

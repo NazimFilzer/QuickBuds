@@ -454,4 +454,6 @@
     <string name="test_not_marked">Nieoznaczone</string>
     <string name="test_broken_hint">Co się stało? Wystarczy jedna linijka.</string>
     <string name="test_mark_all">Oznacz każdą funkcję, aby wysłać wynik.</string>
+    <string name="dual_status_waiting">Oczekiwanie na potwierdzenie podwójnego połączenia przez słuchawki.</string>
+    <string name="dual_change_unconfirmed">Słuchawki nie potwierdziły zmiany. Połącz ponownie i spróbuj jeszcze raz.</string>
 </resources>

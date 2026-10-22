@@ -454,4 +454,6 @@
     <string name="test_not_marked">চিহ্নিত নয়</string>
     <string name="test_broken_hint">কী হয়েছে? এক লাইনই যথেষ্ট।</string>
     <string name="test_mark_all">ফলাফল পাঠাতে প্রতিটি ফিচার চিহ্নিত করুন।</string>
+    <string name="dual_status_waiting">ডুয়াল সংযোগ নিশ্চিত করার জন্য ইয়ারবাডের অপেক্ষা করা হচ্ছে।</string>
+    <string name="dual_change_unconfirmed">ইয়ারবাড পরিবর্তনটি নিশ্চিত করেনি। আবার সংযোগ করে চেষ্টা করুন।</string>
 </resources>

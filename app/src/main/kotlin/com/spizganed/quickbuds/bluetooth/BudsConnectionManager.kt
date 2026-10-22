@@ -23,6 +23,7 @@ import com.spizganed.quickbuds.protocol.KeyFunctionParser
 import com.spizganed.quickbuds.protocol.OpoProtocol
 import com.spizganed.quickbuds.protocol.GoldenSound
 import com.spizganed.quickbuds.protocol.OppoPacketFramer
+import com.spizganed.quickbuds.protocol.BlePacketSizing
 import com.spizganed.quickbuds.protocol.UserInteractionParser
 import com.spizganed.quickbuds.protocol.WearingStatusParser
 import com.spizganed.quickbuds.ui.GestureConfigStore
@@ -34,6 +35,9 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicLong
 
 @SuppressLint("MissingPermission")
 class BudsConnectionManager(private val context: Context) {
@@ -126,6 +130,7 @@ class BudsConnectionManager(private val context: Context) {
 
         /** A `0x810D` status reply arrived — feature id -> value, see [featureStates]. */
         fun onFeatureStates(states: Map<Int, Int>) {}
+        fun onDualStateChanged() {}
 
         /** Any EQ reading changed — see [eqCurrent], [eqCustom], [bassWaveLevel]. */
         fun onEqState() {}
@@ -158,8 +163,13 @@ class BudsConnectionManager(private val context: Context) {
 
     private var bluetoothSocket: BluetoothSocket? = null
     private var connectedThread: ConnectedThread? = null
-    private var isReady = false
-    private var isConnecting = false
+    @Volatile private var bleConnection: BleBudsConnection? = null
+    @Volatile private var isReady = false
+    @Volatile private var isConnecting = false
+    private val connectionEpoch = AtomicLong()
+    @Volatile private var handshakeReply = CountDownLatch(1)
+    private var initialRetry: Runnable? = null
+    internal val dualState = ConfirmedToggle()
     private var reconnectAttempts = 0
 
     // Reconnect-after-loss state — see reconnectAfterLoss().
@@ -184,7 +194,8 @@ class BudsConnectionManager(private val context: Context) {
     private var lastRightStatus = -1
     private var lastCaseStatus = -1
 
-    fun isConnected(): Boolean = isReady && bluetoothSocket?.isConnected == true
+    fun isConnected(): Boolean = isReady &&
+        (bluetoothSocket?.isConnected == true || bleConnection?.isConnected() == true)
 
     /**
      * Drops or restores the phone's own audio link, the way HeyMelody's Connect/Disconnect does:
@@ -215,12 +226,16 @@ class BudsConnectionManager(private val context: Context) {
         }
     }
 
-    fun connect(device: BluetoothDevice, withAudio: Boolean = false) {
+    @Synchronized fun connect(device: BluetoothDevice, withAudio: Boolean = false) {
         if (isConnecting || isConnected()) {
             log("Already connecting/connected, ignoring.")
             return
         }
         isConnecting = true
+        val epoch = connectionEpoch.incrementAndGet()
+        handshakeReply = CountDownLatch(1)
+        dualState.reset()
+        handler.post { listeners.forEach { it.onDualStateChanged() } }
         lastDevice = device
         // Only a connect the user asked for (the pill) brings phone audio up. An automatic one —
         // ACL receiver, retries, reconnect after loss — leaves audio to Android: asking for A2DP
@@ -231,6 +246,35 @@ class BudsConnectionManager(private val context: Context) {
         context.getSystemService(BluetoothManager::class.java)?.adapter?.cancelDiscovery()
 
         Thread {
+            if (device.name == "OnePlus Nord Buds 4 Pro") {
+                lateinit var link: BleBudsConnection
+                link = BleBudsConnection(context, ::log, { packet ->
+                    if (bleConnection === link && epoch == connectionEpoch.get()) handlePacket(packet)
+                }) {
+                    handler.post {
+                        if (bleConnection === link) {
+                            log("BLE control connection lost")
+                            disconnect()
+                            reconnectAfterLoss()
+                        }
+                    }
+                }
+                bleConnection = link
+                featureStates = emptyMap()
+                try {
+                    link.open(device)
+                    if (epoch != connectionEpoch.get()) { link.close(); return@Thread }
+                    if (!link.isConnected()) throw IOException("BLE closed during setup")
+                    connectionReady(device)
+                    isConnecting = false
+                    return@Thread
+                } catch (e: Exception) {
+                    link.close()
+                    if (bleConnection === link) bleConnection = null
+                    if (epoch != connectionEpoch.get()) return@Thread
+                    log("BLE control unavailable: ${e.message}; trying RFCOMM")
+                }
+            }
             val socket = try {
                 val advertised = device.uuids?.map { it.uuid }?.toSet().orEmpty()
                 log("Transport: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, " +
@@ -262,23 +306,21 @@ class BudsConnectionManager(private val context: Context) {
                     UUID.fromString(OpoProtocol.SPP_UUID_PRIMARY)
                 ), advertised, allowStandardSpp = device.name == "OnePlus Nord Buds 4 Pro")
             } catch (e: SecurityException) {
+                if (epoch != connectionEpoch.get()) return@Thread
                 log("Bluetooth permission denied: ${e.message}")
                 disconnect()
                 return@Thread
             }
 
+            if (epoch != connectionEpoch.get()) {
+                runCatching { socket?.close() }
+                return@Thread
+            }
             if (socket != null) {
                 bluetoothSocket = socket
                 connectedThread = ConnectedThread(socket)
                 connectedThread?.start()
-                isReady = true
-                reconnectAttempts = 0
-                connectedAt = System.currentTimeMillis()
-                caseClosing = false
-                if (audioAfterRestart) { audioAfterRestart = false; setPhoneAudio(device, on = true) }
-                handler.post { listeners.forEach { it.onConnected(true) } }
-                log("Ready for commands. Running init sequence...")
-                runInitSequence()
+                connectionReady(device)
             } else {
                 log("All connection methods failed; see each secure/insecure UUID attempt above. " +
                     "Keep the buds awake and close other earbud control apps before retrying.")
@@ -287,9 +329,10 @@ class BudsConnectionManager(private val context: Context) {
                 if (reconnectAttempts < 3) {
                     reconnectAttempts++
                     log("Auto-retry $reconnectAttempts/3 in 5s...")
-                    handler.postDelayed({
-                        if (!isConnected() && !isConnecting) connect(device)
-                    }, 5000)
+                    val retryEpoch = connectionEpoch.get()
+                    initialRetry = Runnable {
+                        if (retryEpoch == connectionEpoch.get() && !isConnected() && !isConnecting) connect(device)
+                    }.also { handler.postDelayed(it, 5000) }
                 } else {
                     log("Giving up. Tap CONNECT to retry manually.")
                     reconnectAttempts = 0
@@ -300,17 +343,39 @@ class BudsConnectionManager(private val context: Context) {
         }.start()
     }
 
+    private fun connectionReady(device: BluetoothDevice) {
+        isReady = true
+        reconnectAttempts = 0
+        connectedAt = System.currentTimeMillis()
+        caseClosing = false
+        if (audioAfterRestart) { audioAfterRestart = false; setPhoneAudio(device, on = true) }
+        handler.post { listeners.forEach { it.onConnected(true); it.onDualStateChanged() } }
+        log("Transport ready. Running init sequence; waiting for earbud status replies...")
+        runInitSequence()
+    }
+
     private fun runInitSequence() {
         offeredEvents = null
+        val epoch = connectionEpoch.get()
+        val ble = bleConnection != null
         Thread {
             try {
+                fun delay(ms: Long) {
+                    Thread.sleep(ms)
+                    if (epoch != connectionEpoch.get()) throw IOException("connection session ended")
+                }
                 delay(300); sendRawBlocking(OpoProtocol.buildHandshake(), "handshake")
+                if (ble) {
+                    if (!handshakeReply.await(2500, TimeUnit.MILLISECONDS))
+                        log("No BLE handshake bitmap yet; using individual queries, no assumed batch support")
+                    delay(0)
+                }
                 delay(200); sendRawBlocking(OpoProtocol.buildQueryProductId(), "query product id")
                 delay(200); sendRawBlocking(OpoProtocol.buildQueryBroadcastCodes(), "query broadcast codes")
                 // The handshake reply (0x8100) has landed by now; the reads below go out only if
                 // these buds list them, as HeyMelody does (see Capabilities). Buds with the `0x012F`
                 // batch get them in one frame at the end, as HeyMelody sends them.
-                val batch = if (Capabilities.supports(context, OpoProtocol.CMD_BATCH)) mutableListOf<ByteArray>() else null
+                val batch = if (!ble && Capabilities.supports(context, OpoProtocol.CMD_BATCH)) mutableListOf<ByteArray>() else null
                 fun query(cmd: Int, packet: ByteArray, label: String) {
                     if (!Capabilities.supports(context, cmd)) { log("skip $label: not supported"); return }
                     if (batch != null) { batch += packet; return }
@@ -380,6 +445,9 @@ class BudsConnectionManager(private val context: Context) {
     }
 
     fun disconnect() {
+        connectionEpoch.incrementAndGet()
+        initialRetry?.let { handler.removeCallbacks(it) }
+        initialRetry = null
         // A deliberate disconnect must not be undone by a queued reconnect.
         pendingReconnect?.let { handler.removeCallbacks(it) }
         pendingReconnect = null
@@ -388,8 +456,12 @@ class BudsConnectionManager(private val context: Context) {
         connectedThread?.cancel()
         connectedThread = null
         bluetoothSocket = null
+        val ble = bleConnection
+        bleConnection = null
+        ble?.close()
+        dualState.reset()
         bridge?.dropClient()
-        handler.post { listeners.forEach { it.onConnected(false) } }
+        handler.post { listeners.forEach { it.onConnected(false); it.onDualStateChanged() } }
         log("Disconnected")
     }
 
@@ -440,15 +512,35 @@ class BudsConnectionManager(private val context: Context) {
      * re-read, then `0x0413 08 00 xx`. The buds answer with a `0x0204` subType `06` device list.
      */
     fun setDualDevice(on: Boolean) {
+        if (!isConnected()) return
+        val token = dualState.request(on) ?: return log("Dual connection: waiting for confirmed feature status")
+        val epoch = connectionEpoch.get()
+        handler.post { listeners.forEach { it.onDualStateChanged() } }
+        handler.postDelayed({ dualChangeUnconfirmed(token) }, 5000)
         Thread {
             try {
+                if (epoch != connectionEpoch.get()) return@Thread
                 sendRawBlocking(OpoProtocol.setFeature(OpoProtocol.FEATURE_DUAL_DEVICE, on), "Dual device -> $on")
                 sendRawBlocking(statusQuery(), "verify features")
                 sendRawBlocking(OpoProtocol.dualFollowup(on), "Dual follow-up")
+                delay(300)
+                if (epoch != connectionEpoch.get()) return@Thread
+                sendRawBlocking(statusQuery(), "verify dual connection")
+                delay(1200)
+                if (epoch != connectionEpoch.get()) return@Thread
+                if (dualState.snapshot().pending) sendRawBlocking(statusQuery(), "recheck dual connection")
             } catch (e: Exception) {
                 log("DUAL WRITE failed: ${e.message}")
+                handler.post { dualChangeUnconfirmed(token) }
             }
         }.start()
+    }
+
+    private fun dualChangeUnconfirmed(token: Long) {
+        if (!dualState.expire(token)) return
+        log("Dual connection change not confirmed by a status reply")
+        listeners.forEach { it.onDualStateChanged() }
+        Toast.makeText(context, R.string.dual_change_unconfirmed, Toast.LENGTH_LONG).show()
     }
 
     /** One entry of the buds' paired-device list (`0x8112`, `0x0204` subType `06`). */
@@ -624,7 +716,9 @@ class BudsConnectionManager(private val context: Context) {
         val prefs = featurePrefs()
         if (prefs.getString(ModelCatalog.KEY_DEVICE_NAME, null) == name) return
         prefs.edit().putString(ModelCatalog.KEY_DEVICE_NAME, name)
-            .remove(Capabilities.KEY_PRODUCT_ID).remove(ModelCatalog.KEY_MANUAL).apply()
+            .remove(Capabilities.KEY_PRODUCT_ID).remove(ModelCatalog.KEY_MANUAL)
+            .remove(Capabilities.KEY_COMMANDS).remove(Capabilities.KEY_FEATURES).remove(KEY_FIRMWARE).apply()
+        featureStates = emptyMap()
     }
 
     private fun featurePrefs() = context.getSharedPreferences(ThemeRes.PREFS_NAME, Context.MODE_PRIVATE)
@@ -1023,6 +1117,15 @@ class BudsConnectionManager(private val context: Context) {
 
     private fun sendRawBlocking(data: ByteArray, label: String = "") {
         try {
+            val ble = bleConnection
+            if (ble?.isConnected() == true) {
+                for (packet in BlePacketSizing.packets(data, ble.maxWriteLength())) {
+                    ble.write(packet)
+                    markAncFlush()
+                    log("TX[$label]: ${OpoProtocol.bytesToHex(packet)}")
+                }
+                return
+            }
             val thread = connectedThread
             if (thread == null) {
                 log("sendRaw[$label]: no active connection.")
@@ -1205,6 +1308,7 @@ class BudsConnectionManager(private val context: Context) {
             val commands = Capabilities.parse(payload)
             if (commands != null) {
                 Capabilities.save(context, commands)
+                handshakeReply.countDown()
                 log("CAPABILITIES: " + commands.sorted().joinToString(" ") { "%04X".format(it) })
                 handler.post { listeners.forEach { it.onCapabilities() } }
             }
@@ -1439,7 +1543,8 @@ class BudsConnectionManager(private val context: Context) {
                 if (o + 1 < payload.size) (payload[o].toInt() and 0xFF) to (payload[o + 1].toInt() and 0xFF)
                 else null
             }.toMap()
-            featureStates = states
+            featureStates = if (bleConnection != null) featureStates + states else states
+            states[OpoProtocol.FEATURE_DUAL_DEVICE]?.takeIf { it in 0..1 }?.let { dualState.confirm(it == 1) }
             log("FEATURES: " + states.entries.joinToString(" ") { "%02X=%d".format(java.util.Locale.ROOT, it.key, it.value) })
             // Game mode has its own push (0x0204 subType 0x05) but none at connect time; this is
             // the connect-time read, fed through the same path so the widget follows too.
@@ -1447,6 +1552,7 @@ class BudsConnectionManager(private val context: Context) {
             handler.post {
                 listeners.forEach {
                     it.onFeatureStates(states)
+                    it.onDualStateChanged()
                     if (game != null) it.onGameModeState(game == 1)
                 }
             }

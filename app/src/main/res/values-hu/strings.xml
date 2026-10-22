@@ -454,4 +454,6 @@
     <string name="test_not_marked">Nincs megjelölve</string>
     <string name="test_broken_hint">Mi történt? Egy sor elég.</string>
     <string name="test_mark_all">Jelölj meg minden funkciót az eredmény elküldéséhez.</string>
+    <string name="dual_status_waiting">Várakozás a kettős kapcsolat fülhallgató általi megerősítésére.</string>
+    <string name="dual_change_unconfirmed">A fülhallgató nem erősítette meg a módosítást. Csatlakozz újra, és próbáld ismét.</string>
 </resources>

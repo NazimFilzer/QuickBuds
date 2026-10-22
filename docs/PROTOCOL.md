@@ -21,7 +21,8 @@ cites them.
 
 ## 1. Transport
 
-Classic Bluetooth **RFCOMM / SPP**, not BLE. One long-lived socket; the buds push events at any time.
+The default transport is Classic Bluetooth **RFCOMM / SPP**. Nord Buds 4 Pro additionally tries
+the OPO BLE GATT service described below. The buds can push events at any time.
 
 | UUID | Use |
 |---|---|
@@ -54,6 +55,32 @@ when advertised; SDP resolves its channel. It never tries the audio profile UUID
 The existing OPPO commands are unchanged; their compatibility on this service is `[GUESS]`.
 Android 14+ socket failures now also log `BluetoothSocketException.getErrorCode()`
 ([Android API](https://developer.android.com/reference/android/bluetooth/BluetoothSocketException#getErrorCode())).
+
+### Nord Buds 4 Pro BLE control (test 3)
+
+The owner's test-2 log (`20261022_213541`) opens standard SPP, then sends the handshake, reads,
+and dual-device writes without a single `RX` frame. The owner reports audible ANC changes, no
+battery readings, and a dual switch that opens as Off again. These observations do not establish
+that the dual-device write failed: its read-back is absent.
+
+`[OSS]` [Sarfraz-droid/OnePlusBudsManager](https://github.com/Sarfraz-droid/OnePlusBudsManager),
+which reports Nord Buds 4 Pro ANC tested on hardware, uses OPO BLE service
+`0000079A-D102-11E1-9B23-00025B00A5A5`, writer `0100079A-D102-11E1-9B23-00025B00A5A5`,
+**write without response**, and notifications on discovered characteristics across services.
+Its reference is [AasheeshLikePanner/cracked-oneplus-buds](https://github.com/AasheeshLikePanner/cracked-oneplus-buds).
+These are wire/API references; no Swift implementation is copied.
+
+Test 3 tries this GATT transport before SPP, for the exact Nord Buds 4 Pro Bluetooth name only.
+It completes service discovery and serialized CCCD subscriptions before sending the existing OPO
+handshake. Each characteristic has an independent packet framer. Android's write-completion
+callback means the write was queued; it is **not** a firmware feature acknowledgement.
+The existing dynamic reply to `0x0500` is retained (§9); no fixed registration token or timestamp
+from the reference script is replayed.
+
+BLE init uses individual queries, without assuming batch support. If MTU negotiation is unavailable,
+only the documented `0x010D` id list is split into smaller complete queries; their replies are merged.
+Oversized feature writes are refused rather than guessing fragmentation. SPP remains the fallback
+if GATT setup fails. BLE and multipoint on the owner's phone remain unverified until test 3 runs.
 
 ---
 
@@ -726,6 +753,14 @@ Smart auto-pause (pause only when both buds leave) is the app's own, not firmwar
 a media pause key. It and switch `04` are mutually exclusive in the UI.
 
 ### Dual connection — `11`, device list `0x0112` `[CAPTURE]`+`[VENDOR]`
+
+**Confirmation handling (test 3):** the screen waits for a current `0x810D` value for `11` before
+enabling its switch. A requested value is held in the service while awaiting read-back, including
+when the screen is reopened. It is not persisted as confirmed firmware state. The existing toggle
+and follow-up are sent, then status is read after 300 ms and again after 1.2 s if needed. A matching
+reply confirms the change; after 5 s without confirmation the previous actual reading is restored
+and the user sees an error. Disconnect clears the live confirmation. No new dual-device payloads
+were inferred from the owner's silent link.
 
 ```
 0x0112 → 8112 00 <count> <entries>        push 0x0204 06 <count> <entries>

@@ -454,4 +454,6 @@
     <string name="test_not_marked">Sin marcar</string>
     <string name="test_broken_hint">¿Qué pasó? Basta con una línea.</string>
     <string name="test_mark_all">Marca cada función para enviar el resultado.</string>
+    <string name="dual_status_waiting">Esperando a que los auriculares confirmen la conexión dual.</string>
+    <string name="dual_change_unconfirmed">Los auriculares no confirmaron el cambio. Vuelve a conectarlos e inténtalo otra vez.</string>
 </resources>

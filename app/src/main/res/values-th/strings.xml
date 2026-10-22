@@ -456,4 +456,6 @@
     <string name="test_not_marked">ยังไม่ได้ทำเครื่องหมาย</string>
     <string name="test_broken_hint">เกิดอะไรขึ้น? หนึ่งบรรทัดก็พอ</string>
     <string name="test_mark_all">ทำเครื่องหมายทุกฟีเจอร์เพื่อส่งผลลัพธ์</string>
+    <string name="dual_status_waiting">กำลังรอหูฟังยืนยันการเชื่อมต่อสองอุปกรณ์</string>
+    <string name="dual_change_unconfirmed">หูฟังไม่ได้ยืนยันการเปลี่ยนแปลง โปรดเชื่อมต่อใหม่แล้วลองอีกครั้ง</string>
 </resources>
