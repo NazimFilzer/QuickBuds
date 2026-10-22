@@ -1,6 +1,6 @@
 # Checks the locales, builds the release APK and AAB, runs the desktop tests and builds the desktop archives
 # (scripts/desktop-dist.sh). Runs only by hand: `gh workflow run Build`, for a release or a test APK made from the
-# phone. On the PC, scripts/release-build.sh does the same, much faster (CLAUDE.md, Release). The APK is signed
+# phone. On the PC, scripts/release-build.sh does the same, much faster (docs/CONTRIBUTING.md). The APK is signed
 # when the repository has the RELEASE_KEYSTORE_B64 and RELEASE_KEY_PROPERTIES secrets, so it installs over the
 # release app. The run's Artifacts hold every release file.
 name: Build
