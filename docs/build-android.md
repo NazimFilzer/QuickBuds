@@ -13,7 +13,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 - The first build downloads Gradle through the wrapper. The only library is `androidx.core`.
 - This fork's debug build uses application id `com.spizganed.quickbuds.nordtest` and a
-  `-nord-test` version suffix, so it installs beside the official release. Both icons use the
+  `-nord-test2` version suffix, so it installs beside the official release. Both icons use the
   QuickBuds name. Force-stop the official app while testing, and remove the test app when done.
 - `./gradlew assembleRelease` without the release key builds an unsigned APK. That is expected.
 

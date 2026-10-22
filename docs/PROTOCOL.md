@@ -44,6 +44,17 @@ is retained last for compatibility; every failed socket, including that fallback
 handshake or product-id reply. It does not establish the correct channel, authentication mode,
 or a new protocol. No model payloads or commands are changed. See [the test guide](./nord-buds-4-pro.md).
 
+**Nord Buds 4 Pro test 2:** the owner's corrected export (`20261022_205826`) targets
+`OnePlus Nord Buds 4 Pro` on a OnePlus CPH2707, Android 16. Its cached service list contains
+`00001101-0000-1000-8000-00805F9B34FB` (standard Serial Port Profile), plus A2DP/AVRCP/HFP;
+neither custom OPPO service is present. Every test-1 attempt fails before receiving any bytes.
+This is evidence of an advertised serial service, **not** proof it carries the OPPO protocol.
+The client therefore includes standard SPP only for that exact Bluetooth model name, and only
+when advertised; SDP resolves its channel. It never tries the audio profile UUIDs.
+The existing OPPO commands are unchanged; their compatibility on this service is `[GUESS]`.
+Android 14+ socket failures now also log `BluetoothSocketException.getErrorCode()`
+([Android API](https://developer.android.com/reference/android/bluetooth/BluetoothSocketException#getErrorCode())).
+
 ---
 
 ## 2. Frame format

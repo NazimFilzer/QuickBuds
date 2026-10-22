@@ -95,6 +95,30 @@ fun main() {
             val f = Fixture()
             f.connector.connect(listOf(first, first, second))
             check(f.attempts.size == 5)
+        },
+        "Nord model opt-in tries advertised standard SPP first" to {
+            val spp = RfcommConnector.STANDARD_SPP_UUID
+            val f = Fixture(success = "true:$spp")
+            check(f.connector.connect(known, setOf(spp), allowStandardSpp = true)?.label == "true:$spp")
+            check(f.attempts == listOf("true:$spp"))
+        },
+        "standard SPP is never guessed when not advertised" to {
+            val f = Fixture()
+            f.connector.connect(known, allowStandardSpp = true)
+            check(f.attempts == listOf("true:$first", "true:$second", "false:$first", "false:$second", "legacy"))
+        },
+        "other models do not gain a standard SPP target" to {
+            val f = Fixture()
+            f.connector.connect(known, setOf(RfcommConnector.STANDARD_SPP_UUID))
+            check(f.attempts == listOf("true:$first", "true:$second", "false:$first", "false:$second", "legacy"))
+        },
+        "standard SPP also gets an insecure fallback and failure cleanup" to {
+            val spp = RfcommConnector.STANDARD_SPP_UUID
+            val f = Fixture(success = "false:$spp")
+            val socket = f.connector.connect(known, setOf(spp), allowStandardSpp = true)
+            check(f.attempts == listOf("true:$spp", "true:$first", "true:$second", "false:$spp"))
+            check(socket === f.sockets.last() && !socket.closed)
+            check(f.sockets.dropLast(1).all { it.closed })
         }
     )
     tests.forEach { (name, test) -> test(); println("PASS: $name") }

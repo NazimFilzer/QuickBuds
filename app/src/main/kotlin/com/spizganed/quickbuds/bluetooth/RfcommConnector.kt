@@ -10,9 +10,21 @@ internal class RfcommConnector<S : Closeable>(
     private val createLegacySocket: () -> S,
     private val log: (String) -> Unit
 ) {
-    fun connect(knownUuids: List<UUID>, advertisedUuids: Set<UUID> = emptySet()): S? {
+    companion object {
+        val STANDARD_SPP_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb")
+    }
+
+    fun connect(
+        knownUuids: List<UUID>,
+        advertisedUuids: Set<UUID> = emptySet(),
+        allowStandardSpp: Boolean = false
+    ): S? {
+        // The Nord Buds 4 Pro owner reports standard SPP, without either OPPO UUID. Its protocol
+        // remains unverified: opt in for that model only, and only when the service is advertised.
+        val candidates = if (allowStandardSpp && STANDARD_SPP_UUID in advertisedUuids)
+            knownUuids + STANDARD_SPP_UUID else knownUuids
         // Cached SDP records are a hint, not a filter: missing/stale records must not block a UUID.
-        val ordered = knownUuids.distinct().sortedBy { if (it in advertisedUuids) 0 else 1 }
+        val ordered = candidates.distinct().sortedBy { if (it in advertisedUuids) 0 else 1 }
         // Keep the existing authenticated paths first. Some phone/earbud combinations cannot
         // authenticate the control service; Android provides insecure RFCOMM for that case.
         for (secure in listOf(true, false)) {

@@ -242,7 +242,16 @@ class BudsConnectionManager(private val context: Context) {
                         if (secure) device.createRfcommSocketToServiceRecord(uuid)
                         else device.createInsecureRfcommSocketToServiceRecord(uuid)
                     },
-                    connectSocket = { it.connect() },
+                    connectSocket = {
+                        try {
+                            it.connect()
+                        } catch (e: IOException) {
+                            // Android's generic message hides whether the service, link or socket failed.
+                            if (android.os.Build.VERSION.SDK_INT >= 34 && e is android.bluetooth.BluetoothSocketException)
+                                log("Android Bluetooth socket error code: ${e.errorCode}")
+                            throw e
+                        }
+                    },
                     createLegacySocket = {
                         val method = device.javaClass.getMethod("createRfcommSocket", Int::class.javaPrimitiveType)
                         method.invoke(device, 15) as BluetoothSocket
@@ -251,7 +260,7 @@ class BudsConnectionManager(private val context: Context) {
                 ).connect(listOf(
                     UUID.fromString(OpoProtocol.SPP_UUID_FALLBACK),
                     UUID.fromString(OpoProtocol.SPP_UUID_PRIMARY)
-                ), advertised)
+                ), advertised, allowStandardSpp = device.name == "OnePlus Nord Buds 4 Pro")
             } catch (e: SecurityException) {
                 log("Bluetooth permission denied: ${e.message}")
                 disconnect()

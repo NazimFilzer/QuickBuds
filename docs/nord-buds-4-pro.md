@@ -1,15 +1,24 @@
 # Nord Buds 4 Pro connection test
 
-This fork is an **experimental connection fix**, based on QuickBuds 4.13.0. It has not been tested
-with physical earbuds. The existing model entry (`066814`) is retained without a `confirmed` flag.
+This fork is an **experimental connection fix**, based on QuickBuds 4.13.0. Build 1 failed in
+the owner's device test; build 2's standard SPP path still needs testing on physical earbuds.
+The existing model entry (`066814`) is retained without a `confirmed` flag.
 The reported setup is OnePlus Nord 5, Android 16: audio works, QuickBuds fails at channel 15,
 and the phone's Earbud functions page is missing or fails. HeyMelody also does not connect.
+
+The owner tested build 1: the corrected log targets the Nord Buds, but all custom OPPO service
+and channel 15 attempts fail. Its cached service records advertise standard Serial Port Profile
+(`00001101-0000-1000-8000-00805f9b34fb`) instead of the custom OPPO UUIDs. **Build 2** tries this
+advertised service first, for the exact Bluetooth name `OnePlus Nord Buds 4 Pro` only. Whether
+it carries the OPPO command protocol still needs a device test.
 
 ## What changed
 
 - Try both known OPPO service UUIDs with authenticated RFCOMM, followed by Android's insecure
   RFCOMM API. Both methods use service discovery for the channel.
 - Prefer known UUIDs present in the phone's cached service records, while still trying both.
+- Build 2: include advertised standard SPP for Nord Buds 4 Pro, with secure and insecure attempts;
+  record Android's Bluetooth socket error code on Android 14+.
 - Close every failed socket, including the existing channel 15 fallback.
 - Log the phone/Android version, bond state, cached service UUIDs, and the outcome of each attempt.
   No Bluetooth addresses are added to these diagnostics.
@@ -19,15 +28,18 @@ requires insecure RFCOMM or that channel 15 is correct. There are no guessed com
 
 ## Install and test
 
-1. [Download the experimental test APK](https://github.com/NazimFilzer/QuickBuds/releases/tag/nord-buds-4-pro-test-1).
+1. [Download experimental test APK 2](https://github.com/NazimFilzer/QuickBuds/releases/tag/nord-buds-4-pro-test-2).
    To build it yourself, use JDK 21+ and Android SDK 37: `./gradlew assembleDebug`. The APK is
    `app/build/outputs/apk/debug/app-debug.apk`. Alternatively run **Nord Buds connection test** in
    GitHub Actions and download its APK artifact. This workflow needs no upstream signing key.
-2. Install the debug APK. Its application id is `com.spizganed.quickbuds.nordtest` and version ends
-   in `-nord-test`, so it can coexist with official QuickBuds. Both icons retain the QuickBuds name;
+2. Install the debug APK. Its application id is `com.spizganed.quickbuds.nordtest` and its version
+   is `4.13.0-nord-test2`. It updates test 1 directly and can coexist with official QuickBuds.
+   Both icons retain the QuickBuds name;
    use Android App info to check the version. Force-stop official QuickBuds before opening the test app.
 3. Keep the earbuds paired in Android, with the lid open and at least one bud awake. Confirm that
    music plays. Close HeyMelody and the Bluetooth Earbud functions page before connecting in the test app.
+   Disconnect other paired OPPO/OnePlus/realme earphones while testing, and check the log targets
+   `OnePlus Nord Buds 4 Pro`. The app still uses upstream's automatic device selection.
 4. Allow Nearby devices when prompted, open Dev tools, clear the log, and try connecting once.
 5. A useful success is `Connected via ...` followed by `RX` handshake/product-id replies and live
    battery readings. A socket opening alone does not establish full model support.
