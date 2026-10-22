@@ -231,43 +231,31 @@ class BudsConnectionManager(private val context: Context) {
         context.getSystemService(BluetoothManager::class.java)?.adapter?.cancelDiscovery()
 
         Thread {
-            // 079A first: it is the one that works (HeyMelody connects straight to it), while
-            // 1107 never connects on the Buds 4 and burns ~5 s. 1107 stays for other models.
-            val uuids = listOf(
-                OpoProtocol.SPP_UUID_FALLBACK,
-                OpoProtocol.SPP_UUID_PRIMARY
-            )
-            var socket: BluetoothSocket? = null
-            var lastError: String? = null
-
-            for (uuidStr in uuids) {
-                try {
-                    log("Trying UUID: $uuidStr")
-                    val uuid = UUID.fromString(uuidStr)
-                    socket = device.createRfcommSocketToServiceRecord(uuid)
-                    socket?.connect()
-                    log("Connected via UUID: $uuidStr")
-                    break
-                } catch (e: IOException) {
-                    lastError = e.message ?: e.javaClass.simpleName
-                    log("Failed UUID $uuidStr: $lastError")
-                    try { socket?.close() } catch (_: Exception) {}
-                    socket = null
-                }
-            }
-
-            if (socket == null) {
-                try {
-                    log("Trying RFCOMM channel 15...")
-                    val m = device.javaClass.getMethod("createRfcommSocket", Int::class.javaPrimitiveType)
-                    socket = m.invoke(device, 15) as BluetoothSocket
-                    socket.connect()
-                    log("Connected via raw channel 15")
-                } catch (e: Exception) {
-                    lastError = e.message ?: e.javaClass.simpleName
-                    log("Channel 15 failed: $lastError")
-                    socket = null
-                }
+            val socket = try {
+                val advertised = device.uuids?.map { it.uuid }?.toSet().orEmpty()
+                log("Transport: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, " +
+                    "Android ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT}), " +
+                    "bond=${device.bondState}, type=${device.type}")
+                log("Cached service UUIDs: ${advertised.joinToString().ifEmpty { "none (will still try known services)" }}")
+                RfcommConnector<BluetoothSocket>(
+                    createSocket = { uuid, secure ->
+                        if (secure) device.createRfcommSocketToServiceRecord(uuid)
+                        else device.createInsecureRfcommSocketToServiceRecord(uuid)
+                    },
+                    connectSocket = { it.connect() },
+                    createLegacySocket = {
+                        val method = device.javaClass.getMethod("createRfcommSocket", Int::class.javaPrimitiveType)
+                        method.invoke(device, 15) as BluetoothSocket
+                    },
+                    log = ::log
+                ).connect(listOf(
+                    UUID.fromString(OpoProtocol.SPP_UUID_FALLBACK),
+                    UUID.fromString(OpoProtocol.SPP_UUID_PRIMARY)
+                ), advertised)
+            } catch (e: SecurityException) {
+                log("Bluetooth permission denied: ${e.message}")
+                disconnect()
+                return@Thread
             }
 
             if (socket != null) {
@@ -283,7 +271,8 @@ class BudsConnectionManager(private val context: Context) {
                 log("Ready for commands. Running init sequence...")
                 runInitSequence()
             } else {
-                log("All connection methods failed: $lastError")
+                log("All connection methods failed; see each secure/insecure UUID attempt above. " +
+                    "Keep the buds awake and close other earbud control apps before retrying.")
                 isConnecting = false
                 disconnect()
                 if (reconnectAttempts < 3) {

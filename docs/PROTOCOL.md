@@ -30,6 +30,20 @@ Classic Bluetooth **RFCOMM / SPP**, not BLE. One long-lived socket; the buds pus
 
 A case lid close kills the socket (§8).
 
+### Android connection fallback (experimental)
+
+The Android client tries the two known service UUIDs above with authenticated RFCOMM first,
+then with `createInsecureRfcommSocketToServiceRecord`. Both APIs resolve the channel using SDP;
+cached advertised UUIDs only prioritise known services, and an absent record never excludes one.
+[Android documents this alternative](https://developer.android.com/reference/android/bluetooth/BluetoothDevice#createRfcommSocketToServiceRecord(java.util.UUID))
+for devices that cannot establish an authenticated socket. This is Android API behaviour, not
+evidence of which transport Nord Buds 4 Pro requires. The existing reflective channel 15 fallback
+is retained last for compatibility; every failed socket, including that fallback, is closed.
+
+**Nord Buds 4 Pro remains unverified.** The owner's log shows a channel 15 connection failure, no
+handshake or product-id reply. It does not establish the correct channel, authentication mode,
+or a new protocol. No model payloads or commands are changed. See [the test guide](./nord-buds-4-pro.md).
+
 ---
 
 ## 2. Frame format
