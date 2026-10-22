@@ -1,7 +1,9 @@
 package com.spizganed.quickbuds.ui
 
+import android.Manifest
 import android.bluetooth.BluetoothManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import com.spizganed.quickbuds.bluetooth.BudsConnectionManager
@@ -87,7 +89,10 @@ object ProblemReport {
     /** This phone's own names: the device name and the Bluetooth name (null without the permission). */
     private fun phoneNames(c: Context): List<String> = listOfNotNull(
         runCatching { Settings.Global.getString(c.contentResolver, Settings.Global.DEVICE_NAME) }.getOrNull(),
-        runCatching { c.getSystemService(BluetoothManager::class.java)?.adapter?.name }.getOrNull()
+        if (Build.VERSION.SDK_INT < 31 ||
+            c.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED)
+            runCatching { c.getSystemService(BluetoothManager::class.java)?.adapter?.name }.getOrNull()
+        else null
     ).filter { it.length >= 3 }.distinct()
 
     /** [r] as the person reads it before Send: one block per field, the log last. */

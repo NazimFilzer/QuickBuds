@@ -1,7 +1,9 @@
 # QuickBuds
 
 **Experimental Nord Buds 4 Pro fork:** this branch adds Android RFCOMM connection fallbacks and
-diagnostics. Hardware support is **not yet confirmed**. See [installation and testing](docs/nord-buds-4-pro.md).
+diagnostics. Hardware support is **not yet confirmed**.
+[Download the test APK](https://github.com/NazimFilzer/QuickBuds/releases/tag/nord-buds-4-pro-test-1)
+and read [installation and testing](docs/nord-buds-4-pro.md).
 Release links below refer to the upstream project; build this fork's debug APK to test these changes.
 
 > Open-source HeyMelody alternative for Android, Windows and Linux. Control OnePlus / OPPO / realme

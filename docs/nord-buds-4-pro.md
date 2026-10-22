@@ -19,7 +19,8 @@ requires insecure RFCOMM or that channel 15 is correct. There are no guessed com
 
 ## Install and test
 
-1. Build with JDK 21+ and Android SDK 37: `./gradlew assembleDebug`. The APK is
+1. [Download the experimental test APK](https://github.com/NazimFilzer/QuickBuds/releases/tag/nord-buds-4-pro-test-1).
+   To build it yourself, use JDK 21+ and Android SDK 37: `./gradlew assembleDebug`. The APK is
    `app/build/outputs/apk/debug/app-debug.apk`. Alternatively run **Nord Buds connection test** in
    GitHub Actions and download its APK artifact. This workflow needs no upstream signing key.
 2. Install the debug APK. Its application id is `com.spizganed.quickbuds.nordtest` and version ends
